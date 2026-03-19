@@ -34,7 +34,7 @@
     "href": "index.html#sessions",
     "title": "R for Publication",
     "section": "Sessions",
-    "text": "Sessions\n\nDay 1\n\nMarkdown basics: writing in Quarto\nOutput formats: HTML, Word, PDF, and LaTeX\nIncorporating data: summary tables and inline reporting\n\n\n\nDay 2\n\nReporting model results: model summary tables and inline reporting\nProducing figures: publication-ready plots, exporting, and cross-referencing\n\nTips on code chunk options are woven throughout both days.",
+    "text": "Sessions\nDay 1 focuses on the foundations: writing in Quarto, producing different output formats from a single source document, and bringing your data into the narrative through summary tables and inline reporting. This will be broken into the following chapters:\n\nMarkdown basics: writing in Quarto\nOutput formats: HTML, Word, PDF, and LaTeX\nIncorporating data: summary tables and inline reporting\n\nDay 2 builds on this to cover the statistical reporting workflow: extracting and presenting model results, producing publication-ready figures, and tying everything together with cross-references. This will be broken into the following chapters:\n\nReporting model results: model summary tables and inline reporting\nProducing figures: publication-ready plots, exporting, and cross-referencing\n\nTips on code chunk options are woven throughout both days.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
     ]
@@ -54,7 +54,7 @@
     "href": "index.html#required-software",
     "title": "R for Publication",
     "section": "Required software",
-    "text": "Required software\nBefore the first session, please make sure you have the following installed:\n\nR (≥ 4.2): https://cran.r-project.org\nRStudio (≥ 2022.07): https://posit.co/download/rstudio-desktop\nQuarto (latest): https://quarto.org/docs/download\n\n\nChecking your versions\nIn the R console:\n\nR.version.string  # R version\n\nTo check your Quarto CLI version, run this in the Terminal tab:\nquarto --version\nRStudio’s version is visible under Help → About RStudio.\n\n\nUpdating\n\nR: download the latest version from https://cran.r-project.org\nRStudio: Help → Check for Updates\nQuarto: download the latest version from https://quarto.org/docs/download",
+    "text": "Required software\nBefore the first session, please make sure you have the following installed:\n\nR (≥ 4.2): https://cran.r-project.org\nRStudio (≥ 2022.07): https://posit.co/download/rstudio-desktop\nQuarto (latest): https://quarto.org/docs/download\nTinyTeX (for PDF output) — see Installing TinyTeX below\n\n\nInstalling R, RStudio, and Quarto\nDownload and install each from the links above, following the instructions for your operating system. Install them in order: R first, then RStudio, then Quarto.\n\n\nInstalling TinyTeX\nTinyTeX is a lightweight LaTeX distribution installable directly from R:\n\ninstall.packages(\"tinytex\")\ntinytex::install_tinytex()\n\n\n\nChecking your versions\nIn the R console:\n\nR.version.string\ntinytex::is_tinytex()\ntinytex::tlmgr(\"--version\")\n\nIn the Terminal tab:\nquarto --version\nRStudio’s version is visible under Help → About RStudio.\n\n\nUpdating\n\nR: download the latest version from https://cran.r-project.org\nRStudio: Help → Check for Updates\nQuarto: download the latest version from https://quarto.org/docs/download\nTinyTeX: tinytex::tlmgr_update()",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
     ]
