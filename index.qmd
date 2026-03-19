@@ -49,13 +49,16 @@ Before the first session, please make sure you have the following installed:
 - **R** (≥ 4.2): <https://cran.r-project.org>
 - **RStudio** (≥ 2022.07): <https://posit.co/download/rstudio-desktop>
 - **Quarto** (latest): <https://quarto.org/docs/download>
+- **TinyTeX** (for PDF output) — see below
 
 ### Checking your versions
 
 In the R console:
 ```{r}
 #| output: false
-R.version.string  # R version
+R.version.string       # R version
+tinytex::is_tinytex()  # should return TRUE if TinyTeX is installed
+tinytex::tlmgr("--version")  # TinyTeX/TeX Live version
 ```
 
 To check your Quarto CLI version, run this in the **Terminal** tab:
@@ -70,4 +73,15 @@ RStudio's version is visible under *Help → About RStudio*.
 - **R**: download the latest version from <https://cran.r-project.org>
 - **RStudio**: *Help → Check for Updates*
 - **Quarto**: download the latest version from <https://quarto.org/docs/download>
+- **TinyTeX**: run `tinytex::tlmgr_update()` in the R console
+
+### Installing TinyTeX
+
+To render PDF output, you need a LaTeX distribution. We recommend TinyTeX,
+a lightweight distribution installable directly from R:
+```{r}
+#| output: false
+install.packages("tinytex")
+tinytex::install_tinytex()
+```
 
