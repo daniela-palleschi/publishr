@@ -1,0 +1,246 @@
+---
+title: "Writing in Quarto"
+subtitle: "Markdown, Citations, and Manuscript Formatting"
+---
+
+## Purpose
+
+This chapter covers writing in Quarto independently of any data or analysis. This is relevant if you want to write any part of your manuscript — including the results section — directly in Quarto, rather than copying output into a separate Word or LaTeX document.
+
+## Text formatting
+
+Quarto uses Markdown for text formatting:
+
+| Markdown | Output |
+|---|---|
+| `**bold**` | **bold** |
+| `*italic*` | *italic* |
+| `***bold italic***` | ***bold italic*** |
+| `` `code` `` | `code` |
+| `~~strikethrough~~` | ~~strikethrough~~ |
+| `H~2~O` | H~2~O |
+| `R^2^` | R^2^ |
+
+For APA 7, statistical symbols should be italicised. Use `*...*` in Markdown:
+
+| Statistic | Markdown | Output |
+|---|---|---|
+| Mean | `*M* = 310.8` | *M* = 310.8 |
+| SD | `*SD* = 155.9` | *SD* = 155.9 |
+| t-test | `*t*(48) = 2.31` | *t*(48) = 2.31 |
+| p-value | `*p* < .001` | *p* < .001 |
+
+## Headers
+
+Use `##` for first-level sections within a chapter, `###` for subsections. The chapter title is set in the YAML `title:` field:
+````markdown
+## Methods
+### Participants
+#### Inclusion criteria
+````
+
+::: callout-tip
+In a Quarto book, avoid using `#` (H1) inside chapter files — it is reserved for the chapter title set in the YAML.
+:::
+
+## Lists and callouts
+````markdown
+- unordered item
+  - nested item
+
+1. ordered item
+   1. nested item
+````
+
+Callout boxes draw attention to key points:
+````markdown
+::: callout-note
+A note — good for asides and tips.
+:::
+
+::: callout-warning
+A warning.
+:::
+
+::: callout-important
+An important point.
+:::
+````
+
+## Equations
+
+Write LaTeX math inline with `$...$` or in a display block with `$$...$$`:
+````markdown
+The model was specified as:
+
+$$
+y_i = \beta_0 + \beta_1 \text{Tense}_i + \beta_2 \text{Lifetime}_i + \varepsilon_i
+$$ {#eq-model}
+````
+
+Reference in prose with `@eq-model` → "Equation 1".
+
+## Cross-references {#sec-crossref}
+
+Cross-references keep figure, table, and section numbers in sync automatically. Every label must start with the correct prefix:
+
+| Type | Prefix | Reference |
+|---|---|---|
+| Figure | `fig-` | `@fig-rt` |
+| Table | `tbl-` | `@tbl-desc` |
+| Section | `sec-` | `@sec-results` |
+| Equation | `eq-` | `@eq-model` |
+````markdown
+```{{r}}
+#| label: fig-rt
+#| fig-cap: "Total reading time by condition."
+ggplot(df, aes(x = lifetime, y = tt)) +
+  geom_boxplot()
+```
+````
+````markdown
+As shown in @fig-rt, reading times differed by condition.
+````
+````markdown
+```{{r}}
+#| label: tbl-desc
+#| tbl-cap: "Descriptive statistics by condition."
+tbl3 |> gt()
+```
+````
+````markdown
+Descriptive statistics are presented in @tbl-desc.
+````
+
+## Numbered example sentences {#sec-examples}
+
+Pandoc's `(@)` syntax auto-numbers linguistic examples continuously across the document:
+````markdown
+(@cond-a) Der Dirigent hat den Komponisten *gekannt*, 
+          der die Sinfonie geschrieben hat.
+(@cond-b) Der Dirigent hat den Komponisten *gekannt*, 
+          der gestorben ist.
+
+The stimuli in (@cond-a) and (@cond-b) differed in the lifetime
+status of the referent.
+````
+
+::: callout-tip
+For sub-examples (1a, 1b), interlinear glosses, or full linguistic formatting in PDF output, use the `linguex` or `gb4e` LaTeX packages via `include-in-header` in your YAML.
+:::
+
+## Citations {#sec-citations}
+
+Add the following to your document YAML:
+````yaml
+bibliography: references.bib
+csl: apa.csl
+````
+
+Download `apa.csl`:
+````r
+download.file(
+  "https://www.zotero.org/styles/apa",
+  here::here("apa.csl")
+)
+````
+
+Citation syntax:
+
+| Syntax | Output |
+|---|---|
+| `@Bates2015` | Bates et al. (2015) |
+| `[@Bates2015]` | (Bates et al., 2015) |
+| `[-@Bates2015]` | (2015) |
+| `[@Bates2015, p. 12]` | (Bates et al., 2015, p. 12) |
+| `[@Bates2015; @R2024]` | (Bates et al., 2015; R Core Team, 2024) |
+
+Getting BibTeX entries:
+
+- **Zotero** — export as BibTeX (recommended)
+- **Google Scholar** — Cite → BibTeX
+- **DOI** — `doi2bib.org`
+- **R packages** — `toBibtex(citation("lme4"))`
+
+Add a references section at the end of your document:
+````markdown
+## References {.unnumbered}
+
+::: {#refs}
+:::
+````
+
+## Inline reporting {#sec-inline}
+
+Embed R values directly in prose so they update automatically:
+
+````markdown
+The sample comprised ` r n_distinct(df$px)` participants.
+The mean total reading time was ` r round(mean(df$tt, na.rm = TRUE), 1)` ms
+(*SD* = ` r round(sd(df$tt, na.rm = TRUE), 1)`).
+````
+
+For model results, define a helper function in `R/utils.R`:
+````{r}
+#| eval: false
+report_t <- function(model, term) {
+  b   <- broom::tidy(model, conf.int = TRUE)
+  row <- b[b$term == term, ]
+  glue::glue(
+    "*b* = {round(row$estimate, 2)}, ",
+    "95% CI [{round(row$conf.low, 2)}, {round(row$conf.high, 2)}], ",
+    "*t*({round(broom::glance(model)$df.residual)}) = {round(row$statistic, 2)}, ",
+    "*p* {ifelse(row$p.value < .001, '< .001', paste0('= ', round(row$p.value, 3)))}"
+  )
+}
+````
+
+````markdown
+The effect of lifetime was significant (` r report_t(m1, "lifetimeDead")`).
+````
+
+::: callout-tip
+Any number that appears in your manuscript should come from your data or models, not typed manually. This prevents inconsistencies when data changes.
+:::
+
+## Exercises
+
+### Exercise 1 — Text formatting
+
+Write a short methods paragraph (3-5 sentences) in your exercise `.qmd` that includes:
+
+- At least one italicised statistic in APA style (*M*, *SD*, or *p*)
+- One piece of inline R code reporting a value from `df`
+- One callout box with a note about your data
+
+### Exercise 2 — Citations
+
+1. Add `bibliography: references.bib` and `csl: apa.csl` to your YAML
+2. Create a `references.bib` file with at least two entries (use `toBibtex(citation("lme4"))` and one from Google Scholar)
+3. Cite both references in prose using `@key` and `[@key]` syntax
+4. Add a references section at the end of your document and render to HTML
+
+### Exercise 3 — Cross-references
+
+1. Add a figure and a table to your document with `#| label:` and `#| fig-cap:` / `#| tbl-cap:`
+2. Reference both in prose using `@fig-` and `@tbl-`
+3. Add a section label `{#sec-methods}` to a heading and cross-reference it
+
+### Exercise 4 — Numbered examples
+
+Write two example sentences from your own stimuli using `(@)` syntax and cross-reference them in a prose sentence below.
+
+### Exercise 5 — Inline reporting
+
+Complete the following sentence using inline R:
+````markdown
+The sample comprised ... participants (*N* trials = ...).
+Mean total reading time was ... ms (*SD* = ...).
+````
+
+## Chapter slides
+````{=html}
+<a href="../slides/07_writing.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````

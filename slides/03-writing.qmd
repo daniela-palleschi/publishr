@@ -1,0 +1,409 @@
+---
+title: "Writing in Quarto"
+subtitle: "Markdown, Citations, and Cross-References"
+---
+
+## Overview
+
+::: incremental
+- Markdown basics: text formatting and structure
+- Headers and document organisation
+- Citations and APA formatting
+- Cross-referencing figures, tables, and sections
+- Numbered example sentences
+- Inline R for dynamic reporting
+:::
+
+---
+
+# Markdown basics {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*Text formatting and structure*
+:::
+
+## Text formatting
+
+| Markdown | Output |
+|---|---|
+| `**bold**` | **bold** |
+| `*italic*` | *italic* |
+| `***bold italic***` | ***bold italic*** |
+| `` `code` `` | `code` |
+| `~~strikethrough~~` | ~~strikethrough~~ |
+| `H~2~O` | H~2~O |
+| `R^2^` | R^2^ |
+
+## Headers
+````markdown
+# Chapter title (H1)
+## Section (H2)
+### Subsection (H3)
+#### Subsubsection (H4)
+````
+
+. . .
+
+::: callout-tip
+In a Quarto book, H1 (`#`) is reserved for the chapter title in the YAML. Use H2 (`##`) for your first-level sections within a chapter.
+:::
+
+## Lists
+````markdown
+- unordered item
+- another item
+  - nested item
+
+1. ordered item
+2. another item
+   1. nested item
+````
+
+. . .
+````markdown
+::: incremental
+- appears
+- one
+- at a time
+:::
+````
+
+## Block elements
+````markdown
+> This is a blockquote.
+> Useful for quoting stimuli or definitions.
+````
+
+. . .
+````markdown
+::: callout-tip
+A tip callout.
+:::
+````
+::: callout-tip
+A tip callout.
+:::
+
+````markdown
+::: callout-note
+A note callout — good for asides and tips.
+:::
+````
+::: callout-note
+A note callout — good for asides and tips.
+:::
+
+````markdown
+::: callout-warning
+A warning callout.
+:::
+````
+
+::: callout-warning
+A warning callout.
+:::
+
+````markdown
+::: callout-important
+An important callout.
+:::
+````
+
+::: callout-important
+An important callout.
+:::
+
+---
+
+# Citations {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*BibTeX, Zotero, and APA formatting*
+:::
+
+## Setting up a bibliography
+
+In your YAML:
+````yaml
+bibliography: references.bib
+csl: apa.csl
+````
+
+. . .
+
+`references.bib` — BibTeX file with your references  
+`apa.csl` — Citation Style Language file for APA formatting
+
+. . .
+
+::: callout-tip
+Download `apa.csl` from the [Zotero CSL repository](https://www.zotero.org/styles) or run:
+````r
+download.file(
+  "https://www.zotero.org/styles/apa",
+  here::here("apa.csl")
+)
+````
+:::
+
+## Citation syntax
+
+| Syntax | Output |
+|---|---|
+| `@Bates2015` | Bates et al. (2015) |
+| `[@Bates2015]` | (Bates et al., 2015) |
+| `[-@Bates2015]` | (2015) |
+| `[@Bates2015, p. 12]` | (Bates et al., 2015, p. 12) |
+| `[@Bates2015; @Gelman2020]` | (Bates et al., 2015; Gelman, 2020) |
+
+. . .
+````markdown
+Mixed-effects models were fitted following @Bates2015.
+All analyses were conducted in R [@R2024].
+````
+
+## Getting BibTeX entries
+
+::: incremental
+- **Zotero** — export library or single item as BibTeX (recommended)
+- **Google Scholar** — Cite → BibTeX → copy into `references.bib`
+- **DOI** — use `doi2bib.org` to generate BibTeX from a DOI
+- **R packages** — `citation("lme4")` gives a citable reference
+:::
+
+. . .
+````r
+citation("lme4")
+toBibtex(citation("lme4"))
+````
+
+## APA formatting tips
+
+::: incremental
+- Use `csl: apa.csl` — Quarto handles the rest automatically
+- Author-date in text: `@Bates2015` → Bates et al. (2015)
+- References section: add `references.qmd` with `::: {#refs} :::`
+- Running head, double spacing, line spacing: set in YAML or reference `.docx`
+:::
+
+. . .
+
+::: callout-note
+For APA 7th edition PDF output, use `documentclass: apa7` in your YAML and the `apa7` LaTeX class.
+:::
+
+---
+
+# Cross-references {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*Figures, tables, sections, and equations*
+:::
+
+## Cross-reference prefixes
+
+| Type | Label prefix | Reference |
+|---|---|---|
+| Figure | `fig-` | `@fig-mass` |
+| Table | `tbl-` | `@tbl-demo` |
+| Section | `sec-` | `@sec-results` |
+| Equation | `eq-` | `@eq-model` |
+| Example | `exm-` | `@exm-stimulus` |
+
+## Figures
+````markdown
+```{{r}}
+#| label: fig-mass
+#| fig-cap: "Body mass by condition."
+ggplot(...)
+```
+````
+
+. . .
+
+In prose:
+````markdown
+As shown in @fig-mass, body mass differed by condition.
+````
+
+→ "As shown in Figure 1, body mass differed by condition."
+
+## Tables
+````markdown
+```{{r}}
+#| label: tbl-desc
+#| tbl-cap: "Descriptive statistics by condition."
+tbl3 |> gt()
+```
+````
+
+. . .
+````markdown
+Descriptive statistics are presented in @tbl-desc.
+````
+
+→ "Descriptive statistics are presented in Table 1."
+
+## Sections
+````markdown
+## Results {#sec-results}
+
+## Discussion {#sec-discussion}
+````
+
+. . .
+````markdown
+We return to this point in @sec-discussion.
+````
+
+→ "We return to this point in Section 4."
+
+## Equations
+````markdown
+$$
+y_i = \beta_0 + \beta_1 \text{Tense}_i + \beta_2 \text{Lifetime}_i + \varepsilon_i
+$$ {#eq-model}
+````
+
+. . .
+````markdown
+The model is specified in @eq-model.
+````
+
+→ "The model is specified in Equation 1."
+
+
+# Numbered examples {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*Linguistic example sentences*
+:::
+
+## Numbered example sentences
+
+Quarto doesn't have built-in linguistic numbering, but you can use ordered lists with a custom class:
+````markdown
+(@) The cat sat on the mat.
+(@) *The mat sat on the cat.
+````
+
+. . .
+
+Pandoc's `(@)` syntax auto-numbers examples continuously across the document:
+````markdown
+(@ex-good) The manager hired the assistant.
+(@ex-bad) *The assistant was hired the manager.
+
+As shown in (@ex-good), the active form is grammatical.
+````
+
+## Numbered examples — cross-referencing
+````markdown
+(@cond-a) Der Dirigent hat den Komponisten *gekannt*, 
+          der die Sinfonie geschrieben hat.
+(@cond-b) Der Dirigent hat den Komponisten *gekannt*, 
+          der gestorben ist.
+
+The stimuli (@cond-a)--(@cond-b) varied in lifetime status.
+````
+
+. . .
+
+::: callout-tip
+For more control (e.g. (1a), (1b) sub-examples, glosses), use the `linguex` or `gb4e` LaTeX packages in PDF output, or a custom Lua filter for HTML.
+:::
+
+---
+
+# Inline reporting {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*Dynamic values in prose*
+:::
+
+## Inline R code
+
+Embed R values directly in prose:
+````markdown
+The sample comprised `r n_distinct(df$px)` participants
+(*M*~age~ = `r round(mean(df$age, na.rm = TRUE), 1)` years).
+````
+
+. . .
+
+::: callout-tip
+Use `*M*` for italicised statistics in APA style — Quarto renders this correctly in both HTML and PDF.
+:::
+
+## Reporting model results inline
+````r
+# R/utils.R — define once, use everywhere
+report_t <- function(model, term) {
+  b   <- broom::tidy(model, conf.int = TRUE)
+  row <- b[b$term == term, ]
+  glue::glue(
+    "b = {round(row$estimate, 2)}, ",
+    "95% CI [{round(row$conf.low, 2)}, {round(row$conf.high, 2)}], ",
+    "t({round(broom::glance(model)$df.residual)}) = {round(row$statistic, 2)}, ",
+    "p {ifelse(row$p.value < .001, '< .001', paste0('= ', round(row$p.value, 3)))}"
+  )
+}
+````
+
+. . .
+````markdown
+The effect of lifetime was significant (`r report_t(m1, "lifetimeDead")`).
+````
+
+## APA-style statistics
+
+| Statistic | Markdown | Output |
+|---|---|---|
+| Mean | `*M* = 310.8` | *M* = 310.8 |
+| SD | `*SD* = 155.9` | *SD* = 155.9 |
+| t-test | `*t*(48) = 2.31` | *t*(48) = 2.31 |
+| p-value | `*p* < .001` | *p* < .001 |
+| Cohen's d | `*d* = 0.45` | *d* = 0.45 |
+
+. . .
+
+::: callout-tip
+In APA 7, statistical symbols (*M*, *SD*, *t*, *p*, *F*) are italicised. Use `*...*` in Quarto markdown — it works in both HTML and PDF output.
+:::
+
+## {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### ✏️ Your turn
+
+Open `07_writing_exercises.qmd`
+
+1. Add a cross-reference to a figure and a table
+2. Write two numbered example sentences and cross-reference them in prose
+3. Report a model result inline using `report_t()`
+4. Format three statistics in APA style (*M*, *SD*, *p*)
+
+*~15 minutes*
+:::
+
+## {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### 💬 Discuss
+
+*What part of your current writing workflow is most painful?*
+
+. . .
+
+*How could inline reporting or cross-references help?*
+:::
+
+## Summary
+
+::: incremental
+- Markdown handles most formatting needs
+- `csl: apa.csl` gives automatic APA citations
+- Cross-references use `@label` syntax with type prefixes
+- `(@)` for numbered linguistic examples
+- Inline R keeps statistics in sync with your analysis
+:::

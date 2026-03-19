@@ -1,0 +1,142 @@
+---
+title: "Figures for Publication"
+subtitle: "ggplot2, themes, and exporting"
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(patchwork)
+```
+
+```{r}
+#| output: false
+df_clean <- palmerpenguins::penguins |>
+  filter(!is.na(sex)) |>
+  mutate(
+    sex     = factor(sex, labels = c("Female", "Male")),
+    species = factor(species)
+  )
+```
+
+## A publication theme
+
+Define a base theme once and apply it consistently. This makes all your figures coherent and easy to update.
+
+```{r}
+theme_pub <- function(base_size = 11) {
+  theme_classic(base_size = base_size) +
+    theme(
+      strip.background  = element_blank(),
+      strip.text        = element_text(face = "bold"),
+      legend.position   = "bottom",
+      legend.title      = element_blank(),
+      axis.line         = element_line(colour = "grey40"),
+      axis.ticks        = element_line(colour = "grey40"),
+      panel.grid.major.y = element_line(colour = "grey92")
+    )
+}
+
+theme_set(theme_pub())
+```
+
+## Common figure types
+
+### Grouped means with error bars
+
+```{r}
+#| fig-cap: "Mean body mass (±1 SD) by species and sex."
+#| label: fig-mass
+
+df_clean |>
+  filter(!is.na(body_mass_g)) |>
+  group_by(species, sex) |>
+  summarise(
+    mean_mass = mean(body_mass_g),
+    sd_mass   = sd(body_mass_g),
+    .groups   = "drop"
+  ) |>
+  ggplot(aes(x = species, y = mean_mass, colour = sex, group = sex)) +
+  geom_point(position = position_dodge(0.4), size = 3) +
+  geom_errorbar(
+    aes(ymin = mean_mass - sd_mass, ymax = mean_mass + sd_mass),
+    width = 0.2,
+    position = position_dodge(0.4)
+  ) +
+  scale_colour_manual(values = c("Female" = "#C0392B", "Male" = "#2980B9")) +
+  labs(x = NULL, y = "Body mass (g)")
+```
+
+### Distribution plot
+
+```{r}
+#| fig-cap: "Flipper length distributions by species."
+#| label: fig-flipper
+
+ggplot(df_clean, aes(x = flipper_length_mm, fill = species)) +
+  geom_histogram(bins = 25, alpha = 0.7, position = "identity") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Flipper length (mm)", y = "Count")
+```
+
+### Combining figures with patchwork
+
+```{r}
+#| fig-cap: "Combined figure: mass by group (A) and flipper distribution (B)."
+#| label: fig-combined
+#| fig-width: 10
+#| fig-height: 4
+
+p1 <- df_clean |>
+  filter(!is.na(body_mass_g)) |>
+  group_by(species, sex) |>
+  summarise(mean_mass = mean(body_mass_g), sd_mass = sd(body_mass_g), .groups = "drop") |>
+  ggplot(aes(x = species, y = mean_mass, colour = sex, group = sex)) +
+  geom_point(position = position_dodge(0.4), size = 3) +
+  geom_errorbar(
+    aes(ymin = mean_mass - sd_mass, ymax = mean_mass + sd_mass),
+    width = 0.2, position = position_dodge(0.4)
+  ) +
+  scale_colour_manual(values = c("Female" = "#C0392B", "Male" = "#2980B9")) +
+  labs(x = NULL, y = "Body mass (g)")
+
+p2 <- ggplot(df_clean, aes(x = flipper_length_mm, fill = species)) +
+  geom_histogram(bins = 25, alpha = 0.7, position = "identity") +
+  scale_fill_brewer(palette = "Set2") +
+  labs(x = "Flipper length (mm)", y = "Count")
+
+(p1 | p2) + plot_annotation(tag_levels = "A")
+```
+
+## Exporting figures
+
+```{r}
+#| eval: false
+ggsave(
+  here::here("output", "figures", "fig1_mass.pdf"),
+  plot   = p1,
+  width  = 8,
+  height = 5,
+  device = cairo_pdf  # best for fonts in LaTeX
+)
+
+ggsave(
+  here::here("output", "figures", "fig1_mass.png"),
+  plot  = p1,
+  width = 8,
+  height = 5,
+  dpi   = 300          # 300 dpi for most journals
+)
+```
+
+::: callout-tip
+For LaTeX manuscripts, prefer `cairo_pdf` over `pdf` — it handles Unicode and custom fonts more reliably. For Word, use high-DPI PNG (300+).
+:::
+
+## Chapter slides
+
+```{=html}
+<a href="../slides/04_figures.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+```

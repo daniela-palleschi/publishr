@@ -1,0 +1,96 @@
+project:
+  type: book
+  output-dir: _book
+
+filters:
+  - slides-margin.lua # for 'Open Slides' to appear below the TOC on the right
+
+book:
+  title: "R for Publication"
+  subtitle: "Reporting, Tables, and Figures for Academic Manuscripts"
+  author: "ZAS Workshop"
+  date: today
+  margin-footer: margin-footer.html
+  navbar:
+    right:
+      - icon: home
+        href: https://daniela-palleschi.github.io/
+        text: D. Palleschi
+      - icon: github
+        href: https://github.com/daniela-palleschi/publishr
+        aria-label: Source Code
+  sidebar:
+    style: "docked"
+    collapse-level: 1
+    search: true
+  twitter-card: true
+  chapters:
+    - index.qmd
+    - part: "Session 1: Markdown foundations"
+      # chapters:
+        # - chapters/01_intro.qmd
+        # - chapters/02_writing.qmd
+        # - chapters/03_formats.qmd
+        # - chapters/02_wrangling.qmd
+        # - chapters/03_demographics.qmd
+        # - chapters/04_figures.qmd
+    - part: "Session 2: Model Outputs & Reporting"
+      # chapters:
+        # - chapters/05_models.qmd
+        # - chapters/06_tables.qmd
+        # #- chapters/07_manuscripts.qmd
+        # - chapters/08_exporting.qmd
+    - references.qmd
+
+bibliography: references.bib
+csl: apa.csl
+
+crossref:
+  exm-prefix: ex.
+
+format:
+  html:
+    theme:
+      light:
+        - flatly
+        - custom.scss
+      dark:
+        - darkly
+        - custom.scss
+    code-tools: true
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    page-layout: full
+    embed-resources: false
+    fig-width: 7
+    fig-height: 5
+  pdf:
+    documentclass: scrbook
+    papersize: a4
+    toc: true
+    number-sections: true
+    colorlinks: true
+    fig-width: 6
+    fig-height: 4
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{longtable}
+        \usepackage{microtype}
+
+execute:
+  eval: true
+  echo: true
+  message: false
+  error: false
+  warning: false
+  fig-align: center
+  fig-asp: 0.618
+
+editor: source
+
+knitr:
+  opts_chunk:
+    comment: "#>"
+    fig.align: "center"

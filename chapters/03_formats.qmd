@@ -1,0 +1,195 @@
+---
+title: "Output Formats"
+subtitle: "HTML, Word, PDF, and LaTeX"
+---
+
+## Purpose
+
+This chapter covers rendering a Quarto document to different output formats. The same `.qmd` source file can produce HTML, Word, and PDF output — but each format has specific YAML options and some practical differences to be aware of.
+
+## Rendering formats
+
+Specify output formats in the YAML `format:` block:
+````yaml
+format:
+  html:
+    embed-resources: true
+  pdf:
+    keep-tex: true
+  docx:
+    reference-doc: custom-reference.docx
+````
+
+Render all formats at once:
+````bash
+quarto render manuscript.qmd
+````
+
+Or a single format:
+````bash
+quarto render manuscript.qmd --to docx
+````
+
+## HTML
+
+HTML is the most flexible output format and the easiest to share.
+````yaml
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+    theme: flatly
+````
+
+::: callout-note
+## Self-contained HTML with `embed-resources`
+By default, Quarto renders HTML with external dependencies (CSS, JavaScript, figures) stored in a separate folder. Setting `embed-resources: true` bundles everything into a single `.html` file, making it easy to share without worrying about missing assets.
+
+`embed-resources: true` increases file size and slows rendering slightly. For a book or website hosted online, leave it as `false`.
+:::
+
+## Word
+
+Word output is useful for sharing with co-authors or for journal submission.
+````yaml
+format:
+  docx:
+    reference-doc: custom-reference.docx
+    toc: false
+    number-sections: false
+````
+
+A reference `.docx` sets the styles (fonts, margins, heading levels) for the output. Generate a default one with:
+````bash
+quarto pandoc -o custom-reference.docx --print-default-data-file reference.docx
+````
+
+Then open it in Word and modify the styles to match your journal's requirements.
+
+::: callout-warning
+## Citations in Word
+Citations are rendered as plain formatted text in `.docx` output — they are not live fields linked to your `.bib` file. Any edits made directly to citations in Word will be overwritten on re-render. Always treat the `.qmd` as the source of truth.
+
+If co-authors need to edit citations in Word, consider using Zotero's Word plugin for the final submission copy.
+:::
+
+## PDF
+
+PDF output is produced via LaTeX. The most important options:
+````yaml
+format:
+  pdf:
+    documentclass: article   # or scrartcl, apa7
+    papersize: a4
+    fontsize: 12pt
+    geometry: margin=2.5cm
+    linestretch: 1.5
+    number-sections: true
+    keep-tex: true
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{longtable}
+        \usepackage{microtype}
+````
+
+::: callout-tip
+## keep-tex
+Setting `keep-tex: true` saves the intermediate `.tex` file alongside the PDF. This is useful if you need to make final tweaks in Overleaf before submission, or if the journal requires a raw `.tex` file.
+:::
+
+## Format comparison
+
+| Feature | HTML | PDF | Word |
+|---|---|---|---|
+| Citations | ✅ from `.bib` | ✅ from `.bib` | ✅ rendered as text |
+| Live `.bib` link | ✅ | depends on `cite-method` | ❌ |
+| Cross-references | ✅ | ✅ | ✅ |
+| Equations | ✅ MathJax | ✅ native LaTeX | ⚠️ limited |
+| Table formatting | `gt` | `kableExtra` | `flextable` |
+| Custom styles | CSS | LaTeX | reference `.docx` |
+| Self-contained | `embed-resources: true` | always | always |
+
+## APA 7 and `.tex` output {#sec-apa7}
+
+These issues are only relevant if you want to edit the `.tex` file after rendering (e.g., in Overleaf). If you render directly to PDF, Word, or HTML from Quarto, citations will be formatted correctly regardless of which option you use.
+
+For `.tex` editing workflows, there is no perfect solution:
+
+**citeproc (default)**  
+Uses `csl: apa.csl`. Gives the most accurate APA 7 output but resolves citations to plain text in the `.tex` file, so there are no live `\cite{}` commands for Overleaf.
+
+**natbib + apacite**  
+Gives live `\cite{}` commands in the `.tex` file. However, `apacite` targets APA 6th edition and has known APA 7 formatting issues (author limits, DOI formatting).
+
+**biblatex + biblatex-apa**  
+The most APA 7-compliant option with live citations. Requires `biber` as the backend, which must be set manually in Overleaf and is more complex to set up.
+
+| Option | APA 7 accuracy | Live `.tex` citations | Overleaf |
+|---|---|---|---|
+| citeproc + `apa.csl` | ✅ best | ❌ | ⚠️ upload `.tex` only |
+| natbib + `apacite` | ⚠️ APA 6 | ✅ | ✅ with `.bib` |
+| biblatex + `biblatex-apa` | ✅ good | ✅ | ✅ set biber in compiler |
+
+Choose based on your priority: APA 7 accuracy or Overleaf compatibility.
+
+To switch from the default citeproc:
+````yaml
+# natbib
+format:
+  pdf:
+    keep-tex: true
+    cite-method: natbib
+    include-in-header:
+      text: |
+        \usepackage[natbibapa]{apacite}
+
+# biblatex
+format:
+  pdf:
+    keep-tex: true
+    cite-method: biblatex
+    biblio-style: apa
+````
+
+## Exercises
+
+### Exercise 1 — Render to all formats
+
+Add HTML, PDF, and Word format blocks to your exercise `.qmd` YAML and render all three. Compare the outputs — what looks different?
+
+### Exercise 2 — Self-contained HTML
+
+Add `embed-resources: true` to your HTML format block and re-render. Check the file size difference between the self-contained and non-self-contained versions.
+
+### Exercise 3 — Word with a reference document
+
+1. Generate a default reference `.docx`:
+````bash
+quarto pandoc -o custom-reference.docx --print-default-data-file reference.docx
+````
+2. Open it in Word and change the body font to Times New Roman 12pt
+3. Point your YAML to it with `reference-doc: custom-reference.docx` and re-render
+
+### Exercise 4 — keep-tex and Overleaf
+
+1. Add `keep-tex: true` to your PDF format block and render
+2. Open the `.tex` file and find your citations — are they `\cite{}` commands or plain text?
+3. Upload the `.tex` to a new Overleaf project and compile
+
+### Exercise 5 — natbib or biblatex
+
+Switch your citation backend to either `natbib` or `biblatex` and re-render to PDF. Check:
+
+- Do citations appear correctly in the PDF?
+- Open the `.tex` file — are citations now live `\cite{}` commands?
+- Upload to Overleaf — do citations resolve?
+
+## Chapter slides
+````{=html}
+<a href="../slides/08_formats.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````

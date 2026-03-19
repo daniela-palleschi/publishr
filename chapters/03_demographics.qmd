@@ -1,0 +1,112 @@
+---
+title: "Summary Statistics & Demographics Tables"
+subtitle: "gtsummary, skimr, and friends"
+---
+
+```{r}
+#| output: false
+library(tidyverse)
+library(gtsummary)
+library(gt)
+```
+
+```{r}
+#| output: false
+df_clean <- palmerpenguins::penguins |>
+  filter(!is.na(sex)) |>
+  mutate(
+    sex     = factor(sex, labels = c("Female", "Male")),
+    species = factor(species)
+  ) |>
+  rename(
+    bill_len = bill_length_mm,
+    bill_dep = bill_depth_mm,
+    flipper  = flipper_length_mm,
+    mass     = body_mass_g
+  )
+```
+
+## The demographics table
+
+A demographics or "Table 1" is usually the first table in a methods section. It describes the sample: who was measured, on what variables, and how those break down by group.
+
+## gtsummary
+
+`gtsummary` produces publication-ready tables from data frames with minimal code and sensible defaults.
+
+### Basic summary table
+
+```{r}
+df_clean |>
+  select(species, sex, bill_len, bill_dep, flipper, mass) |>
+  tbl_summary(
+    by = sex,
+    label = list(
+      bill_len ~ "Bill length (mm)",
+      bill_dep ~ "Bill depth (mm)",
+      flipper  ~ "Flipper length (mm)",
+      mass     ~ "Body mass (g)"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})",
+      all_categorical() ~ "{n} ({p}%)"
+    ),
+    digits = all_continuous() ~ 1
+  ) |>
+  add_p() |>
+  add_overall() |>
+  bold_labels() |>
+  modify_header(label ~ "**Variable**") |>
+  modify_caption("**Table 1.** Sample characteristics by sex")
+```
+
+::: callout-note
+`add_p()` automatically selects tests (t-test, Wilcoxon, chi-square) based on variable type. You can override with `test = list(...)`.
+:::
+
+### Stratified by multiple groups
+
+```{r}
+df_clean |>
+  select(species, sex, mass) |>
+  tbl_strata(
+    strata = species,
+    .tbl_fun = ~ .x |>
+      tbl_summary(
+        by = sex,
+        statistic = all_continuous() ~ "{mean} ({sd})",
+        digits = all_continuous() ~ 1
+      )
+  )
+```
+
+## Exporting gtsummary tables
+
+For Word:
+
+```{r}
+#| eval: false
+tbl <- df_clean |>
+  select(species, sex, mass) |>
+  tbl_summary(by = sex) |>
+  as_flex_table()
+
+flextable::save_as_docx(tbl, path = here::here("output", "tables", "table1.docx"))
+```
+
+For LaTeX:
+
+```{r}
+#| eval: false
+tbl |>
+  as_kable_extra(format = "latex", booktabs = TRUE) |>
+  kableExtra::save_kable(here::here("output", "tables", "table1.tex"))
+```
+
+## Chapter slides
+
+```{=html}
+<a href="../slides/03_demographics.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+```

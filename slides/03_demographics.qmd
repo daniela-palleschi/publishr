@@ -1,0 +1,127 @@
+---
+title: "Summary Statistics & Demographics Tables"
+subtitle: "Tables and in-line reporting"
+---
+
+```{r}
+#| output: false
+pacman::p_load(
+  here,
+  tidyverse,
+  gtsummary,
+  gt)
+```
+
+```{r}
+#| echo: true
+df_clean <- read_csv(here::here("data", "processed", "exp1_clean.csv"))
+```
+
+## The demographics table
+
+A demographics or "Table 1" is usually the first table in a methods section. It describes the sample: who was measured, on what variables, and how those break down by group.
+
+## Summary tables
+
+`gtsummary` produces publication-ready tables from data frames with minimal code and sensible defaults.
+
+### Basic summary table
+
+#### Total reading time
+
+```{r}
+sum_tt <-
+  df_clean |>
+  filter(region == "verb") |>
+  select(tense, lifetime, tt) |>
+  mutate(
+    lifetime = factor(lifetime, levels = c("living", "dead"))
+  ) |>
+  summarise(
+    n      = n(),
+    mean   = mean(tt,   na.rm = TRUE),
+    sd     = sd(tt,     na.rm = TRUE),
+    median = median(tt, na.rm = TRUE),
+    iqr    = IQR(tt,    na.rm = TRUE), # inter-quartile range (middle 50% of data)
+    se     = sd(tt, na.rm = TRUE) / sqrt(sum(!is.na(tt))),
+    ci     = qt(0.975, df = sum(!is.na(tt)) - 1) * sd(tt, na.rm = TRUE) / sqrt(sum(!is.na(tt))),
+    .by    = c(tense, lifetime)
+  )
+```
+
+
+```{r}
+sum_tt |> 
+  gt() |>
+  tab_style(
+    style     = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  cols_label(
+    tense    = "Tense",
+    lifetime = "Lifetime",
+    n        = "N",
+    mean     = "Mean",
+    sd       = "SD",
+    median   = "Median",
+    iqr      = "IQR",
+    se       = "SE",
+    ci       = "95% CI"
+  ) |>
+  tab_spanner(
+    label   = "Total reading time (ms)",
+    columns = c(mean, sd, median, iqr, se, ci)
+  ) |>
+  fmt_number(columns = c(mean, sd, median, iqr, se, ci), decimals = 1)
+```
+
+::: callout-note
+`add_p()` automatically selects tests (t-test, Wilcoxon, chi-square) based on variable type. You can override with `test = list(...)`.
+:::
+
+### Stratified by multiple groups
+
+```{r}
+df_clean |>
+  select(species, sex, mass) |>
+  tbl_strata(
+    strata = species,
+    .tbl_fun = ~ .x |>
+      tbl_summary(
+        by = sex,
+        statistic = all_continuous() ~ "{mean} ({sd})",
+        digits = all_continuous() ~ 1
+      )
+  )
+```
+
+## Exporting gtsummary tables
+
+For Word:
+
+```{r}
+#| eval: false
+tbl <- df_clean |>
+  select(species, sex, mass) |>
+  tbl_summary(by = sex) |>
+  as_flex_table()
+
+flextable::save_as_docx(tbl, path = here::here("output", "tables", "table1.docx"))
+```
+
+For LaTeX:
+
+```{r}
+#| eval: false
+tbl |>
+  as_kable_extra(format = "latex", booktabs = TRUE) |>
+  kableExtra::save_kable(here::here("output", "tables", "table1.tex"))
+```
+
+## Chapter slides
+
+```{=html}
+<a href="../slides/03_demographics.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+```

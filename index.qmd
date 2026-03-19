@@ -1,0 +1,73 @@
+---
+title: "Preface"
+number-sections: false
+toc-depth: 3
+---
+
+## Welcome {.unnumbered}
+
+This workshop is a hands-on introduction to writing reproducible, publication-ready research documents in R and Quarto. Across two sessions, we'll cover the full workflow from raw data to a formatted manuscript, including summary tables, model outputs, figures, citations, and export to HTML, PDF, Word and LaTeX.
+
+## Who this is for
+
+Researchers with a working knowledge of R and the tidyverse who want to move from exploratory analysis to polished, reproducible manuscripts.
+
+## What you will learn
+
+By the end of this workshop, you will be able to:
+
+- Write and structure documents in Quarto using Markdown
+- Export the same document to multiple formats (HTML, Word, PDF, LaTeX) with minimal format-specific tweaking
+- Incorporate data directly into your text using inline reporting
+- Produce publication-ready summary tables and model output tables
+- Create and export figures with `ggplot2` and cross-reference them in your manuscript
+- Manage code chunk options to control what appears in your output
+
+## Sessions
+
+### Day 1
+
+- Markdown basics: writing in Quarto
+- Output formats: HTML, Word, PDF, and LaTeX
+- Incorporating data: summary tables and inline reporting
+
+### Day 2
+
+- Reporting model results: model summary tables and inline reporting
+- Producing figures: publication-ready plots, exporting, and cross-referencing
+
+Tips on code chunk options are woven throughout both days.
+
+## How to use this book
+
+Each chapter corresponds to roughly 30 minutes of workshop time. Code chunks are fully executable, work through them in your own RProject alongside the book. Each chapter also has accompanying slides (linked at the top) for the taught portion.
+
+## Required software
+
+Before the first session, please make sure you have the following installed:
+
+- **R** (≥ 4.2): <https://cran.r-project.org>
+- **RStudio** (≥ 2022.07): <https://posit.co/download/rstudio-desktop>
+- **Quarto** (latest): <https://quarto.org/docs/download>
+
+### Checking your versions
+
+In the R console:
+```{r}
+#| output: false
+R.version.string  # R version
+```
+
+To check your Quarto CLI version, run this in the **Terminal** tab:
+```bash
+quarto --version
+```
+
+RStudio's version is visible under *Help → About RStudio*.
+
+### Updating
+
+- **R**: download the latest version from <https://cran.r-project.org>
+- **RStudio**: *Help → Check for Updates*
+- **Quarto**: download the latest version from <https://quarto.org/docs/download>
+

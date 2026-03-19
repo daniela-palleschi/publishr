@@ -1,0 +1,24 @@
+/* assets/slides.css — R for Publication workshop */
+
+.reveal .slide-number {
+  font-size: 0.6em;
+  color: #aaa;
+}
+
+.reveal pre code {
+  font-size: 0.75em;
+  line-height: 1.5;
+}
+
+.reveal .callout {
+  font-size: 0.85em;
+}
+
+.reveal h2 {
+  font-size: 1.4em;
+}
+
+.reveal .footer {
+  font-size: 0.55em;
+  color: #888;
+}

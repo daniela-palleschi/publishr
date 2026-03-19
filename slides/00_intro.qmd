@@ -1,0 +1,244 @@
+---
+title: "Introduction"
+subtitle: "Dynamic Reports and Data Management"
+day: "Day 1"
+---
+
+## Before we start {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+**Think of a time you had to update a results section (e.g., after review).**
+:::
+
+. . .
+
+::: {style="text-align: center; color: white;"}
+*How long did it take?*
+:::
+
+. . .
+
+::: {style="text-align: center; color: white;"}
+*Could you find where your original analyses had come from?*
+:::
+
+. . .
+
+::: {style="text-align: center; color: white;"}
+*How confident were you nothing broke?*
+:::
+
+. . .
+
+::: {style="text-align: center; color: white;"}
+*Could a colleague reproduce it from scratch?*
+:::
+
+## Learning objectives
+
+By the end of this session you will be able to:
+
+::: incremental
+- Set up a self-contained, reproducible RProject
+- Explain what literate programming is and why it matters
+- Use inline R code to report results dynamically
+- Save and load models as `.rds` objects
+- Apply consistent naming conventions to files and objects
+:::
+
+## How this workshop works {data-stack-name="Workshop overview"}
+
+::: incremental
+- **Mix of short lectures and hands-on exercises**
+- Follow along in your own RProject
+- Red slides = time to pause, discuss, or try something
+- Ask questions any time — there are no silly ones
+:::
+
+. . .
+
+::: callout-tip
+## Running dataset
+We'll use a real dataset throughout -- a clean, well-documented dataset so we can focus on the *workflow*, not the data.
+:::
+
+### What we assume
+
+::: incremental
+- You have used R before
+- You are comfortable with basic `tidyverse` (`filter()`, `mutate()`, `ggplot()`)
+- You have R, RStudio/Positron, and Quarto installed
+- You do **not** need to be an expert, that's why we're here
+:::
+
+. . . 
+
+::: callout-note
+If you haven't installed the required packages yet, now is a good time.  
+See the [Preface](../index.html) for the full list.
+:::
+
+### Why reproducibility matters
+
+::: incremental
+- Analyses change; reviewers ask for revisions, data gets updated
+- Copy-paste errors between R output and manuscript are common
+- A reproducible workflow means **one source of truth**
+:::
+
+
+### 💬 Turn & talk {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 2em; color: white;"}
+
+Discuss with your neighbour:
+
+*What does your current project structure look like?*  
+*How do you get your analyses to your manuscript results section?*
+:::
+
+## The problem with static workflows {data-stack-name="Dynamic reports"}
+```r
+# Run model → copy number → paste into Word → reviewer asks to rerun → ...
+```
+
+::: incremental
+- Output lives in your head (or in a Word comment)
+- Figures saved manually, versioned as `fig_final_v3_ACTUAL_FINAL.png`
+  + you don't even know where the code for that figure is...
+- Collaborators can't reproduce your results
+:::
+
+## The solution: dynamic reports
+
+::: incremental
+- Code, text, and output live in **one document**
+- Re-render = everything updates automatically
+- Works for HTML, PDF, LaTeX, and Word output (among others)
+:::
+
+## Some basics {data-stack-name="Basics"}
+
+### Literate programming
+
+::: callout-note
+## What is literate programming?
+Code and prose are written **together** in the same document; the analysis tells its own story.
+:::
+
+. . .
+
+- Introduced by Donald Knuth (1984)
+- R Markdown and Quarto are modern implementations
+- The document *is* the analysis, not a write-up of it
+
+. . .
+```markdown
+We fitted a linear model predicting body mass from species and sex
+(`r nrow(df_clean)` observations). The effect of sex was
+`r report_t(m1, "sexMale")`.
+```
+
+### Naming conventions
+
+::: callout-tip
+## Files
+Use lowercase, no spaces, separate with `_`:
+`01_clean_data.R`, `02_fit_models.R`, `fig_mass_by_species.png`
+:::
+
+. . .
+
+::: callout-tip
+## Objects
+Be descriptive and consistent:
+`df_raw`, `df_clean`, `m1_null`, `m2_species`, `fig_mass`
+:::
+
+. . .
+
+::: callout-warning
+## Avoid
+`final`, `v2`, `NEW`, `test`, spaces in filenames, `data2`
+:::
+
+### Modular analyses
+
+For larger projects, split your analysis into separate scripts rather than one long `.qmd`:
+```
+R/
+├── 01_load_data.R
+├── 02_clean_data.R
+├── 03_fit_models.R
+└── 04_make_figures.R
+```
+
+### Source scripts
+
+Source them in your `.qmd` render script:
+```r
+#| output: false
+source(here::here("R", "01_load_data.R"))
+source(here::here("R", "02_clean_data.R"))
+```
+
+### Load in objects
+
+As a rule of thumb, each script should have a single output: a preprocessed/clean/tidy dataset, figures or tables, models, etc.
+
+My typical scripts for a project: 
+
+- `00-setup.qmd`: anything needed to set the project up (e.g., installing packages)
+- `01-processing.qmd`: reading in raw data (from `data/raw/`) --> pre-processing / cleaning --> saving cleaned data (to `data/tidy/`)
+- `02-eda.qmd`: Exploratory Data Analysis --> demographic info --> visualising distributions --> tables and figures to understand the data
+- `03-analyses.qmd`: fitting models --> sanity checks for exclusion criteria --> variable transformations (e.g., centring predictors, setting contrast coding) --> fitting models --> checking assumptions --> saving models (to `output/models/`) --> inspecting results
+- `04-figures.qmd`: producing publication figures (usually a lot of options, indicating which ones get chosen for the manuscript) --> saving figures for manuscript (to `output/figures/`)
+- `05-report.qmd`: reporting the findings
+- `06-tables.qmd`: tables for reporting (sometimes not its own script; saved to `output/tables/`)
+. . .
+
+::: callout-tip
+## Why modular?
+- Each script has one job
+- Easy to re-run just one step
+- Easier to debug and hand over
+:::
+
+## Tools we'll use
+
+| Tool | Purpose |
+|---|---|
+| RProject | Self-contained, portable project |
+| `renv` | Reproducible package versions |
+| Quarto | Dynamic documents and reports |
+| `here` | Reliable file paths |
+| `tidyverse` | Data wrangling |
+| `gtsummary`, `modelsummary` | Publication tables |
+| `ggplot2` | Publication figures |
+
+## Workshop structure
+
+**Session 1**
+
+- Project setup, folder structure, `renv`
+- Data wrangling recap
+- Summary statistics and demographics tables
+- Publication figures
+
+. . .
+
+**Session 2**
+
+- Reporting model results
+- Summary tables with `gt` and `flextable`
+- Quarto for manuscripts
+- Exporting to LaTeX and Word
+
+## By the end of this workshop...
+
+::: incremental
+- Your analysis lives in a single reproducible `.qmd` file
+- Tables and figures update automatically when data changes
+- You can export to Word for co-authors or LaTeX for journals
+- Your project is self-contained and shareable
+:::

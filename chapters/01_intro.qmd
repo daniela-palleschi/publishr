@@ -1,0 +1,145 @@
+---
+title: "Project Setup"
+subtitle: "RProjects, renv, and Folder Structure"
+margin-footer: |
+  <div style="text-align: center; margin-bottom: 1em;">
+    <a href="../slides/01_setup.html" class="btn btn-outline-primary btn-sm" target="_blank">
+      📊 Open slides ↗
+    </a>
+  </div>
+  <div style="text-align: center;">
+    <a href="https://www.leibniz-zas.de/en/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-right: 20px;">
+      <img src="/logos/ZAS_Marke-Kurz_4c.png" alt="ZAS" style="height: 70px; width: auto;"/>
+    </a>
+    <a href="https://www.leibniz-gemeinschaft.de/en/" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+      <img src="/logos/Leibniz-Gemeinschaft-Logo-ENG_blau.png" alt="Leibniz" style="height: 60px; width: auto;"/>
+    </a>
+  </div>
+---
+
+```{r}
+#| output: false
+library(here)
+library(renv)
+```
+
+## Before you start
+
+Before the first session, please make sure you have the following installed:
+
+- **R** (≥ 4.2): <https://cran.r-project.org>
+- **RStudio** (≥ 2022.07): <https://posit.co/download/rstudio-desktop>
+- **Quarto** (latest): <https://quarto.org/docs/download>
+
+### Checking your versions
+
+In the R console:
+```{r}
+#| output: false
+R.version.string  # R version
+```
+
+To check your Quarto CLI version, run this in the **Terminal** tab:
+```bash
+quarto --version
+```
+
+RStudio's version is visible under *Help → About RStudio*.
+
+### Updating
+
+- **R**: download the latest version from <https://cran.r-project.org>
+- **RStudio**: *Help → Check for Updates*
+- **Quarto**: download the latest version from <https://quarto.org/docs/download>
+
+
+## Why project hygiene matters
+
+Reproducibility begins before you write a single line of analysis. A clean, self-contained project structure ensures that collaborators — and your future self — can re-run everything without hunting for files or reinstalling packages.
+
+## RProjects
+
+Always work inside an RProject (`.Rproj`). This sets the working directory to the project root and makes `here::here()` reliable.
+
+### Creating a new RProject
+
+In RStudio: *File → New Project → New Directory → New Project*. Tick "Use renv with this project" to initialise package management from the start.
+
+In Positron: *File → New Folder → initialise as R project*.
+
+## Folder structure
+
+A minimal reproducible structure would look something like:
+
+```
+my-project/
+├── my-project.Rproj
+├── _quarto.yml         # if using Quarto
+├── data/
+│   ├── raw/            # original data, never modified
+│   └── processed/      # cleaned/transformed outputs
+├── manuscript/         # .qmd chapters
+└── output/
+    ├── figures/
+    └── tables/
+```
+
+Importantly, you'd have a `data/` folder with subfolders separating your `raw/` data from the `processed/` data. You would never want to alter the `raw/` data.
+
+:::{.callout-warning}
+## Data protection: raw and identifiable data
+
+If your project involves personal, sensitive, or identifiable data (e.g., 
+recordings, transcripts, demographic information), keep the following in mind:
+
+- **Never commit raw data to version control.** Add `data/raw/` to your 
+  `.gitignore` before your first commit. This prevents raw data from ever being tracked accidentally.
+- **Never share the project folder** (e.g., as a zip, via GitHub, or cloud 
+  sync) without first checking what `data/raw/` contains.
+- **Pseudonymisation/anonymisation comes first.** Only once raw data has been 
+  processed and (pseudo)anonymised should derived outputs be treated as 
+  shareable.
+- **Archive, then remove.** Ideally, raw data lives in `data/raw/` only during 
+  active processing. Once archived to a secure location (e.g., the NAS), 
+  remove it from the project folder.
+
+The `data/processed/` folder should contain only anonymised or 
+non-identifiable outputs.
+
+:::
+
+## Project-relative file paths
+
+Use `here::here()` for all file paths so the project is portable:
+
+```{r}
+#| eval: false
+data_raw <- readr::read_csv(here::here("data", "raw", "mydata.csv"))
+```
+
+## renv: reproducible package management
+
+`renv` records the exact version of every package your project uses in a lockfile (`renv.lock`). Anyone who clones your project and runs `renv::restore()` gets an identical environment.
+
+```{r}
+#| eval: false
+renv::init()       # initialise (done once at project start)
+renv::snapshot()   # update lockfile after installing new packages
+renv::restore()    # recreate environment from lockfile
+```
+
+::: callout-warning
+`renv` solves the "works on my machine" problem but has limits over long time horizons — R and system library changes can still break things. Document your R version in a `README.md`.
+:::
+
+## Quarto in an RProject
+
+If your project produces a Quarto book or report, place `_quarto.yml` at the project root. Quarto and RStudio/Positron detect it automatically.
+
+### Chapter slides {.slides-link}
+
+```{=html}
+<a href="../slides/01_setup.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+```
