@@ -1,0 +1,62 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "R for Publication",
+    "section": "",
+    "text": "Welcome\nThis workshop is a hands-on introduction to writing reproducible, publication-ready research documents in R and Quarto. Across two sessions, we’ll cover the full workflow from raw data to a formatted manuscript, including summary tables, model outputs, figures, citations, and export to HTML, PDF, Word and LaTeX.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#who-this-is-for",
+    "href": "index.html#who-this-is-for",
+    "title": "R for Publication",
+    "section": "Who this is for",
+    "text": "Who this is for\nResearchers with a working knowledge of R and the tidyverse who want to move from exploratory analysis to polished, reproducible manuscripts.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-learn",
+    "href": "index.html#what-you-will-learn",
+    "title": "R for Publication",
+    "section": "What you will learn",
+    "text": "What you will learn\nBy the end of this workshop, you will be able to:\n\nWrite and structure documents in Quarto using Markdown\nExport the same document to multiple formats (HTML, Word, PDF, LaTeX) with minimal format-specific tweaking\nIncorporate data directly into your text using inline reporting\nProduce publication-ready summary tables and model output tables\nCreate and export figures with ggplot2 and cross-reference them in your manuscript\nManage code chunk options to control what appears in your output",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#sessions",
+    "href": "index.html#sessions",
+    "title": "R for Publication",
+    "section": "Sessions",
+    "text": "Sessions\n\nDay 1\n\nMarkdown basics: writing in Quarto\nOutput formats: HTML, Word, PDF, and LaTeX\nIncorporating data: summary tables and inline reporting\n\n\n\nDay 2\n\nReporting model results: model summary tables and inline reporting\nProducing figures: publication-ready plots, exporting, and cross-referencing\n\nTips on code chunk options are woven throughout both days.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use-this-book",
+    "href": "index.html#how-to-use-this-book",
+    "title": "R for Publication",
+    "section": "How to use this book",
+    "text": "How to use this book\nEach chapter corresponds to roughly 30 minutes of workshop time. Code chunks are fully executable, work through them in your own RProject alongside the book. Each chapter also has accompanying slides (linked at the top) for the taught portion.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#required-software",
+    "href": "index.html#required-software",
+    "title": "R for Publication",
+    "section": "Required software",
+    "text": "Required software\nBefore the first session, please make sure you have the following installed:\n\nR (≥ 4.2): https://cran.r-project.org\nRStudio (≥ 2022.07): https://posit.co/download/rstudio-desktop\nQuarto (latest): https://quarto.org/docs/download\n\n\nChecking your versions\nIn the R console:\n\nR.version.string  # R version\n\nTo check your Quarto CLI version, run this in the Terminal tab:\nquarto --version\nRStudio’s version is visible under Help → About RStudio.\n\n\nUpdating\n\nR: download the latest version from https://cran.r-project.org\nRStudio: Help → Check for Updates\nQuarto: download the latest version from https://quarto.org/docs/download",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  }
+]
