@@ -25,13 +25,17 @@ By the end of this workshop, you will be able to:
 
 ## Sessions
 
-### Day 1
+**Day 1** focuses on the foundations: writing in Quarto, producing different 
+output formats from a single source document, and bringing your data into the 
+narrative through summary tables and inline reporting. This will be broken into the following chapters:
 
 - Markdown basics: writing in Quarto
 - Output formats: HTML, Word, PDF, and LaTeX
 - Incorporating data: summary tables and inline reporting
 
-### Day 2
+**Day 2** builds on this to cover the statistical reporting workflow: 
+extracting and presenting model results, producing publication-ready figures, 
+and tying everything together with cross-references. This will be broken into the following chapters:
 
 - Reporting model results: model summary tables and inline reporting
 - Producing figures: publication-ready plots, exporting, and cross-referencing
@@ -49,19 +53,35 @@ Before the first session, please make sure you have the following installed:
 - **R** (≥ 4.2): <https://cran.r-project.org>
 - **RStudio** (≥ 2022.07): <https://posit.co/download/rstudio-desktop>
 - **Quarto** (latest): <https://quarto.org/docs/download>
-- **TinyTeX** (for PDF output) — see below
+- **TinyTeX** (for PDF output) — see [Installing TinyTeX] below
+
+### Installing R, RStudio, and Quarto
+
+Download and install each from the links above, following the instructions 
+for your operating system. Install them in order: R first, then RStudio, 
+then Quarto.
+
+### Installing TinyTeX
+
+TinyTeX is a lightweight LaTeX distribution installable directly from R:
+
+```{r}
+#| eval: false
+install.packages("tinytex")
+tinytex::install_tinytex()
+```
 
 ### Checking your versions
 
 In the R console:
 ```{r}
 #| output: false
-R.version.string       # R version
-tinytex::is_tinytex()  # should return TRUE if TinyTeX is installed
-tinytex::tlmgr("--version")  # TinyTeX/TeX Live version
+R.version.string
+tinytex::is_tinytex()
+tinytex::tlmgr("--version")
 ```
 
-To check your Quarto CLI version, run this in the **Terminal** tab:
+In the **Terminal** tab:
 ```bash
 quarto --version
 ```
@@ -73,15 +93,6 @@ RStudio's version is visible under *Help → About RStudio*.
 - **R**: download the latest version from <https://cran.r-project.org>
 - **RStudio**: *Help → Check for Updates*
 - **Quarto**: download the latest version from <https://quarto.org/docs/download>
-- **TinyTeX**: run `tinytex::tlmgr_update()` in the R console
+- **TinyTeX**: `tinytex::tlmgr_update()`
 
-### Installing TinyTeX
-
-To render PDF output, you need a LaTeX distribution. We recommend TinyTeX,
-a lightweight distribution installable directly from R:
-```{r}
-#| output: false
-install.packages("tinytex")
-tinytex::install_tinytex()
-```
 
