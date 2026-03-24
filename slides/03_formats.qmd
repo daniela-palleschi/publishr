@@ -1,0 +1,250 @@
+---
+title: "Output Formats"
+subtitle: "HTML, Word, PDF, and LaTeX"
+day: "Day 1"
+---
+
+# Overview
+
+::: incremental
+- Rendering to multiple formats from one source file
+- HTML: sharing and the web
+- Word: co-authors and journal submission
+- PDF: LaTeX and Overleaf
+- APA 7 and `.tex` trade-offs
+:::
+
+---
+
+# Rendering formats {background-color="#8D203D" data-stack-name="Rendering formats"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*One source file, multiple outputs*
+:::
+
+## The format block
+
+Specify output formats in the YAML `format:` block:
+
+```yaml
+format:
+  html:
+    embed-resources: true
+  pdf:
+    keep-tex: true
+  docx:
+    reference-doc: custom-reference.docx
+```
+
+. . .
+
+Render all formats at once:
+```bash
+quarto render manuscript.qmd
+```
+
+Or a single format:
+```bash
+quarto render manuscript.qmd --to docx
+```
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### 💬 Think about your workflow {background-color="#8D203D"}
+
+*Which output format do you need most?*
+
+. . .
+
+*Do your co-authors use Word, LaTeX, or something else?*
+
+. . .
+
+*Has format incompatibility ever caused you problems?*
+
+. . .
+
+*~3 minutes*
+:::
+
+# HTML {background-color="#8D203D" data-stack-name="HTML"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*The most flexible output format*
+:::
+
+## YAML options
+
+```yaml
+format: html
+```
+
+. . .
+
+```yaml
+format:
+  html:
+    toc: true              # include table of contents
+    toc-depth: 3           # show headings up to H3 in the TOC
+    number-sections: true  # number all sections and subsections
+    embed-resources: true  # bundle everything into a single .html file
+    theme: flatly          # Bootswatch theme (flatly = clean, modern look)
+```
+
+## `embed-resources`
+
+::: incremental
+- By default, Quarto renders HTML with external dependencies stored in a separate folder
+- Setting `embed-resources: true` bundles everything into a single `.html` file
+- Easy to share by email or upload without missing assets
+:::
+
+. . .
+
+::: callout-warning
+`embed-resources: true` increases file size and slows rendering. For a book or website hosted online, leave it as `false`.
+:::
+
+
+# Word {background-color="#8D203D" data-stack-name="Word"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*Co-authors and journal submission*
+:::
+
+## YAML options
+```yaml
+format:
+  docx:
+    reference-doc: custom-reference.docx  # Word template defining fonts, margins, and heading styles
+    toc: false                             # no table of contents in the Word output
+    number-sections: false                 # no section numbering in the Word output
+```
+
+. . .
+
+A reference `.docx` sets the styles (fonts, margins, heading levels) for the output. Generate a default one:
+```bash
+quarto pandoc -o custom-reference.docx \
+  --print-default-data-file reference.docx
+```
+
+Then open in Word and modify styles to match your journal.
+
+## Citations
+
+::: incremental
+- Citations are rendered as plain formatted text in `.docx` output
+- They are not live fields linked to your `.bib` file
+- Any edits made directly to citations in Word will be overwritten on re-render
+- Always treat the `.qmd` as the source of truth
+:::
+
+. . .
+
+::: callout-tip
+If co-authors need to edit citations in Word, use Zotero's Word plugin for the final submission copy.
+:::
+
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### 💬 Turn & talk {background-color="#8D203D"}
+
+*Do your co-authors use Word?*
+
+. . .
+
+*How do you currently handle citation editing across collaborators?*
+
+. . .
+
+*~3 minutes*
+:::
+
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### ✏️ Exercise 2: Rendering a Word Doc {background-color="#8D203D"}
+
+1. Change `html` to `docx` in your YAML. Does it render?
+:::
+
+---
+
+# PDF {background-color="#8D203D" data-stack-name="PDF"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+*LaTeX and Overleaf*
+:::
+
+## YAML options
+
+```yaml
+format:
+  pdf:
+    documentclass: article  # document class: article, scrartcl (KOMA), or apa7
+    papersize: a4            # paper size
+    fontsize: 12pt           # base font size
+    geometry: margin=2.5cm  # page margins (requires geometry LaTeX package)
+    linestretch: 1.5         # line spacing (1.5 = one-and-a-half, 2 = double)
+    number-sections: true    # number all sections and subsections
+    keep-tex: true           # save intermediate .tex file alongside the PDF
+    include-in-header:
+      text: |
+        \usepackage{booktabs}   % professional table rules (required for kableExtra)
+        \usepackage{longtable}  % tables that span multiple pages
+        \usepackage{microtype}  % improved text justification and spacing
+```
+
+## `keep-tex`
+
+::: incremental
+- `keep-tex: true` saves the intermediate `.tex` file alongside the PDF
+- Useful for making final tweaks in Overleaf before submission
+- Required if the journal needs a raw `.tex` file
+:::
+
+. . .
+```yaml
+format:
+  pdf:
+    keep-tex: true
+```
+
+# Format comparison {background-color="#8D203D" data-stack-name="Comparison"}
+
+## At a glance
+
+| Feature | HTML | PDF | Word |
+|---|---|---|---|
+| Citations | ✅ `.bib` | ✅ `.bib` | ⚠️ plain text |
+| Live `.bib` in `.tex` | ✅ | depends | ❌ |
+| Cross-references | ✅ | ✅ | ✅ |
+| Equations | ✅ MathJax | ✅ LaTeX | ⚠️ limited |
+| Table package | `gt` | `kableExtra` | `flextable` |
+| Custom styles | CSS | LaTeX | reference `.docx` |
+| Self-contained | `embed-resources` | always | always |
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### ✏️ Your turn {background-color="#8D203D"}
+
+Open `exercises/session1.qmd` and follow the exercises for .
+
+*~15 minutes*
+:::
+
+# Summary
+
+::: incremental
+- One `.qmd` file renders to HTML, Word, and PDF
+- `embed-resources: true` for shareable standalone HTML
+- Word output has plain text citations — treat `.qmd` as source of truth
+- `keep-tex: true` for Overleaf workflows
+- APA 7 in `.tex` involves trade-offs — choose based on your priority
+:::
+
+## Up next... {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 2em; color: white;"}
+### [Incorporating Data](04_data.html)
+
+*Summary tables and inline reporting*
+:::

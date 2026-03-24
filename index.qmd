@@ -1,10 +1,10 @@
 ---
-title: "Preface"
 number-sections: false
 toc-depth: 3
+unnumbered: true
 ---
 
-## Welcome {.unnumbered}
+# Preface {.unnumbered}
 
 This workshop is a hands-on introduction to writing reproducible, publication-ready research documents in R and Quarto. Across two sessions, we'll cover the full workflow from raw data to a formatted manuscript, including summary tables, model outputs, figures, citations, and export to HTML, PDF, Word and LaTeX.
 
@@ -50,8 +50,8 @@ Each chapter corresponds to roughly 30 minutes of workshop time. Code chunks are
 
 Before the first session, please make sure you have the following installed:
 
-- **R** (≥ 4.2): <https://cran.r-project.org>
-- **RStudio** (≥ 2022.07): <https://posit.co/download/rstudio-desktop>
+- **R** ($\geq$ 4.2): <https://cran.r-project.org>
+- **RStudio** ($\geq$ 2022.07): <https://posit.co/download/rstudio-desktop>
 - **Quarto** (latest): <https://quarto.org/docs/download>
 - **TinyTeX** (for PDF output) — see [Installing TinyTeX] below
 
@@ -94,5 +94,22 @@ RStudio's version is visible under *Help → About RStudio*.
 - **RStudio**: *Help → Check for Updates*
 - **Quarto**: download the latest version from <https://quarto.org/docs/download>
 - **TinyTeX**: `tinytex::tlmgr_update()`
+
+### Packages
+
+We'll be using the `pacman` package to load and install required (CRAN) packages. As long as you have this package installed you should be able to run the example and exercise code.
+
+```{r}
+#| eval: false
+install.packages("pacman")
+```
+
+You only need to install `pacman` once. After that, `pacman::p_load()` handles loading and installing any missing packages automatically. Avoid leaving `install.packages()` calls uncommented in your scripts as they will re-run every time the script is executed or the document is rendered, which is slow and can cause unexpected package version changes. In other words, run this in the Console, or comment it out if you have it in a script.
+
+## Disclaimer {.unnumbered}
+
+These materials were developed with the assistance of an AI language model (Claude, Anthropic) for outlining and editorial refinement using guided prompts. All content was fully reviewed, improved (I hope), and edited by the author. Every topic and reference included falls within the author's own expertise; the use of AI assistance was a practical decision about time and effort, not a substitution for subject knowledge. Any errors, inaccuracies, or omissions are the author's own responsibility.
+
+These chapters also lean heavily on materials I previously created (without AI assistance) on R for Reproducibility, both in a semester-length course [	Open Science Practices: Implementing a Reproducible Analysis Workflow](https://daniela-palleschi.github.io/r4repro_SoSe2024/), a 4-day workshop [Open Science Practices for Linguistic Research: Reproducible Analyses in R](https://daniela-palleschi.github.io/SSOL24-reproducibility-workshop/), and a 2-part workshop [Reproducible Workflow in R](https://daniela-palleschi.github.io/zas-reproducibility-2024/). Unlike these previous materials which covered reproducibility and dynamic reports more broadly (and more in-depth), this book focuses on dynamic reports and reproducible analyses in the context of reporting results for publication and writing a manuscript in general.
 
 

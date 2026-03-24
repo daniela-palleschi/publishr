@@ -3,13 +3,29 @@ title: "Writing in Quarto"
 subtitle: "Markdown, Citations, and Manuscript Formatting"
 ---
 
+::: {style="text-align: right; margin-bottom: 1em;"}
+````{=html}
+<a href="../slides/02_writing.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````
+:::
+
 ## Purpose
 
-This chapter covers writing in Quarto independently of any data or analysis. This is relevant if you want to write any part of your manuscript — including the results section — directly in Quarto, rather than copying output into a separate Word or LaTeX document.
+This chapter covers writing in Quarto independently of any data or analysis. This is relevant if you want to write any part of your manuscript (e,g., the introduction, methods, or results section) directly in Quarto, rather than drafting in Word or Overleaf and manually inserting statistics afterwards.
+
+Quarto is an implementation of *literate programming* [@Knuth1984], whereby code and prose are written together in a single document. The document is then rendered to a readable output format, in this case HTML, Word, or PDF. This approach has been popularised in the R community through R Markdown [@Xie2018; @Xie2020], of which Quarto [@Quarto2024] is the next-generation successor, with broader language support and improved output options.
+
+Writing in Quarto means that your prose and your analysis live in the same document. Values reported in the text can be pulled directly from your data and models using inline R code, so they update automatically when analyses change. This eliminates a common source of error in academic writing: the manual transcription of numbers from statistical software into a word processor. For example, @Nuijten2016 found that around 50% of psychology papers contained at least one statistical reporting error, many attributable to exactly this kind of manual transcription.
+
+This chapter focuses on the writing side: Markdown syntax, document structure, citations, and cross-references. Connecting prose to data and models is covered in later chapters.
 
 ## Text formatting
 
-Quarto uses Markdown for text formatting:
+Quarto uses Markdown for text formatting. Markdown is a lightweight plain-text syntax that is readable in its raw form and renders to formatted output. Unlike Word or Overleaf, formatting in Quarto is entirely handled by the source document: there are no toolbar buttons or style menus, only text.
+
+The most common formatting options are:
 
 | Markdown | Output |
 |---|---|
@@ -21,7 +37,11 @@ Quarto uses Markdown for text formatting:
 | `H~2~O` | H~2~O |
 | `R^2^` | R^2^ |
 
-For APA 7, statistical symbols should be italicised. Use `*...*` in Markdown:
+Markdown formatting is intentionally minimal. For most academic writing purposes (prose, headings, lists, tables, and equations) it covers everything needed without requiring knowledge of LaTeX or HTML. That being said, I still highly recommend having some LaTeX familiarity, as it's commonly used by linguists and might be helpful with future collaborations.
+
+### APA 7 statistical symbols
+
+APA 7 requires statistical symbols to be italicised in text. In Markdown, wrapping text in `*...*` produces italics, which renders correctly in HTML, Word, and PDF output:
 
 | Statistic | Markdown | Output |
 |---|---|---|
@@ -30,9 +50,14 @@ For APA 7, statistical symbols should be italicised. Use `*...*` in Markdown:
 | t-test | `*t*(48) = 2.31` | *t*(48) = 2.31 |
 | p-value | `*p* < .001` | *p* < .001 |
 
+::: callout-tip
+[APA 7](https://apastyle.apa.org/instructional-aids/numbers-statistics-guide.pdf) omits the zero before the decimal point for values that cannot exceed 1 (e.g. *p* = 0.031 is incorrect; *p* = .031 is correct). This applies to correlation coefficients, proportions, and p-values. Inline R code can be written to apply this formatting automatically — see @sec-inline for an example.
+:::
+
 ## Headers
 
 Use `##` for first-level sections within a chapter, `###` for subsections. The chapter title is set in the YAML `title:` field:
+
 ````markdown
 ## Methods
 ### Participants
@@ -44,6 +69,7 @@ In a Quarto book, avoid using `#` (H1) inside chapter files — it is reserved f
 :::
 
 ## Lists and callouts
+
 ````markdown
 - unordered item
   - nested item
@@ -52,24 +78,56 @@ In a Quarto book, avoid using `#` (H1) inside chapter files — it is reserved f
    1. nested item
 ````
 
-Callout boxes draw attention to key points:
+Callout boxes draw attention to key points, and can include a title if you specify one:
+
 ````markdown
 ::: callout-note
-A note — good for asides and tips.
+## This tip has a title
+A tip.
 :::
+````
+
+::: callout-tip
+## Tip: adding a title
+A tip.
+:::
+
+````markdown
+::: callout-note
+A note.
+:::
+````
+
+::: callout-note
+A note.
+:::
+
+````markdown
+::: callout-warning
+A warning.
+:::
+````
 
 ::: callout-warning
 A warning.
 :::
 
-::: callout-important
-An important point.
+````markdown
+::: {.callout-important collapse="true"}
+## Important: collapsing a callout
+An important point. You can also collapse a callout box. This only works in HTML output.
 :::
 ````
+
+::: {.callout-important collapse="true"}
+## Important: collapsing a callout
+An important point. You can also collapse a callout box. This only works in HTML output.
+:::
 
 ## Equations
 
 Write LaTeX math inline with `$...$` or in a display block with `$$...$$`:
+
 ````markdown
 The model was specified as:
 
@@ -78,52 +136,73 @@ y_i = \beta_0 + \beta_1 \text{Tense}_i + \beta_2 \text{Lifetime}_i + \varepsilon
 $$ {#eq-model}
 ````
 
-Reference in prose with `@eq-model` → "Equation 1".
+This is then rendered as:
+
+$$
+y_i = \beta_0 + \beta_1 \text{Tense}_i + \beta_2 \text{Lifetime}_i + \varepsilon_i
+$$ {#eq-model}
+
+Reference in prose with `@eq-model` → "@eq-model"
+
+::: callout-tip
+If you need the LaTeX code for a mathematical symbol or expression, hover over any rendered equation in an HTML document and right-click. Select **Math Settings → TeX Commands** to display the underlying LaTeX source. This is useful for replicating equation formatting or looking up the correct LaTeX syntax for a symbol.
+:::
 
 ## Cross-references {#sec-crossref}
 
-Cross-references keep figure, table, and section numbers in sync automatically. Every label must start with the correct prefix:
+Cross-references allow you to refer to figures, tables, sections, and equations by label rather than by number. Quarto resolves the labels to the correct numbers at render time, so adding or reordering elements never requires manually updating references in the text.
 
-| Type | Prefix | Reference |
-|---|---|---|
-| Figure | `fig-` | `@fig-rt` |
-| Table | `tbl-` | `@tbl-desc` |
-| Section | `sec-` | `@sec-results` |
-| Equation | `eq-` | `@eq-model` |
+Every cross-reference label must begin with a type-specific prefix. The prefix tells Quarto what kind of element is being referenced and how to format the reference in the output:
+
+| Type | Prefix | Reference syntax | Example output |
+|---|---|---|---|
+| Figure | `fig-` | `@fig-rt` | Figure 1 |
+| Table | `tbl-` | `@tbl-desc` | Table 1 |
+| Section | `sec-` | `@sec-results` | Section 3 |
+| Equation | `eq-` | `@eq-model` | Equation 1 |
+
+Labels are set in the chunk options for figures and tables, and in the heading syntax for sections. A label without the correct prefix will not be recognised as a cross-reference and will render as plain text.
+
+:::{.callout-note}
+## Figures and Tables
+
+We'll cover tables later today, and figures in the next session.
+:::
+
+### Sections
+
+Add a label to any heading using the `{#sec-}` syntax:
+
 ````markdown
-```{{r}}
-#| label: fig-rt
-#| fig-cap: "Total reading time by condition."
-ggplot(df, aes(x = lifetime, y = tt)) +
-  geom_boxplot()
-```
+## Results {#sec-results}
+## Discussion {#sec-discussion}
 ````
+
+Reference in prose:
+
 ````markdown
-As shown in @fig-rt, reading times differed by condition.
+The implications of these findings are discussed in @sec-discussion.
 ````
-````markdown
-```{{r}}
-#| label: tbl-desc
-#| tbl-cap: "Descriptive statistics by condition."
-tbl3 |> gt()
-```
-````
-````markdown
-Descriptive statistics are presented in @tbl-desc.
-````
+
+::: callout-tip
+Cross-references are one of the most practical advantages of writing in Quarto (or LaTeX) over Word. In Word, renumbering figures after adding one to the middle of a document requires updating every reference manually. In Quarto, the numbers are always correct automatically.
+:::
 
 ## Numbered example sentences {#sec-examples}
 
+
 Pandoc's `(@)` syntax auto-numbers linguistic examples continuously across the document:
 ````markdown
-(@cond-a) Der Dirigent hat den Komponisten *gekannt*, 
-          der die Sinfonie geschrieben hat.
-(@cond-b) Der Dirigent hat den Komponisten *gekannt*, 
-          der gestorben ist.
+(@cond-a) Example sentence 1.
+(@cond-b) Example sentence 2.
 
-The stimuli in (@cond-a) and (@cond-b) differed in the lifetime
-status of the referent.
+Sentences (@cond-a) and (@cond-b)...
 ````
+
+(@cond-a) Example sentence 1.
+(@cond-b) Example sentence 2.
+
+Sentences (@cond-a) and (@cond-b)...
 
 ::: callout-tip
 For sub-examples (1a, 1b), interlinear glosses, or full linguistic formatting in PDF output, use the `linguex` or `gb4e` LaTeX packages via `include-in-header` in your YAML.
@@ -131,13 +210,18 @@ For sub-examples (1a, 1b), interlinear glosses, or full linguistic formatting in
 
 ## Citations {#sec-citations}
 
+Quarto handles citations through Pandoc's citation processing system. References are stored in a BibTeX file (`.bib`) and formatted according to a Citation Style Language (`.csl`) file. This means citation formatting is automatic and consistent, and switching between citation styles (e.g. APA to Chicago) requires only changing the `.csl` file.
+
 Add the following to your document YAML:
+
 ````yaml
 bibliography: references.bib
 csl: apa.csl
 ````
 
-Download `apa.csl`:
+The `.bib` file contains structured reference entries in BibTeX format. The `.csl` file controls how those references are formatted in the output. Both files should be placed in your project root, or referenced with a relative path.
+
+Download `apa.csl` from the Zotero style repository:
 ````r
 download.file(
   "https://www.zotero.org/styles/apa",
@@ -145,7 +229,9 @@ download.file(
 )
 ````
 
-Citation syntax:
+### Citation syntax
+
+Citations are inserted using `@key` syntax, where `key` is the identifier from your `.bib` entry:
 
 | Syntax | Output |
 |---|---|
@@ -155,14 +241,21 @@ Citation syntax:
 | `[@Bates2015, p. 12]` | (Bates et al., 2015, p. 12) |
 | `[@Bates2015; @R2024]` | (Bates et al., 2015; R Core Team, 2024) |
 
-Getting BibTeX entries:
+These can be added in-text, so `As described in @Bates2015...` would be rendered as: *As described in @Bates2015...*.
 
-- **Zotero** — export as BibTeX (recommended)
-- **Google Scholar** — Cite → BibTeX
-- **DOI** — `doi2bib.org`
-- **R packages** — `toBibtex(citation("lme4"))`
+### Getting BibTeX entries
 
-Add a references section at the end of your document:
+BibTeX entries can be obtained from several sources:
+
+- **Zotero** — export individual items or your full library as BibTeX. This is the recommended workflow for managing references across a project.
+- **Google Scholar** — click Cite below a result, then select BibTeX to copy the entry.
+- **DOI** — paste a DOI at `doi2bib.org` to generate a BibTeX entry automatically.
+- **R packages** — `toBibtex(citation("lme4"))` generates a citable BibTeX entry for any R package. Always cite the packages you use.
+
+### References section
+
+Add a references section at the end of your document. Quarto will populate it automatically with all cited works:
+
 ````markdown
 ## References {.unnumbered}
 
@@ -170,77 +263,49 @@ Add a references section at the end of your document:
 :::
 ````
 
+The `.unnumbered` class prevents the References heading from receiving a section number, which is standard in APA manuscripts.
+
 ## Inline reporting {#sec-inline}
 
-Embed R values directly in prose so they update automatically:
+Inline R code allows values computed in R to be embedded directly in prose. Rather than typing a number manually, you write a small R expression that is evaluated at render time and replaced with its result. This means reported values are always consistent with the underlying analysis, and update automatically if the data or model changes.
+
+The syntax for inline R code is a backtick followed by `r`, a space, the R expression, and a closing backtick. For example:
 
 ````markdown
-The sample comprised ` r n_distinct(df$px)` participants.
-The mean total reading time was ` r round(mean(df$tt, na.rm = TRUE), 1)` ms
-(*SD* = ` r round(sd(df$tt, na.rm = TRUE), 1)`).
+The data were collected from ` r n_distinct(df$px)` participants. The mean total reading time was ` r round(mean(df$tt, na.rm = TRUE), 1)` ms (*SD* = ` r round(sd(df$tt, na.rm = TRUE), 1)`).
 ````
 
-For model results, define a helper function in `R/utils.R`:
-````{r}
-#| eval: false
-report_t <- function(model, term) {
-  b   <- broom::tidy(model, conf.int = TRUE)
-  row <- b[b$term == term, ]
-  glue::glue(
-    "*b* = {round(row$estimate, 2)}, ",
-    "95% CI [{round(row$conf.low, 2)}, {round(row$conf.high, 2)}], ",
-    "*t*({round(broom::glance(model)$df.residual)}) = {round(row$statistic, 2)}, ",
-    "*p* {ifelse(row$p.value < .001, '< .001', paste0('= ', round(row$p.value, 3)))}"
-  )
+This is particularly useful for results sections, where small changes to preprocessing or exclusion criteria can affect many reported values. With inline reporting, re-running the analysis and re-rendering the document is sufficient to update all reported statistics.
+
+### Rounding and formatting
+
+Use `round()` to control decimal places. For p-values, a small helper avoids reporting exact values below a threshold:
+
+````r
+fmt_p <- function(p) {
+  ifelse(p < .001, 
+  "< .001", 
+  paste0("= ", round(p, 3)))
 }
 ````
 
+This function (`fmt_p()`) will print *p*-values smaller than .001 as *p < .001*, printing all other *p*-values to three decimal points. You can also create a function to print *< .01* and *< .05* when applicable (I would do this using the `case_when()` function). This can then be used inline (but note that you should also report the estimate, standard error, and *t*- or *z*-values):
+
 ````markdown
-The effect of lifetime was significant (` r report_t(m1, "lifetimeDead")`).
+The effect was significant (*p* ` r fmt_p(p_value)`).
 ````
+
+### Connecting to models
+
+You can also extract estimates directly from fitted model objects and report them inline, rather than typing them out manually. This makes your results robust to upstream changes: if you refit a model, the reported values update automatically. This is covered in depth in the model reporting chapter.
 
 ::: callout-tip
-Any number that appears in your manuscript should come from your data or models, not typed manually. This prevents inconsistencies when data changes.
+Any number that appears in your manuscript should be computed, not typed. This is the single most effective way to eliminate reporting errors in academic writing.
 :::
 
-## Exercises
 
-### Exercise 1 — Text formatting
 
-Write a short methods paragraph (3-5 sentences) in your exercise `.qmd` that includes:
+## References {.unnumbered .unlisted}
 
-- At least one italicised statistic in APA style (*M*, *SD*, or *p*)
-- One piece of inline R code reporting a value from `df`
-- One callout box with a note about your data
-
-### Exercise 2 — Citations
-
-1. Add `bibliography: references.bib` and `csl: apa.csl` to your YAML
-2. Create a `references.bib` file with at least two entries (use `toBibtex(citation("lme4"))` and one from Google Scholar)
-3. Cite both references in prose using `@key` and `[@key]` syntax
-4. Add a references section at the end of your document and render to HTML
-
-### Exercise 3 — Cross-references
-
-1. Add a figure and a table to your document with `#| label:` and `#| fig-cap:` / `#| tbl-cap:`
-2. Reference both in prose using `@fig-` and `@tbl-`
-3. Add a section label `{#sec-methods}` to a heading and cross-reference it
-
-### Exercise 4 — Numbered examples
-
-Write two example sentences from your own stimuli using `(@)` syntax and cross-reference them in a prose sentence below.
-
-### Exercise 5 — Inline reporting
-
-Complete the following sentence using inline R:
-````markdown
-The sample comprised ... participants (*N* trials = ...).
-Mean total reading time was ... ms (*SD* = ...).
-````
-
-## Chapter slides
-````{=html}
-<a href="../slides/07_writing.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
-````
+::: {#refs}
+:::

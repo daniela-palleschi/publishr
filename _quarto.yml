@@ -1,6 +1,8 @@
 project:
   type: book
   output-dir: _book
+  post-render:
+    - cp -r logos _book/slides/logos
 
 filters:
   - slides-margin.lua # for 'Open Slides' to appear below the TOC on the right
@@ -8,7 +10,7 @@ filters:
 book:
   title: "R for Publication"
   subtitle: "Reporting, Tables, and Figures for Academic Manuscripts"
-  author: "ZAS Workshop"
+  author: "Daniela Palleschi"
   date: today
   margin-footer: margin-footer.html
   navbar:
@@ -26,20 +28,22 @@ book:
   twitter-card: true
   chapters:
     - index.qmd
-    - part: "Session 1: Markdown foundations"
-      # chapters:
-        # - chapters/01_intro.qmd
-        # - chapters/02_writing.qmd
-        # - chapters/03_formats.qmd
-        # - chapters/02_wrangling.qmd
-        # - chapters/03_demographics.qmd
-        # - chapters/04_figures.qmd
+    - part: "Session 1: Quarto foundations"
+      chapters:
+      - chapters/01_intro.qmd
+      - chapters/02_writing.qmd
+      - chapters/03_formats.qmd
+      - chapters/04_data.qmd
     - part: "Session 2: Model Outputs & Reporting"
       # chapters:
-        # - chapters/05_models.qmd
-        # - chapters/06_tables.qmd
+      # - chapters/05_open-science.qmd
+      # - chapters/06_tables.qmd
         # #- chapters/07_manuscripts.qmd
         # - chapters/08_exporting.qmd
+    - part: "Exercises"
+      chapters: 
+      - exercises/setup.qmd
+      - exercises/day1.qmd 
     - references.qmd
 
 bibliography: references.bib
@@ -66,18 +70,21 @@ format:
     fig-width: 7
     fig-height: 5
   pdf:
-    documentclass: scrbook
+    pdf-engine: pdflatex # use pdflatex instead of lualatex to avoid lua-ul/luacolor dependency
+    include-in-header:
+      text: |
+        \usepackage[utf8]{inputenc}  % Unicode character support for pdflatex
+        \usepackage{pmboxdraw}       % box-drawing characters (├, └, ─) for file structure diagrams
+        \usepackage{booktabs}        % professional table rules (required for kableExtra booktabs = TRUE)
+        \usepackage{longtable}       % tables that span multiple pages
+        \usepackage{microtype}       % improved text justification and spacing
+    documentclass: scrbook # KOMA-Script book class: better typography than standard LaTeX book
     papersize: a4
     toc: true
     number-sections: true
     colorlinks: true
-    fig-width: 6
+    fig-width: 6 # in inches
     fig-height: 4
-    include-in-header:
-      text: |
-        \usepackage{booktabs}
-        \usepackage{longtable}
-        \usepackage{microtype}
 
 execute:
   eval: true

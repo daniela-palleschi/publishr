@@ -1,65 +1,34 @@
 ---
-title: "Project Setup"
+title: "(R)Project Hygiene"
 subtitle: "RProjects, renv, and Folder Structure"
-margin-footer: |
-  <div style="text-align: center; margin-bottom: 1em;">
-    <a href="../slides/01_setup.html" class="btn btn-outline-primary btn-sm" target="_blank">
-      📊 Open slides ↗
-    </a>
-  </div>
-  <div style="text-align: center;">
-    <a href="https://www.leibniz-zas.de/en/" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-right: 20px;">
-      <img src="/logos/ZAS_Marke-Kurz_4c.png" alt="ZAS" style="height: 70px; width: auto;"/>
-    </a>
-    <a href="https://www.leibniz-gemeinschaft.de/en/" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
-      <img src="/logos/Leibniz-Gemeinschaft-Logo-ENG_blau.png" alt="Leibniz" style="height: 60px; width: auto;"/>
-    </a>
-  </div>
 ---
 
 ```{r}
 #| output: false
+#| echo: false
 library(here)
 library(renv)
 ```
 
-## Before you start
-
-Before the first session, please make sure you have the following installed:
-
-- **R** (≥ 4.2): <https://cran.r-project.org>
-- **RStudio** (≥ 2022.07): <https://posit.co/download/rstudio-desktop>
-- **Quarto** (latest): <https://quarto.org/docs/download>
-
-### Checking your versions
-
-In the R console:
-```{r}
-#| output: false
-R.version.string  # R version
-```
-
-To check your Quarto CLI version, run this in the **Terminal** tab:
-```bash
-quarto --version
-```
-
-RStudio's version is visible under *Help → About RStudio*.
-
-### Updating
-
-- **R**: download the latest version from <https://cran.r-project.org>
-- **RStudio**: *Help → Check for Updates*
-- **Quarto**: download the latest version from <https://quarto.org/docs/download>
-
-
 ## Why project hygiene matters
 
-Reproducibility begins before you write a single line of analysis. A clean, self-contained project structure ensures that collaborators — and your future self — can re-run everything without hunting for files or reinstalling packages.
+Reproducibility begins before you write a single line of analysis. A clean, self-contained project structure ensures that collaborators, and your future self, can re-run everything without hunting for files or reinstalling packages.
+
+The concept of *literate programming* [@Knuth1984] established the principle that code and documentation should be written together, with human-readable explanation woven through the analysis rather than added as an afterthought. This philosophy underlies tools like R Markdown and Quarto, and extends naturally to project organisation: just as literate programming asks that code be written for human readers, good project hygiene asks that a project be structured for human navigators, i.e., people who need to understand, re-run, or build on your work without guidance from you directly.
+
+@Nagler1995 outlines a set of principles for good computing practice in quantitative research that remain as relevant today as when they were written. Central among these are the ideas that code should be modular, well-documented, and organised so that the analysis can be reproduced from scratch by someone unfamiliar with the project. This means separating raw data from processed data, keeping analysis scripts independent and sequentially ordered, and never modifying raw data files directly. @Bowers2016 extend these principles to the context of modern social science, arguing that transparent and reproducible research practice is not merely a technical matter but a scientific norm, one that requires deliberate organisational habits from the outset of a project.
+
+Good project organisation is also a matter of research data management (RDM). Funding bodies and journals increasingly require that data and analysis code be archived and made available alongside publications, in line with the FAIR principles [@Wilkinson2016]: (meta)data should be Findable, Accessible, Interoperable, and Reusable. A well-organised RProject is a practical first step towards FAIR-compliant research: clear folder structures, descriptive file names, and documented dependencies make it far easier to archive and share a project in a usable state. Conversely, a disorganised project that only makes sense to its author is difficult to share meaningfully, regardless of whether the files are technically accessible.
+
+Poor project organisation is one of the most common sources of reproducibility failures in practice. Files named `analysis_final_v2_ACTUAL.R`, data loaded with absolute paths like `C:/Users/myname/Desktop/study1/data.csv`, and package dependencies that are never documented all make it difficult or impossible for others (or your future self after six months away from the project) to reproduce your work.
+
+The habits covered in this chapter, namely consistent folder structure, relative file paths via `here::here()`, and package management with `renv`, are low-cost investments that pay dividends throughout the life of a project and beyond.
 
 ## RProjects
 
-Always work inside an RProject (`.Rproj`). This sets the working directory to the project root and makes `here::here()` reliable.
+Always work inside an RProject (`.Rproj`). This sets the working directory to the project root, makes `here::here()` reliable, and keeps your R environment isolated from other projects. Without an RProject, file paths are fragile and environment state can bleed between sessions.
+
+An RProject is simply a folder with a `.Rproj` file at its root. Opening this file in RStudio or Positron sets the working directory automatically — no `setwd()` required.
 
 ### Creating a new RProject
 
@@ -67,74 +36,137 @@ In RStudio: *File → New Project → New Directory → New Project*. Tick "Use 
 
 In Positron: *File → New Folder → initialise as R project*.
 
+::: callout-tip
+Get into the habit of always opening your work via the `.Rproj` file rather than navigating to individual scripts. This ensures the working directory is always set correctly and that `here::here()` resolves paths from the project root.
+:::
+
 ## Folder structure
 
-A minimal reproducible structure would look something like:
-
-```
+A consistent folder structure makes projects navigable by collaborators and reviewers, and is a prerequisite for FAIR-compliant data sharing [@Wilkinson2016]. The exact structure will vary by project, but the following is a reasonable starting point for a research project with data, analysis scripts, and a manuscript:
+```{=html}
+<pre>
 my-project/
 ├── my-project.Rproj
-├── _quarto.yml         # if using Quarto
+├── _quarto.yml              # if using Quarto
+├── renv.lock                # package versions — commit to version control
+├── README.md                # project overview and setup instructions
 ├── data/
-│   ├── raw/            # original data, never modified
-│   └── processed/      # cleaned/transformed outputs
-├── manuscript/         # .qmd chapters
+│   ├── raw/                 # original data, never modified
+│   └── processed/           # cleaned and anonymised outputs
+├── R/
+│   ├── 01-anonymise.R
+│   ├── 02-process.R
+│   ├── 03-eda.R
+│   └── 04-analysis.R
+├── manuscript/              # .qmd chapters
 └── output/
     ├── figures/
-    └── tables/
+    ├── tables/
+    └── models/
+</pre>
+```
+```{=latex}
+\begin{verbatim}
+my-project/
+|-- my-project.Rproj
+|-- _quarto.yml              # if using Quarto
+|-- renv.lock                # package versions
+|-- README.md                # project overview
+|-- data/
+|   |-- raw/                 # original data, never modified
+|   `-- processed/           # cleaned and anonymised outputs
+|-- R/
+|   |-- 01-anonymise.R
+|   |-- 02-process.R
+|   |-- 03-eda.R
+|   `-- 04-analysis.R
+|-- manuscript/
+`-- output/
+    |-- figures/
+    |-- tables/
+    `-- models/
+\end{verbatim}
 ```
 
-Importantly, you'd have a `data/` folder with subfolders separating your `raw/` data from the `processed/` data. You would never want to alter the `raw/` data.
+The `R/` folder contains numbered scripts following a modular analysis workflow [@Nagler1995]: each script has a single responsibility, takes clearly defined inputs, and produces clearly defined outputs. Scripts are numbered to indicate the order in which they should be run. The `data/raw/` folder contains the original, unmodified data — this is the source of truth and should never be altered directly.
 
-:::{.callout-warning}
+::: callout-warning
 ## Data protection: raw and identifiable data
 
-If your project involves personal, sensitive, or identifiable data (e.g., 
-recordings, transcripts, demographic information), keep the following in mind:
+If your project involves personal, sensitive, or identifiable data (e.g. recordings, transcripts, demographic information), keep the following in mind:
 
-- **Never commit raw data to version control.** Add `data/raw/` to your 
-  `.gitignore` before your first commit. This prevents raw data from ever being tracked accidentally.
-- **Never share the project folder** (e.g., as a zip, via GitHub, or cloud 
-  sync) without first checking what `data/raw/` contains.
-- **Pseudonymisation/anonymisation comes first.** Only once raw data has been 
-  processed and (pseudo)anonymised should derived outputs be treated as 
-  shareable.
-- **Archive, then remove.** Ideally, raw data lives in `data/raw/` only during 
-  active processing. Once archived to a secure location (e.g., the NAS), 
-  remove it from the project folder.
+- **Never commit raw data to version control.** Add `data/raw/` to your `.gitignore` before your first commit. This prevents raw data from ever being tracked accidentally.
+- **Never share the project folder** (e.g. as a zip, via GitHub, or cloud sync) without first checking what `data/raw/` contains.
+- **Pseudonymisation and anonymisation come first.** Only once raw data has been processed and (pseudo)anonymised should derived outputs be treated as shareable.
+- **Archive, then remove.** Ideally, raw data lives in `data/raw/` only during active processing. Once archived to a secure location, remove it from the project folder.
 
-The `data/processed/` folder should contain only anonymised or 
-non-identifiable outputs.
-
+The `data/processed/` folder should contain only anonymised or non-identifiable outputs.
 :::
 
 ## Project-relative file paths
 
-Use `here::here()` for all file paths so the project is portable:
+Absolute file paths like `C:/Users/myname/Desktop/study1/data.csv` break the moment the project is moved or shared. Use `here::here()` for all file paths so the project is portable across machines and operating systems:
 
 ```{r}
 #| eval: false
-data_raw <- readr::read_csv(here::here("data", "raw", "mydata.csv"))
+# load raw data
+df_raw <- readr::read_csv(here::here("data", "raw", "mydata.csv"))
+
+# save processed data
+saveRDS(df_clean, here::here("data", "processed", "data_clean.rds"))
+
+# load a saved model
+m1 <- readRDS(here::here("output", "models", "m1.rds"))
 ```
+
+`here::here()` builds the file path from the project root — the folder containing the `.Rproj` file, regardless of where the script is located within the project. This means a script in `R/04-analysis.R` and a `.qmd` file in `manuscript/` can both use `here::here("data", "processed", "data_clean.rds")` and resolve to the same file.
+
+::: callout-tip
+Never use `setwd()` in a script that will be shared or re-run. It hardcodes a path that only works on your machine. `here::here()` is always the better alternative inside an RProject.
+:::
 
 ## renv: reproducible package management
 
-`renv` records the exact version of every package your project uses in a lockfile (`renv.lock`). Anyone who clones your project and runs `renv::restore()` gets an identical environment.
+`renv` records the exact version of every package your project uses in a lockfile (`renv.lock`). Anyone who clones your project and runs `renv::restore()` gets an identical package environment — no more "works on my machine" failures due to package version differences.
 
 ```{r}
 #| eval: false
-renv::init()       # initialise (done once at project start)
+renv::init()       # initialise once at project start
 renv::snapshot()   # update lockfile after installing new packages
 renv::restore()    # recreate environment from lockfile
 ```
 
+The `renv.lock` file should be committed to version control. The `renv/library/` folder should not — it is machine-specific and can be large.
+
 ::: callout-warning
-`renv` solves the "works on my machine" problem but has limits over long time horizons — R and system library changes can still break things. Document your R version in a `README.md`.
+`renv` solves package version differences between collaborators but has limits over long time horizons. R itself, system libraries, and compiled packages can change in ways that `renv` cannot fully protect against. Document your R version, operating system, and any system dependencies in your `README.md` for long-term reproducibility.
+:::
+
+### An alternative: pacman
+
+If you prefer not to use `renv`, `pacman::p_load()` provides a lightweight alternative that installs missing packages automatically on load:
+
+```{r}
+#| eval: false
+install.packages("pacman")  # run once
+pacman::p_load(tidyverse, here, broom, gt, kableExtra)
+```
+
+`pacman::p_load()` checks whether each package is installed, installs any that are missing, and loads all of them. This does not lock package versions, so it is less reproducible than `renv` over time, but it is simpler and sufficient for following along in a workshop setting.
+
+::: callout-warning
+Avoid leaving `install.packages()` calls uncommented in scripts. They will re-run every time the script is executed or the document is rendered, which is slow and can cause unexpected package version changes.
 :::
 
 ## Quarto in an RProject
 
-If your project produces a Quarto book or report, place `_quarto.yml` at the project root. Quarto and RStudio/Positron detect it automatically.
+If your project produces a Quarto book or report, place `_quarto.yml` at the project root. Quarto and RStudio/Positron detect it automatically and use it to configure rendering for the entire project.
+
+For a standalone manuscript or report (not a book), place the `.qmd` file at the project root alongside the `.Rproj` file. The YAML header of the `.qmd` file controls rendering in this case.
+
+::: callout-tip
+A Quarto project and an RProject are complementary but independent. The `.Rproj` file manages the R environment and working directory; the `_quarto.yml` file manages document rendering. Both can coexist in the same folder, and together they provide a fully self-contained, reproducible research project.
+:::
 
 ### Chapter slides {.slides-link}
 

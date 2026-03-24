@@ -1,244 +1,311 @@
 ---
-title: "Introduction"
-subtitle: "Dynamic Reports and Data Management"
+title: "Welcome to R for Publication"
+subtitle: "Reproducible Manuscripts from Data to Document"
 day: "Day 1"
 ---
 
-## Before we start {background-color="#8D203D"}
+## Welcome
+
+::: {style="text-align: center; margin-top: 2em;"}
+Before we start, a quick poll:
+
+**[📊 Go to Mentimeter](https://www.menti.com/alh3k2ry8qgi){target="_blank"}**
+
+*or enter code 2677 4179 at menti.com*
+:::
+
 
 ::: {style="text-align: center; margin-top: 1em; color: white;"}
-**Think of a time you had to update a results section (e.g., after review).**
-:::
+### 💬 Think about your current workflow {background-color="#8D203D"}
+
+*What software do you use to write manuscripts?*
 
 . . .
 
-::: {style="text-align: center; color: white;"}
-*How long did it take?*
-:::
+*How do you collaborate with co-authors?*
 
 . . .
 
-::: {style="text-align: center; color: white;"}
-*Could you find where your original analyses had come from?*
-:::
+*How do you get your results into your manuscript?*
 
 . . .
 
-::: {style="text-align: center; color: white;"}
-*How confident were you nothing broke?*
+*~3 minutes*
 :::
 
-. . .
+# Writing and collaborating {background-color="#8D203D" data-stack-name="Writing tools"}
 
-::: {style="text-align: center; color: white;"}
-*Could a colleague reproduce it from scratch?*
-:::
-
-## Learning objectives
-
-By the end of this session you will be able to:
+## Common tools for manuscript writing
 
 ::: incremental
-- Set up a self-contained, reproducible RProject
-- Explain what literate programming is and why it matters
-- Use inline R code to report results dynamically
-- Save and load models as `.rds` objects
-- Apply consistent naming conventions to files and objects
-:::
-
-## How this workshop works {data-stack-name="Workshop overview"}
-
-::: incremental
-- **Mix of short lectures and hands-on exercises**
-- Follow along in your own RProject
-- Red slides = time to pause, discuss, or try something
-- Ask questions any time — there are no silly ones
+- **Microsoft Word** — ubiquitous, familiar, easy to share
+- **Google Docs** — real-time collaboration, version history
+- **Overleaf / LaTeX** — precise formatting, journal templates, reference management
+- **Quarto / R Markdown** — dynamic documents, code and prose together
 :::
 
 . . .
-
-::: callout-tip
-## Running dataset
-We'll use a real dataset throughout -- a clean, well-documented dataset so we can focus on the *workflow*, not the data.
-:::
-
-### What we assume
-
-::: incremental
-- You have used R before
-- You are comfortable with basic `tidyverse` (`filter()`, `mutate()`, `ggplot()`)
-- You have R, RStudio/Positron, and Quarto installed
-- You do **not** need to be an expert, that's why we're here
-:::
-
-. . . 
 
 ::: callout-note
-If you haven't installed the required packages yet, now is a good time.  
-See the [Preface](../index.html) for the full list.
+Most researchers use a combination — and most have a story about something going wrong.
 :::
 
-### Why reproducibility matters
+## Word and Google Docs
 
 ::: incremental
-- Analyses change; reviewers ask for revisions, data gets updated
-- Copy-paste errors between R output and manuscript are common
-- A reproducible workflow means **one source of truth**
+**Pros**
+
+- Familiar and widely used
+- Easy to share with co-authors and reviewers
+- Track changes and comments for collaboration
+- No technical setup required
+
+**Cons**
+
+- No connection to your analysis
+- Copy-paste errors when updating results
+- Version control is manual (`manuscript_final_v3_ACTUAL.docx`)
+- Formatting can break between platforms
 :::
 
-
-### 💬 Turn & talk {background-color="#8D203D"}
-
-::: {style="text-align: center; margin-top: 2em; color: white;"}
-
-Discuss with your neighbour:
-
-*What does your current project structure look like?*  
-*How do you get your analyses to your manuscript results section?*
-:::
-
-## The problem with static workflows {data-stack-name="Dynamic reports"}
-```r
-# Run model → copy number → paste into Word → reviewer asks to rerun → ...
-```
+## Overleaf / LaTeX
 
 ::: incremental
-- Output lives in your head (or in a Word comment)
-- Figures saved manually, versioned as `fig_final_v3_ACTUAL_FINAL.png`
-  + you don't even know where the code for that figure is...
-- Collaborators can't reproduce your results
+**Pros**
+
+- Precise, consistent formatting
+- Journal templates available
+- Native support for equations and cross-references
+- Bibliography management with `.bib`
+
+**Cons**
+
+- Steep learning curve
+- Still requires manual copy-paste of results
+- Collaboration can be slow without a paid plan
+- Error messages are cryptic
 :::
 
-## The solution: dynamic reports
+## Quarto
 
 ::: incremental
-- Code, text, and output live in **one document**
-- Re-render = everything updates automatically
-- Works for HTML, PDF, LaTeX, and Word output (among others)
+**Pros**
+
+- Code, prose, and output in one document
+- Results update automatically when data changes
+- Renders to HTML, Word, and PDF from the same source
+- Cross-references, equations, and citations built in
+
+**Cons**
+
+- Requires learning Markdown and R
+- Collaborators may not use it
+- PDF output requires LaTeX
+- Debugging render errors can be frustrating
 :::
 
-## Some basics {data-stack-name="Basics"}
 
-### Literate programming
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### 💬 Discuss {background-color="#8D203D"}
 
-::: callout-note
-## What is literate programming?
-Code and prose are written **together** in the same document; the analysis tells its own story.
-:::
+*Which tool do your co-authors use?*
 
 . . .
 
-- Introduced by Donald Knuth (1984)
-- R Markdown and Quarto are modern implementations
-- The document *is* the analysis, not a write-up of it
+*Is that a constraint for you?*
 
 . . .
-```markdown
-We fitted a linear model predicting body mass from species and sex
-(`r nrow(df_clean)` observations). The effect of sex was
-`r report_t(m1, "sexMale")`.
-```
 
-### Naming conventions
+*What would it take to change your workflow?*
 
-::: callout-tip
-## Files
-Use lowercase, no spaces, separate with `_`:
-`01_clean_data.R`, `02_fit_models.R`, `fig_mass_by_species.png`
 :::
 
-. . .
 
-::: callout-tip
-## Objects
-Be descriptive and consistent:
-`df_raw`, `df_clean`, `m1_null`, `m2_species`, `fig_mass`
+# Reporting results {background-color="#8D203D" data-stack-name="Reporting results"}
+
+## The copy-paste problem
+
+A typical results workflow without Quarto:
+
+::: incremental
+1. Run model in R
+2. Read off coefficients from the console
+3. Type numbers into Word
+4. Reviewer asks to rerun with different exclusion criteria
+5. Rerun model, find updated values
+6. Manually update every number in the manuscript
+7. Hope nothing was missed
 :::
 
 . . .
 
 ::: callout-warning
-## Avoid
-`final`, `v2`, `NEW`, `test`, spaces in filenames, `data2`
+Around 50% of psychology papers contain at least one statistical reporting error, many due to manual transcription [@Nuijten2016].
 :::
 
-### Modular analyses
+## The Quarto alternative
 
-For larger projects, split your analysis into separate scripts rather than one long `.qmd`:
-```
-R/
-├── 01_load_data.R
-├── 02_clean_data.R
-├── 03_fit_models.R
-└── 04_make_figures.R
-```
+::: incremental
+1. Run model in R
+2. Save model as `.rds`
+3. Load in `.qmd` and report inline: `` `r report_t(m1, "condition1")` ``
+4. Reviewer asks to rerun
+5. Rerun model, save updated `.rds`
+6. Re-render document
+7. Every number updates automatically
+:::
 
-### Source scripts
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### 💬 Think of a time... {background-color="#8D203D"}
 
-Source them in your `.qmd` render script:
-```r
-#| output: false
-source(here::here("R", "01_load_data.R"))
-source(here::here("R", "02_clean_data.R"))
-```
+*...you had to update results after a re-analysis.*
 
-### Load in objects
-
-As a rule of thumb, each script should have a single output: a preprocessed/clean/tidy dataset, figures or tables, models, etc.
-
-My typical scripts for a project: 
-
-- `00-setup.qmd`: anything needed to set the project up (e.g., installing packages)
-- `01-processing.qmd`: reading in raw data (from `data/raw/`) --> pre-processing / cleaning --> saving cleaned data (to `data/tidy/`)
-- `02-eda.qmd`: Exploratory Data Analysis --> demographic info --> visualising distributions --> tables and figures to understand the data
-- `03-analyses.qmd`: fitting models --> sanity checks for exclusion criteria --> variable transformations (e.g., centring predictors, setting contrast coding) --> fitting models --> checking assumptions --> saving models (to `output/models/`) --> inspecting results
-- `04-figures.qmd`: producing publication figures (usually a lot of options, indicating which ones get chosen for the manuscript) --> saving figures for manuscript (to `output/figures/`)
-- `05-report.qmd`: reporting the findings
-- `06-tables.qmd`: tables for reporting (sometimes not its own script; saved to `output/tables/`)
 . . .
 
-::: callout-tip
-## Why modular?
-- Each script has one job
-- Easy to re-run just one step
-- Easier to debug and hand over
+*How long did it take?*
+
+. . .
+
+*How confident were you that nothing was missed?*
+
+. . .
+
+*Could a colleague have reproduced your manuscript from scratch?*
 :::
 
-## Tools we'll use
+---
 
-| Tool | Purpose |
-|---|---|
-| RProject | Self-contained, portable project |
-| `renv` | Reproducible package versions |
-| Quarto | Dynamic documents and reports |
-| `here` | Reliable file paths |
-| `tidyverse` | Data wrangling |
-| `gtsummary`, `modelsummary` | Publication tables |
-| `ggplot2` | Publication figures |
+# This workshop {background-color="#8D203D" data-stack-name="This workshop"}
 
 ## Workshop structure
 
-**Session 1**
+**Day 1**
 
-- Project setup, folder structure, `renv`
-- Data wrangling recap
-- Summary statistics and demographics tables
-- Publication figures
+::: incremental
+- Writing in Quarto: Markdown basics, citations, cross-references
+- Output formats: HTML, Word, PDF, and LaTeX
+- Incorporating data: code chunks, inline reporting
+:::
 
 . . .
 
-**Session 2**
-
-- Reporting model results
-- Summary tables with `gt` and `flextable`
-- Quarto for manuscripts
-- Exporting to LaTeX and Word
-
-## By the end of this workshop...
+**Day 2**
 
 ::: incremental
-- Your analysis lives in a single reproducible `.qmd` file
-- Tables and figures update automatically when data changes
-- You can export to Word for co-authors or LaTeX for journals
-- Your project is self-contained and shareable
+- Open and reproducible research: FAIR, data life cycle
+- Tables: `gt`, `kableExtra`, modular workflow
+- Model results: `broom`, `modelsummary`, inline reporting
+- Figures: `ggplot2`, exporting, cross-referencing
+:::
+
+. . .
+
+Tips on code chunk options woven throughout both days.
+
+## How this workshop works
+
+::: incremental
+- Mix of short overviews and hands-on exercises
+- Follow along in your own RProject
+- Red slides = time to pause, discuss, or try something
+- Ask questions any time
+:::
+
+## The dataset
+
+The exercises use a real dataset based on @palleschi_living_2025 ([osf.io/6sra7](https://osf.io/6sra7)), adapted for workshop purposes:
+
+- Some variables removed, some new ones added
+- Restructured to resemble raw data from a collection platform
+- Participant codes are randomly generated — not real identifiers
+- In Session 2 we will work through anonymisation and data management
+
+## What we assume
+
+::: incremental
+- You have used R before
+- You are comfortable with basic `tidyverse`
+- You have R, RStudio or Positron, and Quarto installed
+- You do not need to be an expert
+:::
+
+
+## Learning objectives
+
+By the end of this workshop you will be able to:
+
+::: incremental
+- Write a results section in Quarto that updates automatically
+- Produce output in Word, PDF, and HTML from the same source
+- Extract and report model parameters using `broom::tidy()`
+- Embed results in prose using inline R code
+- Create publication-ready summary tables and figures
+:::
+
+---
+
+# Getting started {background-color="#8D203D" data-stack-name="Getting started"}
+
+## Option A: Clone or download the repository
+
+**With Git — terminal:**
+```bash
+git clone https://github.com/daniela-palleschi/publishr-exercises.git
+```
+
+**With Git — RStudio:** *File → New Project → Version Control → Git*
+
+**Without Git:**
+
+1. Go to [github.com/daniela-palleschi/publishr-exercises](https://github.com/daniela-palleschi/publishr-exercises)
+2. Click **Code → Download ZIP**
+3. Unzip and open `publishr-exercises.Rproj`
+
+## Option B: Set up your own RProject
+
+1. *File → New Project → New Directory → New Project*
+2. In the terminal:
+```bash
+mkdir -p data/raw data/processed exercises output/figures output/tables output/models
+```
+
+3. Download the dataset:
+```{=html}
+<a href="https://raw.githubusercontent.com/daniela-palleschi/publishr-workshop/main/data/raw/data_example.csv">👉 Download sample dataset</a>
+```
+
+4. Save to `data/raw/`
+
+## Install packages
+
+**Option 1 — renv (recommended):**
+```r
+renv::restore()
+```
+
+**Option 2 — pacman:**
+```r
+install.packages("pacman")
+pacman::p_load(here, tidyverse, gt, kableExtra, broom, modelsummary)
+```
+
+## 
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### 🗂️ Setup{background-color="#8D203D"}
+
+1. Open the workshop RProject
+2. Open a new Quarto script to take notes
+
+. . .
+
+Any issues? Raise your hand.
+:::
+
+## Up next... {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 2em; color: white;"}
+### [Writing in Quarto](https://daniela-palleschi.github.io/publishr/slides/01_writing.html){target="_blank"}
+
+*Markdown basics, citations, and cross-references*
 :::

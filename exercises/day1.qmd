@@ -1,0 +1,170 @@
+---
+editor: source
+---
+
+# Session 1 Exercises {.unnumbered}
+
+In the `publishr_workshop` RProject, open the `exercises/session1.qmd` Quarto script.
+
+## Writing in Quarto
+
+### Exercise 1: Text formatting
+
+In the script you'll see an example sentence (repeated below). Add some text formatting to it: try making some words bold, some italic, and add at least one superscript or subscript.
+
+> The mean first-pass reading time at the verb region was 312 ms (SD = 159 ms).
+
+### Exercise 2: Lists and callouts
+
+Add an unordered list of three things you want to get out of this workshop. Then add a callout box (any type) with a note about your dataset.
+
+### Exercise 3: Headers
+
+Add the following headers to structure this document:
+
+- A level-2 header called "Methods"
+- A level-3 header called "Participants"
+- A level-3 header called "Materials"
+
+### Exercise 4: Cross-references
+
+Add the label `{#sec-methods}` to your Methods header from Exercise 3. Then write a sentence below that cross-references it using `@sec-methods`.
+
+### Exercise 5: Citations
+
+Add a citation to your methods section. You will need to:
+
+1. Add `bibliography: references.bib` to your YAML (already done above)
+2. Add `csl: apa.csl` to your YAML (already done above)
+3. Add at least one entry to `references.bib` — you can use the R citation:
+
+```r
+toBibtex(citation("base"))
+```
+
+4. Cite it in prose using `@key` or `[@key]` syntax
+
+### Exercise 6: References section
+
+Add a references section at the end of this document so your citations are listed. Remember to use the `.unnumbered` class on the heading.
+
+### Exercise 7: Inline arithmetic
+
+Use inline R code to compute and report the following directly in prose:
+
+Complete the sentence below:
+
+2 + 2 = \_\_\_, and the square root of 144 is \_\_\_.
+
+
+## Output formats
+
+*Add appropriate headers below to keep your work structured.*
+
+### Exercise 1: HTML with TOC
+
+The YAML above already has a `toc: true` option under `html`. Render this document to HTML and check that the table of contents appears. Try changing `toc-depth` to 2 and re-render — what changes?
+
+### Exercise 2: Word output
+
+Change the active output format to `docx` and render. Open the `.docx` file and inspect your citation. How is it formatted? Can you edit it directly in Word?
+
+::: callout-note
+To render to a specific format from the terminal: `quarto render exercises/day1.qmd --to docx`
+:::
+
+### Exercise 3: PDF and `.tex` output (stretch)
+
+The YAML already has `keep-tex: true` under `pdf`. Render to PDF:
+```bash
+quarto render exercises/day1.qmd --to pdf
+```
+
+Then:
+
+1. Open the PDF — does your citation look correct?
+2. Open the `.tex` file — is your citation a live `\cite{}` command or plain text?
+3. If you want to experiment with live citations in the `.tex` file, try adding `cite-method: natbib` to your PDF YAML options and re-render. Does the citation look different in the PDF? In the `.tex`?
+
+::: callout-note
+## This is a stretch exercise
+Getting APA 7 formatting with live `.tex` citations working perfectly involves trade-offs — see the Output Formats chapter for a full discussion. The goal here is simply to observe the difference, not necessarily to resolve it.
+:::
+
+---
+
+## Data and tables
+
+*Add appropriate headers below to keep your work structured.*
+
+### Exercise 1: A simple code chunk
+
+Add a code chunk below that computes `2 + 2` and renders it. Make sure the chunk is both printed (code visible) and evaluated (output visible).
+
+### Exercise 2: Echo without eval
+
+Change the chunk options on your Exercise 1 chunk so that the code is printed but not evaluated. Render and observe the difference.
+
+::: callout-tip
+Relevant chunk option: `eval: false`
+:::
+
+### Exercise 3: Silent chunk
+
+Add a new code chunk that computes `10 * 10`. Set the chunk options so that neither the code nor the output appears in the rendered document. Render and verify it is invisible.
+
+::: callout-tip
+Relevant chunk option: `include: false`
+:::
+
+### Exercise 4: Load data
+
+Add a code chunk that loads the sample dataset. Set the chunk options so that the code is not printed in the rendered output but the chunk is evaluated.
+```r
+df <- readr::read_csv(here::here("data", "raw", "your-data.csv"))
+```
+
+::: callout-tip
+Relevant chunk option: `echo: false`
+:::
+
+### Exercise 5: Summary statistics
+
+Create a code chunk that filters to the verb region and computes the mean and SD of first-pass reading time (`gaze`), storing them as named objects. Set the chunk so it runs silently.
+```r
+m_gaze  <- # YOUR CODE HERE
+sd_gaze <- # YOUR CODE HERE
+```
+
+::: callout-tip
+You will need `filter(region == "verb")`, `mean(..., na.rm = TRUE)`, `sd(..., na.rm = TRUE)`, and `round(..., 1)`.
+:::
+
+### Exercise 6: Inline reporting
+
+Report your values from Exercise 5 inline by completing the sentence below:
+
+Mean first-pass reading time at the verb region was \_\_\_ ms (SD = \_\_\_ ms).
+
+### Exercise 7: Global eval
+
+Add the following to your YAML `execute:` block:
+```yaml
+execute:
+  eval: false
+```
+
+Render. What happens? Which exercises break and why?
+
+Now fix the problem by adding `#| eval: true` to the chunks that need to run (Exercises 4 and 5). Re-render and confirm everything works.
+
+::: callout-note
+This exercise illustrates why global chunk options need to be set carefully, and why it is often better to set `eval: false` only on specific chunks rather than globally.
+:::
+
+---
+
+## References {.unnumbered}
+
+::: {#refs}
+:::

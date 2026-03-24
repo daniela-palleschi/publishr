@@ -7,3 +7,4 @@
 **/*.quarto_ipynb
 _book/
 renv/library/
+data/raw/exp1_data_tidy.csv

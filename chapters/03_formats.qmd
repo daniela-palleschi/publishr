@@ -1,15 +1,43 @@
 ---
 title: "Output Formats"
 subtitle: "HTML, Word, PDF, and LaTeX"
+day: "Day 1"
 ---
+
+::: {style="text-align: right; margin-bottom: 1em;"}
+````{=html}
+<a href="../slides/03_formats.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````
+:::
+
+
+```{r}
+#| echo: false
+#| message: false
+#| output: false
+
+pacman::p_load(tidyverse, kableExtra)
+if (!knitr::is_latex_output()) pacman::p_load(gt)
+```
 
 ## Purpose
 
-This chapter covers rendering a Quarto document to different output formats. The same `.qmd` source file can produce HTML, Word, and PDF output — but each format has specific YAML options and some practical differences to be aware of.
+This chapter covers rendering a Quarto document to different output formats. The same `.qmd` source file can produce HTML, Word, PDF, and a LaTeX `.tex` file, but each format has specific YAML options and some practical differences worth understanding before committing to a workflow.
+
+Rather than trying to support all formats simultaneously, the most pragmatic approach is to decide early which format best fits your collaboration context. The right choice depends on who your co-authors are, how they prefer to give feedback, and what the target journal requires. A workflow that is technically reproducible but creates friction for collaborators is unlikely to be sustainable in practice.
+
+To illustrate: my own workflow has evolved considerably over time. Writing my dissertation entirely in R Markdown (with separate `.Rmd` files per chapter knitted together) worked well for a sole-author project but would have been impractical with collaborators. Sharing PDF output for feedback from co-authors on a journal article was workable but painful: comments arrived as annotations on a PDF, had to be manually transferred back to the source (by me), and any revision meant re-rendering and re-sharing (2/10, would not recommend). More recently, rendering a first draft from Rmarkdown to PDF, uploading the produced `.tex` document to Overleaf, and inviting collaborators to edit there directly has been a reasonable compromise, as it preserves the reproducible analysis pipeline while giving collaborators a familiar LaTeX editing environment (8/10: not perfect for reproducibility at the writing stage, but it facilitates collaboration in a way that a pure Quarto workflow currently cannot).
+
+A further option is to collaborate in Google Docs, rendering results text and tables to Word and copying them across. This is admittedly imperfect from a reproducibility standpoint, as prose edits made in Google Docs are not tracked in the source `.qmd`. However, it can be a pragmatic workflow when collaborators are not willing or able to use anything else. Crucially, the analysis itself remains fully documented in R scripts and output files, even if the manuscript prose lives elsewhere. The results are still reproducible; only the writing layer is decoupled.
+
+The sections below cover the main output formats, their YAML options, and the practical trade-offs involved.
 
 ## Rendering formats
 
-Specify output formats in the YAML `format:` block:
+Quarto separates the source document from its output format. The same `.qmd` file can be rendered to multiple formats by specifying them in the YAML `format:` block:
+
 ````yaml
 format:
   html:
@@ -20,19 +48,24 @@ format:
     reference-doc: custom-reference.docx
 ````
 
-Render all formats at once:
+Render all formats at once from the terminal:
+
 ````bash
 quarto render manuscript.qmd
 ````
 
 Or a single format:
+
 ````bash
 quarto render manuscript.qmd --to docx
 ````
 
+This separation of content from presentation is one of Quarto's core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents. However, I suggest you choose *one* output format until you have a specific need to render to different formats.
+
 ## HTML
 
-HTML is the most flexible output format and the easiest to share.
+HTML is the most flexible output format. It supports interactive elements, renders equations via MathJax, and can be hosted online (like this book, written in Quarto) or shared as a standalone file. For internal reports, supplementary materials, or workshop books, HTML is usually the best default.
+
 ````yaml
 format:
   html:
@@ -45,14 +78,15 @@ format:
 
 ::: callout-note
 ## Self-contained HTML with `embed-resources`
-By default, Quarto renders HTML with external dependencies (CSS, JavaScript, figures) stored in a separate folder. Setting `embed-resources: true` bundles everything into a single `.html` file, making it easy to share without worrying about missing assets.
+By default, Quarto renders HTML with external dependencies (CSS, JavaScript, figures) stored in a separate folder alongside the `.html` file. This means sharing the file alone — by email, for example — will result in missing images and broken styling. Setting `embed-resources: true` bundles everything into a single self-contained `.html` file that can be shared without any accompanying folder.
 
-`embed-resources: true` increases file size and slows rendering slightly. For a book or website hosted online, leave it as `false`.
+The trade-off is file size and render time: `embed-resources: true` produces larger files and renders more slowly. For a book or website that will be hosted online and served from a web server, leave it as `false`.
 :::
 
 ## Word
 
-Word output is useful for sharing with co-authors or for journal submission.
+Word output is the most practical format for sharing with co-authors who are not using Quarto, and is widely accepted by journals for submission. The rendered `.docx` looks and behaves like any other Word document, co-authors can annotate, track changes, and comment without needing to know anything about Quarto.
+
 ````yaml
 format:
   docx:
@@ -61,23 +95,27 @@ format:
     number-sections: false
 ````
 
-A reference `.docx` sets the styles (fonts, margins, heading levels) for the output. Generate a default one with:
+A reference `.docx` controls the visual styling of the output (fonts, margins, heading styles, and spacing) by mapping Quarto's document elements to Word styles. Generate a default one and then customise it:
+
+
 ````bash
 quarto pandoc -o custom-reference.docx --print-default-data-file reference.docx
 ````
 
-Then open it in Word and modify the styles to match your journal's requirements.
+Open the generated file in Word, modify the paragraph and heading styles to match your journal's requirements, and point your YAML to it with `reference-doc: custom-reference.docx`.
 
 ::: callout-warning
 ## Citations in Word
-Citations are rendered as plain formatted text in `.docx` output — they are not live fields linked to your `.bib` file. Any edits made directly to citations in Word will be overwritten on re-render. Always treat the `.qmd` as the source of truth.
 
-If co-authors need to edit citations in Word, consider using Zotero's Word plugin for the final submission copy.
+Citations are rendered as plain formatted text in `.docx` output. They are not live fields linked to your `.bib` file, so editing them directly in Word — or adding new ones — will have no effect on the source document and will be overwritten on re-render. Always treat the `.qmd` as the source of truth, and re-render to update the `.docx` rather than editing it directly.
+
+If co-authors need to edit citations in Word, the most practical solution is to use Zotero's Word plugin for the final submission copy, keeping the Quarto document as the reproducible record of the analysis.
 :::
 
 ## PDF
 
-PDF output is produced via LaTeX. The most important options:
+PDF output is produced by rendering the `.qmd` to LaTeX and then compiling with a LaTeX engine (by default `pdflatex`). This gives access to the full power of LaTeX for typesetting, including precise control over layout, fonts, and mathematical notation. PDF is the appropriate format for journal submission when a `.pdf` or `.tex` file is required.
+
 ````yaml
 format:
   pdf:
@@ -90,52 +128,99 @@ format:
     keep-tex: true
     include-in-header:
       text: |
-        \usepackage{booktabs}
-        \usepackage{longtable}
-        \usepackage{microtype}
+        \usepackage{booktabs}    % professional table rules
+        \usepackage{longtable}   % tables spanning multiple pages
+        \usepackage{microtype}   % improved text justification
 ````
 
 ::: callout-tip
 ## keep-tex
-Setting `keep-tex: true` saves the intermediate `.tex` file alongside the PDF. This is useful if you need to make final tweaks in Overleaf before submission, or if the journal requires a raw `.tex` file.
+Setting `keep-tex: true` saves the intermediate `.tex` file alongside the rendered PDF. This is useful in two situations: if the journal requires a raw `.tex` file for submission, or if you want to upload to Overleaf for final formatting tweaks or co-author editing. See @sec-apa7 for important caveats about citation handling in `.tex` output.
 :::
 
 ## Format comparison
 
-| Feature | HTML | PDF | Word |
-|---|---|---|---|
-| Citations | ✅ from `.bib` | ✅ from `.bib` | ✅ rendered as text |
-| Live `.bib` link | ✅ | depends on `cite-method` | ❌ |
-| Cross-references | ✅ | ✅ | ✅ |
-| Equations | ✅ MathJax | ✅ native LaTeX | ⚠️ limited |
-| Table formatting | `gt` | `kableExtra` | `flextable` |
-| Custom styles | CSS | LaTeX | reference `.docx` |
-| Self-contained | `embed-resources: true` | always | always |
+The table below summarises the key differences between output formats for common manuscript features.
+
+````{r}
+#| label: tbl-formats
+#| tbl-cap: "Comparison of output formats for common manuscript features."
+#| echo: false
+
+check <- if (knitr::is_latex_output()) "yes"     else "✅"
+cross <- if (knitr::is_latex_output()) "no"      else "❌"
+warn  <- if (knitr::is_latex_output()) "limited" else "⚠️"
+
+tbl_formats <- tibble::tribble(
+  ~Feature,           ~HTML,                       ~PDF,                                  ~Word,
+  "Citations",        paste(check, "from .bib"),   paste(check, "from .bib"),             paste(check, "rendered as text"),
+  "Live .bib link",   check,                       paste(warn, "depends on cite-method"), cross,
+  "Cross-references", check,                       check,                                 check,
+  "Equations",        paste(check, "MathJax"),     paste(check, "native LaTeX"),          paste(warn, "limited"),
+  "Table formatting", "`gt`",                      "`kableExtra`",                        "`flextable`",
+  "Custom styles",    "CSS",                       "LaTeX",                               "reference .docx",
+  "Self-contained",   "`embed-resources: true`",   "always",                              "always"
+)
+
+if (knitr::is_latex_output()) {
+  tbl_formats |>
+    kbl(booktabs = TRUE, format = "latex") |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(1, width = "3cm") |>
+    column_spec(2:4, width = "3.5cm")
+} else {
+  tbl_formats |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
+````
 
 ## APA 7 and `.tex` output {#sec-apa7}
 
-These issues are only relevant if you want to edit the `.tex` file after rendering (e.g., in Overleaf). If you render directly to PDF, Word, or HTML from Quarto, citations will be formatted correctly regardless of which option you use.
+The following considerations are only relevant if you intend to edit the `.tex` file after rendering — for example, uploading to Overleaf for final formatting or co-author editing. If you render directly to PDF, Word, or HTML from Quarto, citations will be formatted correctly by the default citeproc engine regardless of which option you choose. The issue is specifically about whether the `.tex` file contains live `\cite{}` commands that a LaTeX editor like Overleaf can resolve, or plain formatted text that it cannot.
 
-For `.tex` editing workflows, there is no perfect solution:
+For `.tex` editing workflows, there is no perfect solution. The three main options involve trade-offs between APA 7 accuracy and Overleaf compatibility:
 
 **citeproc (default)**  
-Uses `csl: apa.csl`. Gives the most accurate APA 7 output but resolves citations to plain text in the `.tex` file, so there are no live `\cite{}` commands for Overleaf.
+Uses `csl: apa.csl` to format citations at render time. Produces the most accurate APA 7 output of the three options, but resolves citations to plain text in the `.tex` file. Overleaf receives a fully formatted document but with no live citation commands — adding or editing references requires going back to the Quarto source.
 
 **natbib + apacite**  
-Gives live `\cite{}` commands in the `.tex` file. However, `apacite` targets APA 6th edition and has known APA 7 formatting issues (author limits, DOI formatting).
+Passes citations through to LaTeX as live `\cite{}` commands, which Overleaf can resolve using your uploaded `.bib` file. However, `apacite` was written to APA 6th edition standards and has known formatting issues with APA 7 requirements, including author name truncation rules and DOI formatting.
 
 **biblatex + biblatex-apa**  
-The most APA 7-compliant option with live citations. Requires `biber` as the backend, which must be set manually in Overleaf and is more complex to set up.
+The most APA 7-compliant LaTeX citation option, with live citations. Requires `biber` as the backend processor, which must be set manually in Overleaf's compiler settings. More complex to set up than the other options but the best choice if both APA 7 accuracy and live Overleaf citations are required.
 
-| Option | APA 7 accuracy | Live `.tex` citations | Overleaf |
-|---|---|---|---|
-| citeproc + `apa.csl` | ✅ best | ❌ | ⚠️ upload `.tex` only |
-| natbib + `apacite` | ⚠️ APA 6 | ✅ | ✅ with `.bib` |
-| biblatex + `biblatex-apa` | ✅ good | ✅ | ✅ set biber in compiler |
+````{r}
+#| label: tbl-apa7
+#| tbl-cap: "Citation backend options for .tex output."
+#| echo: false
 
-Choose based on your priority: APA 7 accuracy or Overleaf compatibility.
+tbl_apa7 <- tibble::tribble(
+  ~Option,                   ~`APA 7 accuracy`,    ~`Live .tex citations`, ~Overleaf,
+  "citeproc + apa.csl",      paste(check, "best"), cross,                  paste(warn, "upload .tex only"),
+  "natbib + apacite",        paste(warn, "APA 6"), check,                  paste(check, "with .bib"),
+  "biblatex + biblatex-apa", paste(check, "good"), check,                  paste(check, "set biber in compiler")
+)
 
-To switch from the default citeproc:
+if (knitr::is_latex_output()) {
+  tbl_apa7 |>
+    kbl(booktabs = TRUE, format = "latex") |>
+    kable_styling(latex_options = c("hold_position", "scale_down"))
+} else {
+  tbl_apa7 |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
+````
+
+Choose based on your priority: APA 7 accuracy or Overleaf compatibility. To switch from the default citeproc:
+
 ````yaml
 # natbib
 format:
@@ -154,38 +239,6 @@ format:
     biblio-style: apa
 ````
 
-## Exercises
-
-### Exercise 1 — Render to all formats
-
-Add HTML, PDF, and Word format blocks to your exercise `.qmd` YAML and render all three. Compare the outputs — what looks different?
-
-### Exercise 2 — Self-contained HTML
-
-Add `embed-resources: true` to your HTML format block and re-render. Check the file size difference between the self-contained and non-self-contained versions.
-
-### Exercise 3 — Word with a reference document
-
-1. Generate a default reference `.docx`:
-````bash
-quarto pandoc -o custom-reference.docx --print-default-data-file reference.docx
-````
-2. Open it in Word and change the body font to Times New Roman 12pt
-3. Point your YAML to it with `reference-doc: custom-reference.docx` and re-render
-
-### Exercise 4 — keep-tex and Overleaf
-
-1. Add `keep-tex: true` to your PDF format block and render
-2. Open the `.tex` file and find your citations — are they `\cite{}` commands or plain text?
-3. Upload the `.tex` to a new Overleaf project and compile
-
-### Exercise 5 — natbib or biblatex
-
-Switch your citation backend to either `natbib` or `biblatex` and re-render to PDF. Check:
-
-- Do citations appear correctly in the PDF?
-- Open the `.tex` file — are citations now live `\cite{}` commands?
-- Upload to Overleaf — do citations resolve?
 
 ## Chapter slides
 ````{=html}

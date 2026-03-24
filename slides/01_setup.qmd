@@ -3,7 +3,7 @@ title: "Project Setup"
 subtitle: "RProjects, renv, and Folder Structure"
 ---
 
-## 
+## {background-color="#8D203D"}
 
 Why do we want to our analyses to be reproducible?
 
@@ -23,15 +23,17 @@ pacman::p_load(
 
 ## Why project hygiene matters
 
-Reproducibility begins before you write a single line of code A clean, self-contained project structure ensures that collaborators (and your future self) can re-run everything without hunting for files or re-installing packages.
+Reproducibility begins before you write a single line of code 
+- clean, self-contained project structure ensures that collaborators (and your future self) can re-run everything without hunting for files or re-installing packages.
 
 ## RProjects + `here`
 
-**Always** (seriously, ALWAYS) work inside an RProject (`.Rproj`). This sets the working directory to the project root and makes `here::here()` reliable.
+**Always** (seriously, ALWAYS) work inside an RProject (`.Rproj`)
+- This sets the working directory to the project root and makes `here::here()` reliable.
 
 ### Creating a new RProject
 
-In RStudio: *File → New Project → New Directory → New Project*. Tick "Use renv with this project" to initialise package management from the start.
+- In RStudio: *File → New Project → New Directory → New Project*. Tick "Use renv with this project" to initialise package management from the start.
 
 In Positron: *File → New Folder → initialise as R project*.
 

@@ -1,108 +1,238 @@
 ---
-title: "Summary Tables for Publication"
-subtitle: "gt and flextable"
+title: "Tables"
 ---
 
-```{r}
+
+````{r}
+#| label: setup
 #| output: false
-library(tidyverse)
-library(gt)
-library(flextable)
-```
+#| message: false
+pacman::p_load(here, tidyverse, kableExtra, reticulate)
+if (!knitr::is_latex_output()) pacman::p_load(gt)
+````
 
-## Two tools, two targets
+::: {.callout-note collapse="true"}
+### Simple Markdown tables
 
-| Package     | Best for               |
-|-------------|------------------------|
-| `gt`        | HTML and PDF output    |
-| `flextable` | Word (.docx) output    |
+For quick, small tables that do not need formatting, Markdown syntax is the simplest option:
+````markdown
+| Condition | Tense            | Lifetime |
+|---|---|---|
+| A         | Present Perfect  | Living   |
+| B         | Present Perfect  | Dead     |
+````
 
-Both accept data frames and give fine-grained control over formatting.
-
-## gt
-
-`gt` tables are built in layers. Start with `gt()`, then add formatting functions.
-
-```{r}
-df_summary <- palmerpenguins::penguins |>
-  filter(!is.na(sex), !is.na(body_mass_g)) |>
-  group_by(species, sex) |>
-  summarise(
-    n        = n(),
-    mean_mass = mean(body_mass_g),
-    sd_mass   = sd(body_mass_g),
-    .groups   = "drop"
-  ) |>
-  mutate(sex = str_to_title(sex))
-
-df_summary |>
-  gt(groupname_col = "species") |>
-  cols_label(
-    sex       = "Sex",
-    n         = "N",
-    mean_mass = "Mean (g)",
-    sd_mass   = "SD (g)"
-  ) |>
-  fmt_number(columns = c(mean_mass, sd_mass), decimals = 1) |>
-  tab_spanner(label = "Body mass", columns = c(mean_mass, sd_mass)) |>
-  tab_header(
-    title    = "Table 3",
-    subtitle = "Body mass by species and sex"
-  ) |>
-  tab_source_note("Data: palmerpenguins") |>
-  opt_row_striping()
-```
-
-### Exporting gt to LaTeX or Word
-
-```{r}
-#| eval: false
-# Save as LaTeX
-tbl_gt <- df_summary |> gt(groupname_col = "species")
-gtsave(tbl_gt, here::here("output", "tables", "table3.tex"))
-
-# Save as Word (via gt's docx support)
-gtsave(tbl_gt, here::here("output", "tables", "table3.docx"))
-```
-
-## flextable
-
-`flextable` gives pixel-level control for Word documents.
-
-```{r}
-df_summary |>
-  rename(
-    Species = species, Sex = sex, N = n,
-    `Mean (g)` = mean_mass, `SD (g)` = sd_mass
-  ) |>
-  flextable() |>
-  merge_v(j = "Species") |>
-  valign(j = "Species", valign = "top") |>
-  colformat_double(j = c("Mean (g)", "SD (g)"), digits = 1) |>
-  bold(part = "header") |>
-  autofit() |>
-  set_caption("Table 3. Body mass by species and sex")
-```
-
-### Exporting flextable to Word
-
-```{r}
-#| eval: false
-ft <- df_summary |>
-  flextable() |>
-  autofit()
-
-save_as_docx(ft, path = here::here("output", "tables", "table3.docx"))
-```
-
-::: callout-note
-For manuscripts that will be submitted as `.docx`, `flextable` is generally more reliable than `gt` because it maps directly to Word's native table model.
+Markdown tables render in all output formats without any packages. However they offer no control over column widths, cell formatting, footnotes, or spanning headers. For anything that will appear in a manuscript, `gt` or `kableExtra` is preferable.
 :::
 
-## Chapter slides
+### Which package to use
 
-```{=html}
-<a href="../slides/06_tables.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
+````{r}
+#| label: tbl-packages
+#| tbl-cap: "Recommended table packages by output format."
+#| echo: false
+tbl_packages <-
+  tibble::tribble(
+  ~Target,        ~Package,      ~`Key function`,
+  "HTML",         "gt",          "gt()",
+  "PDF / LaTeX",  "kableExtra",  "kbl(..., booktabs = TRUE)",
+  "Word",         "gt",          "gtsave()"
+) 
+
+if (knitr::is_latex_output()) {
+  tbl_packages |>
+    kbl(booktabs = TRUE, format = "latex") |>
+    kable_styling(latex_options = "hold_position")
+} else {
+  tbl_packages |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
+````
+
+## Tables from scratch with `tribble()`
+
+Not all manuscript tables come from data. Methods sections, model specification tables, and condition overviews are often written out manually. `tibble::tribble()` lets you create a table row by row in a readable format, which can then be piped into `gt` or `kableExtra` for formatting.
+
+````{r}
+#| label: tbl-conditions
+#| tbl-cap: "Experimental conditions."
+
+tbl_conditions <-
+  tibble::tribble(
+  ~Condition, ~Tense,             ~Lifetime, ~Example,
+  "A",        "Present Perfect",  "Living",  "Der Dirigent hat den Komponisten gekannt, der...",
+  "B",        "Present Perfect",  "Dead",    "Der Dirigent hat den Komponisten gekannt, der...",
+  "C",        "Simple Past",      "Living",  "Der Dirigent kannte den Komponisten, der...",
+  "D",        "Simple Past",      "Dead",    "Der Dirigent kannte den Komponisten, der..."
+)
+
+if (knitr::is_latex_output()) {
+  tbl_conditions |>
+    kbl(
+      format    = "latex",
+      booktabs  = TRUE,
+      col.names = c("Condition", "Tense", "Lifetime", "Example stimulus")
+    ) |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    add_header_above(c(" " = 1, "Condition factors" = 2, " " = 1)) |>
+    column_spec(4, width = "6cm") |>
+    kableExtra::footnote(
+      general           = "Only the critical verb region is shown.",
+      general_title     = "Note.",
+      footnote_as_chunk = TRUE
+    )
+} else {
+  tbl_conditions |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    tab_spanner(
+      label   = "Condition factors",
+      columns = c(Tense, Lifetime)
+    ) |>
+    cols_label(Example = "Example stimulus") |>
+    cols_width(Example ~ px(300)) |>
+    tab_source_note("Only the critical verb region is shown.")
+}
+````
+
+## Cross-referencing tables
+
+To cross-reference a table in prose, add a `label` starting with `tbl-` and a `tbl-cap` to the chunk options:
+````markdown
+```{{r}}
+#| label: tbl-desc
+#| tbl-cap: "Total reading time (ms) by condition."
+tbl_desc |> gt()
 ```
+````
+
+Then reference in prose with `@tbl-desc`:
+````markdown
+Descriptive statistics are presented in @tbl-desc.
+````
+
+This renders as "Descriptive statistics are presented in Table 1." and updates automatically if tables are added or reordered.
+
+::: callout-warning
+Cross-references only work when the chunk label begins with `tbl-`. A label like `#| label: desc-table` will not be recognised as a table reference.
+:::
+
+## Summary tables
+
+Summary tables in manuscripts serve two purposes: describing the sample (demographics, condition counts) and reporting descriptive statistics (means, SDs, reading times). The appropriate package depends on your target output format.
+
+
+
+### Preparing summary data
+
+````{r}
+#| output: false
+#| eval: false
+df_clean <- readRDS(here::here("data", "processed", "exp1_clean.rds"))
+
+tbl_desc <- df_clean |>
+  filter(region == "verb") |>
+  mutate(lifetime = factor(lifetime, levels = c("living", "dead"))) |>
+  summarise(
+    n      = n(),
+    mean   = mean(tt,   na.rm = TRUE),
+    sd     = sd(tt,     na.rm = TRUE),
+    median = median(tt, na.rm = TRUE),
+    iqr    = IQR(tt,    na.rm = TRUE),
+    .by    = c(tense, lifetime)
+  ) |>
+  arrange(tense, lifetime)
+````
+
+### Key functions
+
+````{r}
+#| label: tbl-gt-functions
+#| tbl-cap: "Key gt functions for manuscript tables."
+tbl_gt_func <-
+  tibble::tribble(
+  ~Function,          ~Purpose,
+  "tab_header()",     "Add title and subtitle",
+  "tab_spanner()",    "Group columns under a label",
+  "cols_label()",     "Rename columns",
+  "fmt_number()",     "Format numeric columns",
+  "tab_style()",      "Apply cell styles",
+  "tab_source_note()", "Add a general note",
+  "tab_footnote()",   "Add a footnote to a specific cell",
+  "gtsave()",         "Export to HTML, PDF, or Word")
+
+  
+if (knitr::is_latex_output()) {
+  tbl_gt_func |>
+    kbl(
+      booktabs = TRUE,
+      format   = "latex",
+      caption  = "Key gt functions for manuscript tables."
+    ) |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(2, width = "8cm")
+} else {
+  tbl_gt_func |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    tab_header(title = "Key gt functions") |>
+    cols_width(Purpose ~ px(350))
+}
+````
+
+````{r}
+#| label: tbl-kbl-functions
+#| tbl-cap: "Key kableExtra functions for manuscript tables."
+tbl_kbl_func <-
+  tibble::tribble(
+  ~Function,              ~Purpose,
+  "kbl()",                "Initialise table",
+  "kable_styling()",      "Set LaTeX or HTML styling options",
+  "add_header_above()",   "Span columns under a label",
+  "column_spec()",        "Format specific columns",
+  "collapse_rows()",      "Merge repeated row values",
+  "kableExtra::footnote()", "Add general or labelled notes",
+  "save_kable()",         "Export to .tex, .html, or .pdf"
+)
+
+if (knitr::is_latex_output()) {
+    tbl_kbl_func |>
+      kbl(booktabs = TRUE, format = "latex") |>
+      kable_styling(latex_options = c("hold_position", "scale_down")) |>
+      column_spec(2, width = "8cm")
+  } else {
+    tbl_kbl_func |>
+      gt() |>
+      tab_style(
+        style     = cell_text(weight = "bold"),
+        locations = cells_column_labels()
+      ) |>
+      cols_width(Purpose ~ px(350))
+  }
+````
+
+### Exporting tables
+
+````{r}
+#| eval: false
+# gt to Word or PDF
+tbl_gt <- tbl_desc |> gt()
+gtsave(tbl_gt, here::here("output", "tables", "tab_desc.docx"))
+gtsave(tbl_gt, here::here("output", "tables", "tab_desc.pdf"))
+
+# kableExtra to LaTeX
+tbl_desc |>
+  kbl(booktabs = TRUE, digits = 1) |>
+  kable_styling() |>
+  save_kable(here::here("output", "tables", "tab_desc.tex"))
+````

@@ -1,0 +1,183 @@
+---
+title: "Data and Tables"
+subtitle: "Code Chunks, Loading Data, and Summary Tables"
+---
+
+::: {style="text-align: right; margin-bottom: 1em;"}
+````{=html}
+<a href="../slides/04_data.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````
+:::
+
+````{r}
+#| label: setup
+#| echo: false
+#| output: false
+#| message: false
+pacman::p_load(here, tidyverse, kableExtra, reticulate)
+if (!knitr::is_latex_output()) pacman::p_load(gt)
+````
+
+## Purpose
+
+This chapter introduces the practical side of working with data in Quarto. Rather than running analyses in a separate R script and copying results into a document, Quarto allows you to load data, compute summaries, and produce formatted tables directly within the manuscript. The result is a document in which every number, table, and figure is generated from the underlying data at render time.
+
+We cover the essentials of code chunk options, loading data from file, producing summary tables with `gt` and `kableExtra`, cross-referencing tables in prose, and reporting values inline. Together these form the foundation of a reproducible results section.
+
+## Code chunks
+
+Code chunks are the blocks of R code embedded in a `.qmd` document. They are delimited by triple backticks and a language identifier:
+
+```{r}
+#| echo: fenced
+rt <- c(312, 287, 445, 301, 389)
+mean(rt)
+```
+
+
+Each chunk is executed in sequence when the document is rendered, and the output (whether a number, a table, or a figure) is inserted into the document at that position.
+
+::: callout-note
+### Note: Quarto beyond R
+While this workshop focuses on R, Quarto supports multiple languages in code chunks, including Python (`{python}`), Julia (`{julia}`), and Observable JavaScript (`{ojs}`). Different languages can be used in the same document without any additional packages, with each chunk executed by its respective engine. You can use the `reticulate` package if you want to share objects between R and Python chunks within the same session (and would need it to render Python chunks to PDF).
+
+For example, a Python chunk in the same document as R code:
+
+```{python}
+#| echo: fenced
+import numpy as np # numpy is Python's main numerical computing library, similar to base R
+
+rt = [312, 287, 445, 301, 389]
+print(np.mean(rt))
+```
+:::
+
+
+### Chunk options
+
+Chunk behaviour is controlled by options written at the top of the chunk using the `#|` prefix. The most important options for manuscript writing are:
+
+````{r}
+#| label: tbl-chunk-options
+#| tbl-cap: "Common code chunk options for manuscript writing."
+#| echo: false
+chunk_opts <- tibble::tribble(
+  ~Option,    ~Values,              ~Effect,
+  "echo",     "true / false",       "Show or hide the code",
+  "output",   "true / false",       "Show or hide the output",
+  "eval",     "true / false",       "Run or skip the chunk",
+  "include",  "true / false",       "Include chunk and output in document",
+  "warning",  "true / false",       "Show or hide warnings",
+  "message",  "true / false",       "Show or hide messages",
+  "label",    "string",             "Chunk identifier for cross-references",
+  "fig-cap",  "string",             "Figure caption",
+  "tab-cap",  "string",             "Table caption"
+)
+
+if (knitr::is_latex_output()) {
+  chunk_opts |>
+    kbl(booktabs = TRUE, format = "latex") |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(3, width = "6cm")
+} else {
+  chunk_opts |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    cols_width(Effect ~ px(300))
+}
+````
+
+For a manuscript, you typically want to hide code and show only output. Set global defaults in `_quarto.yml` or the document YAML, then override per chunk where needed:
+````yaml
+execute:
+  echo: false      # hide code from output
+  warning: false   # suppress R warnings
+  message: false   # suppress R messages (e.g. package loading messages)
+````
+
+Then override for specific chunks:
+````markdown
+```{{r}}
+#| echo: true
+#| label: tbl-desc
+#| tbl-cap: "Descriptive statistics by condition."
+tbl_demo |> gt()
+```
+````
+
+::: callout-tip
+### `echo: true` or `false`?
+The right default depends on your document's purpose. For teaching materials and workshop scripts, `echo: true` ensures participants can see the code alongside the output. For manuscript submissions, `echo: false` (as well as `warning: false` and `message: false`) produces clean output with no visible code. For internal analysis reports, i.e., documents whose purpose is to serve as a transparent record of your analysis, `echo: true` is essential for auditability and reproducibility.
+:::
+
+### Chunk labels
+
+Every chunk that produces a figure or table should have a label. Labels must begin with the correct prefix (`fig-` for figures, `tbl-` for tables) and be unique across the document. Unlabelled chunks cannot be cross-referenced.
+````r
+#| label: tbl-desc
+#| tbl-cap: "Descriptive statistics by condition."
+````
+
+::: callout-warning
+Duplicate labels cause render errors. If you copy a chunk, always update the label.
+:::
+
+## Loading data
+
+Data should be stored in `data/raw/` and loaded at the top of the document using `here::here()`. This ensures the file path works regardless of where the project is opened:
+````{r}
+#| eval: false
+df <- readr::read_csv(here::here("data", "raw", "your-data.csv"))
+````
+
+For processed data or saved R objects, load from `data/processed/` or `output/models/`:
+````{r}
+#| eval: false
+df_clean <- readRDS(here::here("data", "processed", "data_example.rds"))
+lmer_verb_firstfix <- readRDS(here::here("output", "models", "lmer_verb_firstfix.rds"))
+````
+
+::: callout-tip
+Load all data objects in a single setup chunk at the top of the document with `#| output: false`. This keeps the document clean and makes dependencies explicit.
+:::
+
+### Saving processed data
+
+After cleaning and transforming your data, save the processed object so it can be loaded quickly in subsequent documents without re-running the full pipeline:
+
+````{r}
+#| eval: false
+saveRDS(df_clean, here::here("data", "processed", "data_example.rds"))
+````
+
+## Inline reporting
+
+Values from your data can be embedded directly in prose using inline R code. This ensures reported statistics are always consistent with the underlying data. For frequently reported values, compute them once in a code chunk and store as named objects, then reference those objects inline:
+````{r}
+#| output: false
+#| eval: false
+n_px  <- dplyr::n_distinct(df_clean$px)
+n_obs <- nrow(df_clean |> filter(region == "verb"))
+m_tt  <- round(mean(df_clean$tt, na.rm = TRUE), 1)
+sd_tt <- round(sd(df_clean$tt,   na.rm = TRUE), 1)
+````
+````markdown
+The sample comprised ` r n_px` participants (*N* observations = ` r n_obs`).
+Mean total reading time was ` r m_tt` ms (*SD* = ` r sd_tt`).
+````
+
+::: callout-tip
+Storing computed values as named objects keeps inline expressions short and readable. It also means the value is only computed once, reducing the risk of inconsistencies if the expression is used in multiple places.
+:::
+
+## Chapter slides
+````{=html}
+<a href="../slides/04_data.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````

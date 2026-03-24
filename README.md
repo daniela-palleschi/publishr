@@ -2,9 +2,20 @@
 
 ### Reporting, Tables, and Figures for Academic Manuscripts
 
-A two-session workshop (2 × 2 hours) on using RProjects and Quarto to produce 
+Materials for the webbook and slides accompanying a two-session workshop (2 × 2 hours) on using RProjects and Quarto to produce 
 publication-ready output: summary statistics, demographic tables, model results, 
 figures, and final manuscripts in LaTeX and Word.
+
+## Book
+
+The workshop materials are available as a Quarto book at:  
+👉 [daniela-palleschi.github.io/r-for-publication](https://daniela-palleschi.github.io/r-for-publication)
+
+## Author
+
+[Daniela Palleschi](https://daniela-palleschi.github.io/) -- [Scientific Support Staff for Data Management and Data Science/Statistics](https://www.leibniz-zas.de/en/personen/details/palleschi-daniela/daniela-palleschi) at the [Leibniz-Zentrum 
+Allgemeine Sprachwissenschaft (ZAS)](https://www.leibniz-zas.de/en), Berlin, Germany
+
 
 ## Workshop overview
 
@@ -51,9 +62,9 @@ r-for-publication/
 
 ## Requirements
 
-- **R** (≥ 4.3): https://cran.r-project.org
-- **RStudio** (≥ 2022.07): https://posit.co/download/rstudio-desktop
-- **Quarto** (≥ 1.4): https://quarto.org/docs/download
+- **R** ($\geq$ 4.3): https://cran.r-project.org
+- **RStudio** ($\geq$ 2022.07): https://posit.co/download/rstudio-desktop
+- **Quarto** ($\geq$ 1.4): https://quarto.org/docs/download
 - **LaTeX** (TinyTeX recommended): `quarto install tinytex`
 - **R packages**: see `index.qmd` for the full list
 
@@ -68,16 +79,6 @@ quarto render --to html
 # Render a single chapter slide deck
 quarto render slides/01_setup.qmd
 ```
-
-## Book
-
-The workshop materials are available as a Quarto book at:  
-👉 [daniela-palleschi.github.io/r-for-publication](https://daniela-palleschi.github.io/r-for-publication)
-
-## Author
-
-[Daniela Palleschi](https://daniela-palleschi.github.io/) — [Leibniz-Zentrum 
-Allgemeine Sprachwissenschaft (ZAS)](https://www.leibniz-zas.de/de/personen/details/palleschi-daniela/daniela-palleschi), Berlin
 
 ## Licence
 

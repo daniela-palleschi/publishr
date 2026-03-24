@@ -1,4 +1,0 @@
----
-title: "Quarto for Manuscripts"
-subtitle: "YAML, cross-references, citations, and inline reporting"
----
