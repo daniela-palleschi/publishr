@@ -4,9 +4,9 @@
     "href": "index.html",
     "title": "R for Publication",
     "section": "",
-    "text": "Welcome\nThis workshop is a hands-on introduction to writing reproducible, publication-ready research documents in R and Quarto. Across two sessions, we’ll cover the full workflow from raw data to a formatted manuscript, including summary tables, model outputs, figures, citations, and export to HTML, PDF, Word and LaTeX.",
+    "text": "Preface\nThis workshop is a hands-on introduction to writing reproducible, publication-ready research documents in R and Quarto. Across two sessions, we’ll cover the full workflow from raw data to a formatted manuscript, including summary tables, model outputs, figures, citations, and export to HTML, PDF, Word and LaTeX.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+      "Preface"
     ]
   },
   {
@@ -16,7 +16,7 @@
     "section": "Who this is for",
     "text": "Who this is for\nResearchers with a working knowledge of R and the tidyverse who want to move from exploratory analysis to polished, reproducible manuscripts.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+      "Preface"
     ]
   },
   {
@@ -26,7 +26,7 @@
     "section": "What you will learn",
     "text": "What you will learn\nBy the end of this workshop, you will be able to:\n\nWrite and structure documents in Quarto using Markdown\nExport the same document to multiple formats (HTML, Word, PDF, LaTeX) with minimal format-specific tweaking\nIncorporate data directly into your text using inline reporting\nProduce publication-ready summary tables and model output tables\nCreate and export figures with ggplot2 and cross-reference them in your manuscript\nManage code chunk options to control what appears in your output",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+      "Preface"
     ]
   },
   {
@@ -36,7 +36,7 @@
     "section": "Sessions",
     "text": "Sessions\nDay 1 focuses on the foundations: writing in Quarto, producing different output formats from a single source document, and bringing your data into the narrative through summary tables and inline reporting. This will be broken into the following chapters:\n\nMarkdown basics: writing in Quarto\nOutput formats: HTML, Word, PDF, and LaTeX\nIncorporating data: summary tables and inline reporting\n\nDay 2 builds on this to cover the statistical reporting workflow: extracting and presenting model results, producing publication-ready figures, and tying everything together with cross-references. This will be broken into the following chapters:\n\nReporting model results: model summary tables and inline reporting\nProducing figures: publication-ready plots, exporting, and cross-referencing\n\nTips on code chunk options are woven throughout both days.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+      "Preface"
     ]
   },
   {
@@ -46,7 +46,7 @@
     "section": "How to use this book",
     "text": "How to use this book\nEach chapter corresponds to roughly 30 minutes of workshop time. Code chunks are fully executable, work through them in your own RProject alongside the book. Each chapter also has accompanying slides (linked at the top) for the taught portion.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+      "Preface"
     ]
   },
   {
@@ -54,9 +54,415 @@
     "href": "index.html#required-software",
     "title": "R for Publication",
     "section": "Required software",
-    "text": "Required software\nBefore the first session, please make sure you have the following installed:\n\nR (≥ 4.2): https://cran.r-project.org\nRStudio (≥ 2022.07): https://posit.co/download/rstudio-desktop\nQuarto (latest): https://quarto.org/docs/download\nTinyTeX (for PDF output) — see Installing TinyTeX below\n\n\nInstalling R, RStudio, and Quarto\nDownload and install each from the links above, following the instructions for your operating system. Install them in order: R first, then RStudio, then Quarto.\n\n\nInstalling TinyTeX\nTinyTeX is a lightweight LaTeX distribution installable directly from R:\n\ninstall.packages(\"tinytex\")\ntinytex::install_tinytex()\n\n\n\nChecking your versions\nIn the R console:\n\nR.version.string\ntinytex::is_tinytex()\ntinytex::tlmgr(\"--version\")\n\nIn the Terminal tab:\nquarto --version\nRStudio’s version is visible under Help → About RStudio.\n\n\nUpdating\n\nR: download the latest version from https://cran.r-project.org\nRStudio: Help → Check for Updates\nQuarto: download the latest version from https://quarto.org/docs/download\nTinyTeX: tinytex::tlmgr_update()",
+    "text": "Required software\nBefore the first session, please make sure you have the following installed:\n\nR (\\(\\geq\\) 4.2): https://cran.r-project.org\nRStudio (\\(\\geq\\) 2022.07): https://posit.co/download/rstudio-desktop\nQuarto (latest): https://quarto.org/docs/download\nTinyTeX (for PDF output) — see Installing TinyTeX below\n\n\nInstalling R, RStudio, and Quarto\nDownload and install each from the links above, following the instructions for your operating system. Install them in order: R first, then RStudio, then Quarto.\n\n\nInstalling TinyTeX\nTinyTeX is a lightweight LaTeX distribution installable directly from R:\n\ninstall.packages(\"tinytex\")\ntinytex::install_tinytex()\n\n\n\nChecking your versions\nIn the R console:\n\nR.version.string\ntinytex::is_tinytex()\ntinytex::tlmgr(\"--version\")\n\nIn the Terminal tab:\nquarto --version\nRStudio’s version is visible under Help → About RStudio.\n\n\nUpdating\n\nR: download the latest version from https://cran.r-project.org\nRStudio: Help → Check for Updates\nQuarto: download the latest version from https://quarto.org/docs/download\nTinyTeX: tinytex::tlmgr_update()\n\n\n\nPackages\nWe’ll be using the pacman package to load and install required (CRAN) packages. As long as you have this package installed you should be able to run the example and exercise code.\n\ninstall.packages(\"pacman\")\n\nYou only need to install pacman once. After that, pacman::p_load() handles loading and installing any missing packages automatically. Avoid leaving install.packages() calls uncommented in your scripts as they will re-run every time the script is executed or the document is rendered, which is slow and can cause unexpected package version changes. In other words, run this in the Console, or comment it out if you have it in a script.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "index.html#disclaimer",
+    "href": "index.html#disclaimer",
+    "title": "R for Publication",
+    "section": "Disclaimer",
+    "text": "Disclaimer\nThese materials were developed with the assistance of an AI language model (Claude, Anthropic) for outlining and editorial refinement using guided prompts. All content was fully reviewed, improved (I hope), and edited by the author. Every topic and reference included falls within the author’s own expertise; the use of AI assistance was a practical decision about time and effort, not a substitution for subject knowledge. Any errors, inaccuracies, or omissions are the author’s own responsibility.\nThese chapters also lean heavily on materials I previously created (without AI assistance) on R for Reproducibility, both in a semester-length course Open Science Practices: Implementing a Reproducible Analysis Workflow, a 4-day workshop Open Science Practices for Linguistic Research: Reproducible Analyses in R, and a 2-part workshop Reproducible Workflow in R. Unlike these previous materials which covered reproducibility and dynamic reports more broadly (and more in-depth), this book focuses on dynamic reports and reproducible analyses in the context of reporting results for publication and writing a manuscript in general.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "chapters/01_intro.html",
+    "href": "chapters/01_intro.html",
+    "title": "1  (R)Project Hygiene",
+    "section": "",
+    "text": "1.1 Why project hygiene matters\nReproducibility begins before you write a single line of analysis. A clean, self-contained project structure ensures that collaborators, and your future self, can re-run everything without hunting for files or reinstalling packages.\nThe concept of literate programming (Knuth, 1984) established the principle that code and documentation should be written together, with human-readable explanation woven through the analysis rather than added as an afterthought. This philosophy underlies tools like R Markdown and Quarto, and extends naturally to project organisation: just as literate programming asks that code be written for human readers, good project hygiene asks that a project be structured for human navigators, i.e., people who need to understand, re-run, or build on your work without guidance from you directly.\nNagler (1995) outlines a set of principles for good computing practice in quantitative research that remain as relevant today as when they were written. Central among these are the ideas that code should be modular, well-documented, and organised so that the analysis can be reproduced from scratch by someone unfamiliar with the project. This means separating raw data from processed data, keeping analysis scripts independent and sequentially ordered, and never modifying raw data files directly. Bowers & Voors (2016) extend these principles to the context of modern social science, arguing that transparent and reproducible research practice is not merely a technical matter but a scientific norm, one that requires deliberate organisational habits from the outset of a project.\nGood project organisation is also a matter of research data management (RDM). Funding bodies and journals increasingly require that data and analysis code be archived and made available alongside publications, in line with the FAIR principles (Wilkinson et al., 2016): (meta)data should be Findable, Accessible, Interoperable, and Reusable. A well-organised RProject is a practical first step towards FAIR-compliant research: clear folder structures, descriptive file names, and documented dependencies make it far easier to archive and share a project in a usable state. Conversely, a disorganised project that only makes sense to its author is difficult to share meaningfully, regardless of whether the files are technically accessible.\nPoor project organisation is one of the most common sources of reproducibility failures in practice. Files named analysis_final_v2_ACTUAL.R, data loaded with absolute paths like C:/Users/myname/Desktop/study1/data.csv, and package dependencies that are never documented all make it difficult or impossible for others (or your future self after six months away from the project) to reproduce your work.\nThe habits covered in this chapter, namely consistent folder structure, relative file paths via here::here(), and package management with renv, are low-cost investments that pay dividends throughout the life of a project and beyond.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>(R)Project Hygiene</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_intro.html#rprojects",
+    "href": "chapters/01_intro.html#rprojects",
+    "title": "1  (R)Project Hygiene",
+    "section": "1.2 RProjects",
+    "text": "1.2 RProjects\nAlways work inside an RProject (.Rproj). This sets the working directory to the project root, makes here::here() reliable, and keeps your R environment isolated from other projects. Without an RProject, file paths are fragile and environment state can bleed between sessions.\nAn RProject is simply a folder with a .Rproj file at its root. Opening this file in RStudio or Positron sets the working directory automatically — no setwd() required.\n\n1.2.1 Creating a new RProject\nIn RStudio: File → New Project → New Directory → New Project. Tick “Use renv with this project” to initialise package management from the start.\nIn Positron: File → New Folder → initialise as R project.\n\n\n\n\n\n\nTip\n\n\n\nGet into the habit of always opening your work via the .Rproj file rather than navigating to individual scripts. This ensures the working directory is always set correctly and that here::here() resolves paths from the project root.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>(R)Project Hygiene</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_intro.html#folder-structure",
+    "href": "chapters/01_intro.html#folder-structure",
+    "title": "1  (R)Project Hygiene",
+    "section": "1.3 Folder structure",
+    "text": "1.3 Folder structure\nA consistent folder structure makes projects navigable by collaborators and reviewers, and is a prerequisite for FAIR-compliant data sharing (Wilkinson et al., 2016). The exact structure will vary by project, but the following is a reasonable starting point for a research project with data, analysis scripts, and a manuscript:\nmy-project/\n├── my-project.Rproj\n├── _quarto.yml              # if using Quarto\n├── renv.lock                # package versions — commit to version control\n├── README.md                # project overview and setup instructions\n├── data/\n│   ├── raw/                 # original data, never modified\n│   └── processed/           # cleaned and anonymised outputs\n├── R/\n│   ├── 01-anonymise.R\n│   ├── 02-process.R\n│   ├── 03-eda.R\n│   └── 04-analysis.R\n├── manuscript/              # .qmd chapters\n└── output/\n    ├── figures/\n    ├── tables/\n    └── models/\n\nThe R/ folder contains numbered scripts following a modular analysis workflow (Nagler, 1995): each script has a single responsibility, takes clearly defined inputs, and produces clearly defined outputs. Scripts are numbered to indicate the order in which they should be run. The data/raw/ folder contains the original, unmodified data — this is the source of truth and should never be altered directly.\n\n\n\n\n\n\nWarningData protection: raw and identifiable data\n\n\n\nIf your project involves personal, sensitive, or identifiable data (e.g. recordings, transcripts, demographic information), keep the following in mind:\n\nNever commit raw data to version control. Add data/raw/ to your .gitignore before your first commit. This prevents raw data from ever being tracked accidentally.\nNever share the project folder (e.g. as a zip, via GitHub, or cloud sync) without first checking what data/raw/ contains.\nPseudonymisation and anonymisation come first. Only once raw data has been processed and (pseudo)anonymised should derived outputs be treated as shareable.\nArchive, then remove. Ideally, raw data lives in data/raw/ only during active processing. Once archived to a secure location, remove it from the project folder.\n\nThe data/processed/ folder should contain only anonymised or non-identifiable outputs.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>(R)Project Hygiene</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_intro.html#project-relative-file-paths",
+    "href": "chapters/01_intro.html#project-relative-file-paths",
+    "title": "1  (R)Project Hygiene",
+    "section": "1.4 Project-relative file paths",
+    "text": "1.4 Project-relative file paths\nAbsolute file paths like C:/Users/myname/Desktop/study1/data.csv break the moment the project is moved or shared. Use here::here() for all file paths so the project is portable across machines and operating systems:\n\n# load raw data\ndf_raw &lt;- readr::read_csv(here::here(\"data\", \"raw\", \"mydata.csv\"))\n\n# save processed data\nsaveRDS(df_clean, here::here(\"data\", \"processed\", \"data_clean.rds\"))\n\n# load a saved model\nm1 &lt;- readRDS(here::here(\"output\", \"models\", \"m1.rds\"))\n\nhere::here() builds the file path from the project root — the folder containing the .Rproj file, regardless of where the script is located within the project. This means a script in R/04-analysis.R and a .qmd file in manuscript/ can both use here::here(\"data\", \"processed\", \"data_clean.rds\") and resolve to the same file.\n\n\n\n\n\n\nTip\n\n\n\nNever use setwd() in a script that will be shared or re-run. It hardcodes a path that only works on your machine. here::here() is always the better alternative inside an RProject.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>(R)Project Hygiene</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_intro.html#renv-reproducible-package-management",
+    "href": "chapters/01_intro.html#renv-reproducible-package-management",
+    "title": "1  (R)Project Hygiene",
+    "section": "1.5 renv: reproducible package management",
+    "text": "1.5 renv: reproducible package management\nrenv records the exact version of every package your project uses in a lockfile (renv.lock). Anyone who clones your project and runs renv::restore() gets an identical package environment — no more “works on my machine” failures due to package version differences.\n\nrenv::init()       # initialise once at project start\nrenv::snapshot()   # update lockfile after installing new packages\nrenv::restore()    # recreate environment from lockfile\n\nThe renv.lock file should be committed to version control. The renv/library/ folder should not — it is machine-specific and can be large.\n\n\n\n\n\n\nWarning\n\n\n\nrenv solves package version differences between collaborators but has limits over long time horizons. R itself, system libraries, and compiled packages can change in ways that renv cannot fully protect against. Document your R version, operating system, and any system dependencies in your README.md for long-term reproducibility.\n\n\n\n1.5.1 An alternative: pacman\nIf you prefer not to use renv, pacman::p_load() provides a lightweight alternative that installs missing packages automatically on load:\n\ninstall.packages(\"pacman\")  # run once\npacman::p_load(tidyverse, here, broom, gt, kableExtra)\n\npacman::p_load() checks whether each package is installed, installs any that are missing, and loads all of them. This does not lock package versions, so it is less reproducible than renv over time, but it is simpler and sufficient for following along in a workshop setting.\n\n\n\n\n\n\nWarning\n\n\n\nAvoid leaving install.packages() calls uncommented in scripts. They will re-run every time the script is executed or the document is rendered, which is slow and can cause unexpected package version changes.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>(R)Project Hygiene</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01_intro.html#quarto-in-an-rproject",
+    "href": "chapters/01_intro.html#quarto-in-an-rproject",
+    "title": "1  (R)Project Hygiene",
+    "section": "1.6 Quarto in an RProject",
+    "text": "1.6 Quarto in an RProject\nIf your project produces a Quarto book or report, place _quarto.yml at the project root. Quarto and RStudio/Positron detect it automatically and use it to configure rendering for the entire project.\nFor a standalone manuscript or report (not a book), place the .qmd file at the project root alongside the .Rproj file. The YAML header of the .qmd file controls rendering in this case.\n\n\n\n\n\n\nTip\n\n\n\nA Quarto project and an RProject are complementary but independent. The .Rproj file manages the R environment and working directory; the _quarto.yml file manages document rendering. Both can coexist in the same folder, and together they provide a fully self-contained, reproducible research project.\n\n\n\n1.6.1 Chapter slides\n\n  Open slides ↗\n\n\n\n\n\n\n\nBowers, J., & Voors, M. (2016). How to improve your relationship with your future self. Revista de Ciencia Política, 36(3), 829–848. https://doi.org/10.4067/S0718-090X2016000300011\n\n\nKnuth, D. E. (1984). Literate programming. The Computer Journal, 27(2), 97–111. https://doi.org/10.1093/comjnl/27.2.97\n\n\nNagler, J. (1995). Coding style and good computing practices. PS: Political Science and Politics, 28(3), 488–492. https://doi.org/10.2307/420315\n\n\nWilkinson, M. D. et al. (2016). The FAIR guiding principles for scientific data management and stewardship. Scientific Data, 3, 160018. https://doi.org/10.1038/sdata.2016.18",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>(R)Project Hygiene</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html",
+    "href": "chapters/02_writing.html",
+    "title": "2  Writing in Quarto",
+    "section": "",
+    "text": "2.1 Purpose\nThis chapter covers writing in Quarto independently of any data or analysis. This is relevant if you want to write any part of your manuscript (e,g., the introduction, methods, or results section) directly in Quarto, rather than drafting in Word or Overleaf and manually inserting statistics afterwards.\nQuarto is an implementation of literate programming (Knuth, 1984), whereby code and prose are written together in a single document. The document is then rendered to a readable output format, in this case HTML, Word, or PDF. This approach has been popularised in the R community through R Markdown (Xie et al., 2018, 2020), of which Quarto (Allaire et al., 2024) is the next-generation successor, with broader language support and improved output options.\nWriting in Quarto means that your prose and your analysis live in the same document. Values reported in the text can be pulled directly from your data and models using inline R code, so they update automatically when analyses change. This eliminates a common source of error in academic writing: the manual transcription of numbers from statistical software into a word processor. For example, Nuijten et al. (2016) found that around 50% of psychology papers contained at least one statistical reporting error, many attributable to exactly this kind of manual transcription.\nThis chapter focuses on the writing side: Markdown syntax, document structure, citations, and cross-references. Connecting prose to data and models is covered in later chapters.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#text-formatting",
+    "href": "chapters/02_writing.html#text-formatting",
+    "title": "2  Writing in Quarto",
+    "section": "2.2 Text formatting",
+    "text": "2.2 Text formatting\nQuarto uses Markdown for text formatting. Markdown is a lightweight plain-text syntax that is readable in its raw form and renders to formatted output. Unlike Word or Overleaf, formatting in Quarto is entirely handled by the source document: there are no toolbar buttons or style menus, only text.\nThe most common formatting options are:\n\n\n\nMarkdown\nOutput\n\n\n\n\n**bold**\nbold\n\n\n*italic*\nitalic\n\n\n***bold italic***\nbold italic\n\n\n`code`\ncode\n\n\n~~strikethrough~~\nstrikethrough\n\n\nH~2~O\nH2O\n\n\nR^2^\nR2\n\n\n\nMarkdown formatting is intentionally minimal. For most academic writing purposes (prose, headings, lists, tables, and equations) it covers everything needed without requiring knowledge of LaTeX or HTML. That being said, I still highly recommend having some LaTeX familiarity, as it’s commonly used by linguists and might be helpful with future collaborations.\n\n2.2.1 APA 7 statistical symbols\nAPA 7 requires statistical symbols to be italicised in text. In Markdown, wrapping text in *...* produces italics, which renders correctly in HTML, Word, and PDF output:\n\n\n\nStatistic\nMarkdown\nOutput\n\n\n\n\nMean\n*M* = 310.8\nM = 310.8\n\n\nSD\n*SD* = 155.9\nSD = 155.9\n\n\nt-test\n*t*(48) = 2.31\nt(48) = 2.31\n\n\np-value\n*p* &lt; .001\np &lt; .001\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nAPA 7 omits the zero before the decimal point for values that cannot exceed 1 (e.g. p = 0.031 is incorrect; p = .031 is correct). This applies to correlation coefficients, proportions, and p-values. Inline R code can be written to apply this formatting automatically — see Section 2.9 for an example.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#headers",
+    "href": "chapters/02_writing.html#headers",
+    "title": "2  Writing in Quarto",
+    "section": "2.3 Headers",
+    "text": "2.3 Headers\nUse ## for first-level sections within a chapter, ### for subsections. The chapter title is set in the YAML title: field:\n## Methods\n### Participants\n#### Inclusion criteria\n\n\n\n\n\n\nTip\n\n\n\nIn a Quarto book, avoid using # (H1) inside chapter files — it is reserved for the chapter title set in the YAML.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#lists-and-callouts",
+    "href": "chapters/02_writing.html#lists-and-callouts",
+    "title": "2  Writing in Quarto",
+    "section": "2.4 Lists and callouts",
+    "text": "2.4 Lists and callouts\n- unordered item\n  - nested item\n\n1. ordered item\n   1. nested item\nCallout boxes draw attention to key points, and can include a title if you specify one:\n::: callout-note\n## This tip has a title\nA tip.\n:::\n\n\n\n\n\n\nTipTip: adding a title\n\n\n\nA tip.\n\n\n::: callout-note\nA note.\n:::\n\n\n\n\n\n\nNote\n\n\n\nA note.\n\n\n::: callout-warning\nA warning.\n:::\n\n\n\n\n\n\nWarning\n\n\n\nA warning.\n\n\n::: {.callout-important collapse=\"true\"}\n## Important: collapsing a callout\nAn important point. You can also collapse a callout box. This only works in HTML output.\n:::\n\n\n\n\n\n\nImportantImportant: collapsing a callout\n\n\n\n\n\nAn important point. You can also collapse a callout box. This only works in HTML output.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#equations",
+    "href": "chapters/02_writing.html#equations",
+    "title": "2  Writing in Quarto",
+    "section": "2.5 Equations",
+    "text": "2.5 Equations\nWrite LaTeX math inline with $...$ or in a display block with $$...$$:\nThe model was specified as:\n\n$$\ny_i = \\beta_0 + \\beta_1 \\text{Tense}_i + \\beta_2 \\text{Lifetime}_i + \\varepsilon_i\n$$ {#eq-model}\nThis is then rendered as:\n\\[\ny_i = \\beta_0 + \\beta_1 \\text{Tense}_i + \\beta_2 \\text{Lifetime}_i + \\varepsilon_i\n\\tag{2.1}\\]\nReference in prose with @eq-model → “Equation 2.1”\n\n\n\n\n\n\nTip\n\n\n\nIf you need the LaTeX code for a mathematical symbol or expression, hover over any rendered equation in an HTML document and right-click. Select Math Settings → TeX Commands to display the underlying LaTeX source. This is useful for replicating equation formatting or looking up the correct LaTeX syntax for a symbol.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#sec-crossref",
+    "href": "chapters/02_writing.html#sec-crossref",
+    "title": "2  Writing in Quarto",
+    "section": "2.6 Cross-references",
+    "text": "2.6 Cross-references\nCross-references allow you to refer to figures, tables, sections, and equations by label rather than by number. Quarto resolves the labels to the correct numbers at render time, so adding or reordering elements never requires manually updating references in the text.\nEvery cross-reference label must begin with a type-specific prefix. The prefix tells Quarto what kind of element is being referenced and how to format the reference in the output:\n\n\n\nType\nPrefix\nReference syntax\nExample output\n\n\n\n\nFigure\nfig-\n@fig-rt\nFigure 1\n\n\nTable\ntbl-\n@tbl-desc\nTable 1\n\n\nSection\nsec-\n@sec-results\nSection 3\n\n\nEquation\neq-\n@eq-model\nEquation 1\n\n\n\nLabels are set in the chunk options for figures and tables, and in the heading syntax for sections. A label without the correct prefix will not be recognised as a cross-reference and will render as plain text.\n\n\n\n\n\n\nNoteFigures and Tables\n\n\n\nWe’ll cover tables later today, and figures in the next session.\n\n\n\n2.6.1 Sections\nAdd a label to any heading using the {#sec-} syntax:\n## Results {#sec-results}\n## Discussion {#sec-discussion}\nReference in prose:\nThe implications of these findings are discussed in @sec-discussion.\n\n\n\n\n\n\nTip\n\n\n\nCross-references are one of the most practical advantages of writing in Quarto (or LaTeX) over Word. In Word, renumbering figures after adding one to the middle of a document requires updating every reference manually. In Quarto, the numbers are always correct automatically.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#sec-examples",
+    "href": "chapters/02_writing.html#sec-examples",
+    "title": "2  Writing in Quarto",
+    "section": "2.7 Numbered example sentences",
+    "text": "2.7 Numbered example sentences\nPandoc’s (@) syntax auto-numbers linguistic examples continuously across the document:\n(@cond-a) Example sentence 1.\n(@cond-b) Example sentence 2.\n\nSentences (@cond-a) and (@cond-b)...\n\nExample sentence 1.\nExample sentence 2.\n\nSentences (1) and (2)…\n\n\n\n\n\n\nTip\n\n\n\nFor sub-examples (1a, 1b), interlinear glosses, or full linguistic formatting in PDF output, use the linguex or gb4e LaTeX packages via include-in-header in your YAML.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#sec-citations",
+    "href": "chapters/02_writing.html#sec-citations",
+    "title": "2  Writing in Quarto",
+    "section": "2.8 Citations",
+    "text": "2.8 Citations\nQuarto handles citations through Pandoc’s citation processing system. References are stored in a BibTeX file (.bib) and formatted according to a Citation Style Language (.csl) file. This means citation formatting is automatic and consistent, and switching between citation styles (e.g. APA to Chicago) requires only changing the .csl file.\nAdd the following to your document YAML:\nbibliography: references.bib\ncsl: apa.csl\nThe .bib file contains structured reference entries in BibTeX format. The .csl file controls how those references are formatted in the output. Both files should be placed in your project root, or referenced with a relative path.\nDownload apa.csl from the Zotero style repository:\ndownload.file(\n  \"https://www.zotero.org/styles/apa\",\n  here::here(\"apa.csl\")\n)\n\n2.8.1 Citation syntax\nCitations are inserted using @key syntax, where key is the identifier from your .bib entry:\n\n\n\nSyntax\nOutput\n\n\n\n\n@Bates2015\nBates et al. (2015)\n\n\n[@Bates2015]\n(Bates et al., 2015)\n\n\n[-@Bates2015]\n(2015)\n\n\n[@Bates2015, p. 12]\n(Bates et al., 2015, p. 12)\n\n\n[@Bates2015; @R2024]\n(Bates et al., 2015; R Core Team, 2024)\n\n\n\nThese can be added in-text, so As described in @Bates2015... would be rendered as: As described in Bates et al. (2015)….\n\n\n2.8.2 Getting BibTeX entries\nBibTeX entries can be obtained from several sources:\n\nZotero — export individual items or your full library as BibTeX. This is the recommended workflow for managing references across a project.\nGoogle Scholar — click Cite below a result, then select BibTeX to copy the entry.\nDOI — paste a DOI at doi2bib.org to generate a BibTeX entry automatically.\nR packages — toBibtex(citation(\"lme4\")) generates a citable BibTeX entry for any R package. Always cite the packages you use.\n\n\n\n2.8.3 References section\nAdd a references section at the end of your document. Quarto will populate it automatically with all cited works:\n## References {.unnumbered}\n\n::: {#refs}\n:::\nThe .unnumbered class prevents the References heading from receiving a section number, which is standard in APA manuscripts.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#sec-inline",
+    "href": "chapters/02_writing.html#sec-inline",
+    "title": "2  Writing in Quarto",
+    "section": "2.9 Inline reporting",
+    "text": "2.9 Inline reporting\nInline R code allows values computed in R to be embedded directly in prose. Rather than typing a number manually, you write a small R expression that is evaluated at render time and replaced with its result. This means reported values are always consistent with the underlying analysis, and update automatically if the data or model changes.\nThe syntax for inline R code is a backtick followed by r, a space, the R expression, and a closing backtick. For example:\nThe data were collected from ` r n_distinct(df$px)` participants. The mean total reading time was ` r round(mean(df$tt, na.rm = TRUE), 1)` ms (*SD* = ` r round(sd(df$tt, na.rm = TRUE), 1)`).\nThis is particularly useful for results sections, where small changes to preprocessing or exclusion criteria can affect many reported values. With inline reporting, re-running the analysis and re-rendering the document is sufficient to update all reported statistics.\n\n2.9.1 Rounding and formatting\nUse round() to control decimal places. For p-values, a small helper avoids reporting exact values below a threshold:\nfmt_p &lt;- function(p) {\n  ifelse(p &lt; .001, \n  \"&lt; .001\", \n  paste0(\"= \", round(p, 3)))\n}\nThis function (fmt_p()) will print p-values smaller than .001 as p &lt; .001, printing all other p-values to three decimal points. You can also create a function to print &lt; .01 and &lt; .05 when applicable (I would do this using the case_when() function). This can then be used inline (but note that you should also report the estimate, standard error, and t- or z-values):\nThe effect was significant (*p* ` r fmt_p(p_value)`).\n\n\n2.9.2 Connecting to models\nYou can also extract estimates directly from fitted model objects and report them inline, rather than typing them out manually. This makes your results robust to upstream changes: if you refit a model, the reported values update automatically. This is covered in depth in the model reporting chapter.\n\n\n\n\n\n\nTip\n\n\n\nAny number that appears in your manuscript should be computed, not typed. This is the single most effective way to eliminate reporting errors in academic writing.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02_writing.html#references",
+    "href": "chapters/02_writing.html#references",
+    "title": "2  Writing in Quarto",
+    "section": "References",
+    "text": "References\n\n\nAllaire, J. J., Teague, C., Scheidegger, C., Xie, Y., & Dervieux, C.\n(2024). Quarto. https://github.com/quarto-dev/quarto-cli\n\n\nBates, D., Mächler, M., Bolker, B., & Walker, S. (2015). Fitting\nlinear mixed-effects models using lme4.\nJournal of Statistical Software, 67(1), 1–48. https://doi.org/10.18637/jss.v067.i01\n\n\nBowers, J., & Voors, M. (2016). How to improve your relationship\nwith your future self. Revista de Ciencia Política,\n36(3), 829–848. https://doi.org/10.4067/S0718-090X2016000300011\n\n\nKnuth, D. E. (1984). Literate programming. The Computer\nJournal, 27(2), 97–111. https://doi.org/10.1093/comjnl/27.2.97\n\n\nNagler, J. (1995). Coding style and good computing practices. PS:\nPolitical Science and Politics, 28(3), 488–492. https://doi.org/10.2307/420315\n\n\nNuijten, M. B., Hartgerink, C. H. J., Assen, M. A. L. M. van, Epskamp,\nS., & Wicherts, J. M. (2016). The prevalence of statistical\nreporting errors in psychology (1985–2013). Behavior Research\nMethods, 48, 1205–1226. https://doi.org/10.3758/s13428-015-0664-2\n\n\nPalleschi, D., Ronderos, C. R., & Knoeferle, P. (2025). Living in\nthe present – how referent lifetime influences processing of past,\npresent (perfect), and future tenses. Glossa Psycholinguistics,\n4(1), 1–48. https://doi.org/https://doi.org/10.5070/G601119481\n\n\nWilkinson, M. D. et al. (2016). The FAIR guiding principles\nfor scientific data management and stewardship. Scientific\nData, 3, 160018. https://doi.org/10.1038/sdata.2016.18\n\n\nXie, Y., Allaire, J. J., & Grolemund, G. (2018). R markdown: The\ndefinitive guide. Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown\n\n\nXie, Y., Dervieux, C., & Riederer, E. (2020). R markdown\ncookbook. Chapman; Hall/CRC. https://bookdown.org/yihui/rmarkdown-cookbook",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Writing in Quarto</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html",
+    "href": "chapters/03_formats.html",
+    "title": "3  Output Formats",
+    "section": "",
+    "text": "3.1 Purpose\nThis chapter covers rendering a Quarto document to different output formats. The same .qmd source file can produce HTML, Word, PDF, and a LaTeX .tex file, but each format has specific YAML options and some practical differences worth understanding before committing to a workflow.\nRather than trying to support all formats simultaneously, the most pragmatic approach is to decide early which format best fits your collaboration context. The right choice depends on who your co-authors are, how they prefer to give feedback, and what the target journal requires. A workflow that is technically reproducible but creates friction for collaborators is unlikely to be sustainable in practice.\nTo illustrate: my own workflow has evolved considerably over time. Writing my dissertation entirely in R Markdown (with separate .Rmd files per chapter knitted together) worked well for a sole-author project but would have been impractical with collaborators. Sharing PDF output for feedback from co-authors on a journal article was workable but painful: comments arrived as annotations on a PDF, had to be manually transferred back to the source (by me), and any revision meant re-rendering and re-sharing (2/10, would not recommend). More recently, rendering a first draft from Rmarkdown to PDF, uploading the produced .tex document to Overleaf, and inviting collaborators to edit there directly has been a reasonable compromise, as it preserves the reproducible analysis pipeline while giving collaborators a familiar LaTeX editing environment (8/10: not perfect for reproducibility at the writing stage, but it facilitates collaboration in a way that a pure Quarto workflow currently cannot).\nA further option is to collaborate in Google Docs, rendering results text and tables to Word and copying them across. This is admittedly imperfect from a reproducibility standpoint, as prose edits made in Google Docs are not tracked in the source .qmd. However, it can be a pragmatic workflow when collaborators are not willing or able to use anything else. Crucially, the analysis itself remains fully documented in R scripts and output files, even if the manuscript prose lives elsewhere. The results are still reproducible; only the writing layer is decoupled.\nThe sections below cover the main output formats, their YAML options, and the practical trade-offs involved.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html#rendering-formats",
+    "href": "chapters/03_formats.html#rendering-formats",
+    "title": "3  Output Formats",
+    "section": "3.2 Rendering formats",
+    "text": "3.2 Rendering formats\nQuarto separates the source document from its output format. The same .qmd file can be rendered to multiple formats by specifying them in the YAML format: block:\nformat:\n  html:\n    embed-resources: true\n  pdf:\n    keep-tex: true\n  docx:\n    reference-doc: custom-reference.docx\nRender all formats at once from the terminal:\nquarto render manuscript.qmd\nOr a single format:\nquarto render manuscript.qmd --to docx\nThis separation of content from presentation is one of Quarto’s core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents. However, I suggest you choose one output format until you have a specific need to render to different formats.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html#html",
+    "href": "chapters/03_formats.html#html",
+    "title": "3  Output Formats",
+    "section": "3.3 HTML",
+    "text": "3.3 HTML\nHTML is the most flexible output format. It supports interactive elements, renders equations via MathJax, and can be hosted online (like this book, written in Quarto) or shared as a standalone file. For internal reports, supplementary materials, or workshop books, HTML is usually the best default.\nformat:\n  html:\n    toc: true\n    toc-depth: 3\n    number-sections: true\n    embed-resources: true\n    theme: flatly\n\n\n\n\n\n\nNoteSelf-contained HTML with embed-resources\n\n\n\nBy default, Quarto renders HTML with external dependencies (CSS, JavaScript, figures) stored in a separate folder alongside the .html file. This means sharing the file alone — by email, for example — will result in missing images and broken styling. Setting embed-resources: true bundles everything into a single self-contained .html file that can be shared without any accompanying folder.\nThe trade-off is file size and render time: embed-resources: true produces larger files and renders more slowly. For a book or website that will be hosted online and served from a web server, leave it as false.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html#word",
+    "href": "chapters/03_formats.html#word",
+    "title": "3  Output Formats",
+    "section": "3.4 Word",
+    "text": "3.4 Word\nWord output is the most practical format for sharing with co-authors who are not using Quarto, and is widely accepted by journals for submission. The rendered .docx looks and behaves like any other Word document, co-authors can annotate, track changes, and comment without needing to know anything about Quarto.\nformat:\n  docx:\n    reference-doc: custom-reference.docx\n    toc: false\n    number-sections: false\nA reference .docx controls the visual styling of the output (fonts, margins, heading styles, and spacing) by mapping Quarto’s document elements to Word styles. Generate a default one and then customise it:\nquarto pandoc -o custom-reference.docx --print-default-data-file reference.docx\nOpen the generated file in Word, modify the paragraph and heading styles to match your journal’s requirements, and point your YAML to it with reference-doc: custom-reference.docx.\n\n\n\n\n\n\nWarningCitations in Word\n\n\n\nCitations are rendered as plain formatted text in .docx output. They are not live fields linked to your .bib file, so editing them directly in Word — or adding new ones — will have no effect on the source document and will be overwritten on re-render. Always treat the .qmd as the source of truth, and re-render to update the .docx rather than editing it directly.\nIf co-authors need to edit citations in Word, the most practical solution is to use Zotero’s Word plugin for the final submission copy, keeping the Quarto document as the reproducible record of the analysis.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html#pdf",
+    "href": "chapters/03_formats.html#pdf",
+    "title": "3  Output Formats",
+    "section": "3.5 PDF",
+    "text": "3.5 PDF\nPDF output is produced by rendering the .qmd to LaTeX and then compiling with a LaTeX engine (by default pdflatex). This gives access to the full power of LaTeX for typesetting, including precise control over layout, fonts, and mathematical notation. PDF is the appropriate format for journal submission when a .pdf or .tex file is required.\nformat:\n  pdf:\n    documentclass: article   # or scrartcl, apa7\n    papersize: a4\n    fontsize: 12pt\n    geometry: margin=2.5cm\n    linestretch: 1.5\n    number-sections: true\n    keep-tex: true\n    include-in-header:\n      text: |\n        \\usepackage{booktabs}    % professional table rules\n        \\usepackage{longtable}   % tables spanning multiple pages\n        \\usepackage{microtype}   % improved text justification\n\n\n\n\n\n\nTipkeep-tex\n\n\n\nSetting keep-tex: true saves the intermediate .tex file alongside the rendered PDF. This is useful in two situations: if the journal requires a raw .tex file for submission, or if you want to upload to Overleaf for final formatting tweaks or co-author editing. See Section 3.7 for important caveats about citation handling in .tex output.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html#format-comparison",
+    "href": "chapters/03_formats.html#format-comparison",
+    "title": "3  Output Formats",
+    "section": "3.6 Format comparison",
+    "text": "3.6 Format comparison\nThe table below summarises the key differences between output formats for common manuscript features.\n\n\n\n\nTable 3.1: Comparison of output formats for common manuscript features.\n\n\n\n\n\n\n\n\n\nFeature\nHTML\nPDF\nWord\n\n\n\n\nCitations\n✅ from .bib\n✅ from .bib\n✅ rendered as text\n\n\nLive .bib link\n✅\n⚠️ depends on cite-method\n❌\n\n\nCross-references\n✅\n✅\n✅\n\n\nEquations\n✅ MathJax\n✅ native LaTeX\n⚠️ limited\n\n\nTable formatting\n`gt`\n`kableExtra`\n`flextable`\n\n\nCustom styles\nCSS\nLaTeX\nreference .docx\n\n\nSelf-contained\n`embed-resources: true`\nalways\nalways",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html#sec-apa7",
+    "href": "chapters/03_formats.html#sec-apa7",
+    "title": "3  Output Formats",
+    "section": "3.7 APA 7 and .tex output",
+    "text": "3.7 APA 7 and .tex output\nThe following considerations are only relevant if you intend to edit the .tex file after rendering — for example, uploading to Overleaf for final formatting or co-author editing. If you render directly to PDF, Word, or HTML from Quarto, citations will be formatted correctly by the default citeproc engine regardless of which option you choose. The issue is specifically about whether the .tex file contains live \\cite{} commands that a LaTeX editor like Overleaf can resolve, or plain formatted text that it cannot.\nFor .tex editing workflows, there is no perfect solution. The three main options involve trade-offs between APA 7 accuracy and Overleaf compatibility:\nciteproc (default)\nUses csl: apa.csl to format citations at render time. Produces the most accurate APA 7 output of the three options, but resolves citations to plain text in the .tex file. Overleaf receives a fully formatted document but with no live citation commands — adding or editing references requires going back to the Quarto source.\nnatbib + apacite\nPasses citations through to LaTeX as live \\cite{} commands, which Overleaf can resolve using your uploaded .bib file. However, apacite was written to APA 6th edition standards and has known formatting issues with APA 7 requirements, including author name truncation rules and DOI formatting.\nbiblatex + biblatex-apa\nThe most APA 7-compliant LaTeX citation option, with live citations. Requires biber as the backend processor, which must be set manually in Overleaf’s compiler settings. More complex to set up than the other options but the best choice if both APA 7 accuracy and live Overleaf citations are required.\n\n\n\n\nTable 3.2: Citation backend options for .tex output.\n\n\n\n\n\n\n\n\n\nOption\nAPA 7 accuracy\nLive .tex citations\nOverleaf\n\n\n\n\nciteproc + apa.csl\n✅ best\n❌\n⚠️ upload .tex only\n\n\nnatbib + apacite\n⚠️ APA 6\n✅\n✅ with .bib\n\n\nbiblatex + biblatex-apa\n✅ good\n✅\n✅ set biber in compiler\n\n\n\n\n\n\n\n\n\n\nChoose based on your priority: APA 7 accuracy or Overleaf compatibility. To switch from the default citeproc:\n# natbib\nformat:\n  pdf:\n    keep-tex: true\n    cite-method: natbib\n    include-in-header:\n      text: |\n        \\usepackage[natbibapa]{apacite}\n\n# biblatex\nformat:\n  pdf:\n    keep-tex: true\n    cite-method: biblatex\n    biblio-style: apa",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03_formats.html#chapter-slides",
+    "href": "chapters/03_formats.html#chapter-slides",
+    "title": "3  Output Formats",
+    "section": "3.8 Chapter slides",
+    "text": "3.8 Chapter slides\n\n  Open slides ↗",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Output Formats</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_data.html",
+    "href": "chapters/04_data.html",
+    "title": "4  Data and Tables",
+    "section": "",
+    "text": "4.1 Purpose\nThis chapter introduces the practical side of working with data in Quarto. Rather than running analyses in a separate R script and copying results into a document, Quarto allows you to load data, compute summaries, and produce formatted tables directly within the manuscript. The result is a document in which every number, table, and figure is generated from the underlying data at render time.\nWe cover the essentials of code chunk options, loading data from file, producing summary tables with gt and kableExtra, cross-referencing tables in prose, and reporting values inline. Together these form the foundation of a reproducible results section.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Data and Tables</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_data.html#code-chunks",
+    "href": "chapters/04_data.html#code-chunks",
+    "title": "4  Data and Tables",
+    "section": "4.2 Code chunks",
+    "text": "4.2 Code chunks\nCode chunks are the blocks of R code embedded in a .qmd document. They are delimited by triple backticks and a language identifier:\n\n```{r}\nrt &lt;- c(312, 287, 445, 301, 389)\nmean(rt)\n```\n\n#&gt; [1] 346.8\n\n\nEach chunk is executed in sequence when the document is rendered, and the output (whether a number, a table, or a figure) is inserted into the document at that position.\n\n\n\n\n\n\nNoteNote: Quarto beyond R\n\n\n\nWhile this workshop focuses on R, Quarto supports multiple languages in code chunks, including Python ({python}), Julia ({julia}), and Observable JavaScript ({ojs}). Different languages can be used in the same document without any additional packages, with each chunk executed by its respective engine. You can use the reticulate package if you want to share objects between R and Python chunks within the same session (and would need it to render Python chunks to PDF).\nFor example, a Python chunk in the same document as R code:\n\n```{python}\nimport numpy as np # numpy is Python's main numerical computing library, similar to base R\n\nrt = [312, 287, 445, 301, 389]\nprint(np.mean(rt))\n```\n\n#&gt; 346.8\n\n\n\n\n\n4.2.1 Chunk options\nChunk behaviour is controlled by options written at the top of the chunk using the #| prefix. The most important options for manuscript writing are:\n\n\n\n\nTable 4.1: Common code chunk options for manuscript writing.\n\n\n\n\n\n\n\n\n\nOption\nValues\nEffect\n\n\n\n\necho\ntrue / false\nShow or hide the code\n\n\noutput\ntrue / false\nShow or hide the output\n\n\neval\ntrue / false\nRun or skip the chunk\n\n\ninclude\ntrue / false\nInclude chunk and output in document\n\n\nwarning\ntrue / false\nShow or hide warnings\n\n\nmessage\ntrue / false\nShow or hide messages\n\n\nlabel\nstring\nChunk identifier for cross-references\n\n\nfig-cap\nstring\nFigure caption\n\n\ntab-cap\nstring\nTable caption\n\n\n\n\n\n\n\n\n\n\nFor a manuscript, you typically want to hide code and show only output. Set global defaults in _quarto.yml or the document YAML, then override per chunk where needed:\nexecute:\n  echo: false      # hide code from output\n  warning: false   # suppress R warnings\n  message: false   # suppress R messages (e.g. package loading messages)\nThen override for specific chunks:\n```{r}\n#| echo: true\n#| label: tbl-desc\n#| tbl-cap: \"Descriptive statistics by condition.\"\ntbl_demo |&gt; gt()\n```\n\n\n\n\n\n\nTipecho: true or false?\n\n\n\nThe right default depends on your document’s purpose. For teaching materials and workshop scripts, echo: true ensures participants can see the code alongside the output. For manuscript submissions, echo: false (as well as warning: false and message: false) produces clean output with no visible code. For internal analysis reports, i.e., documents whose purpose is to serve as a transparent record of your analysis, echo: true is essential for auditability and reproducibility.\n\n\n\n\n4.2.2 Chunk labels\nEvery chunk that produces a figure or table should have a label. Labels must begin with the correct prefix (fig- for figures, tbl- for tables) and be unique across the document. Unlabelled chunks cannot be cross-referenced.\n#| label: tbl-desc\n#| tbl-cap: \"Descriptive statistics by condition.\"\n\n\n\n\n\n\nWarning\n\n\n\nDuplicate labels cause render errors. If you copy a chunk, always update the label.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Data and Tables</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_data.html#loading-data",
+    "href": "chapters/04_data.html#loading-data",
+    "title": "4  Data and Tables",
+    "section": "4.3 Loading data",
+    "text": "4.3 Loading data\nData should be stored in data/raw/ and loaded at the top of the document using here::here(). This ensures the file path works regardless of where the project is opened:\n\ndf &lt;- readr::read_csv(here::here(\"data\", \"raw\", \"your-data.csv\"))\n\nFor processed data or saved R objects, load from data/processed/ or output/models/:\n\ndf_clean &lt;- readRDS(here::here(\"data\", \"processed\", \"data_example.rds\"))\nlmer_verb_firstfix &lt;- readRDS(here::here(\"output\", \"models\", \"lmer_verb_firstfix.rds\"))\n\n\n\n\n\n\n\nTip\n\n\n\nLoad all data objects in a single setup chunk at the top of the document with #| output: false. This keeps the document clean and makes dependencies explicit.\n\n\n\n4.3.1 Saving processed data\nAfter cleaning and transforming your data, save the processed object so it can be loaded quickly in subsequent documents without re-running the full pipeline:\n\nsaveRDS(df_clean, here::here(\"data\", \"processed\", \"data_example.rds\"))",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Data and Tables</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_data.html#inline-reporting",
+    "href": "chapters/04_data.html#inline-reporting",
+    "title": "4  Data and Tables",
+    "section": "4.4 Inline reporting",
+    "text": "4.4 Inline reporting\nValues from your data can be embedded directly in prose using inline R code. This ensures reported statistics are always consistent with the underlying data. For frequently reported values, compute them once in a code chunk and store as named objects, then reference those objects inline:\n\nn_px  &lt;- dplyr::n_distinct(df_clean$px)\nn_obs &lt;- nrow(df_clean |&gt; filter(region == \"verb\"))\nm_tt  &lt;- round(mean(df_clean$tt, na.rm = TRUE), 1)\nsd_tt &lt;- round(sd(df_clean$tt,   na.rm = TRUE), 1)\n\nThe sample comprised ` r n_px` participants (*N* observations = ` r n_obs`).\nMean total reading time was ` r m_tt` ms (*SD* = ` r sd_tt`).\n\n\n\n\n\n\nTip\n\n\n\nStoring computed values as named objects keeps inline expressions short and readable. It also means the value is only computed once, reducing the risk of inconsistencies if the expression is used in multiple places.",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Data and Tables</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04_data.html#chapter-slides",
+    "href": "chapters/04_data.html#chapter-slides",
+    "title": "4  Data and Tables",
+    "section": "4.5 Chapter slides",
+    "text": "4.5 Chapter slides\n\n  Open slides ↗",
+    "crumbs": [
+      "Session 1: Quarto foundations",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Data and Tables</span>"
+    ]
+  },
+  {
+    "objectID": "exercises/setup.html",
+    "href": "exercises/setup.html",
+    "title": "Set-up",
+    "section": "",
+    "text": "Before you begin\nThese exercises require you to be working in Quarto within an RProject, ideally the same RProject designed for this workshop (https://github.com/daniela-palleschi/publishr-workshop). Choose one of the two setup options below depending on your situation.",
+    "crumbs": [
+      "Exercises",
+      "Set-up"
+    ]
+  },
+  {
+    "objectID": "exercises/setup.html#before-you-begin",
+    "href": "exercises/setup.html#before-you-begin",
+    "title": "Set-up",
+    "section": "",
+    "text": "Option A: Use the workshop repository (recommended)\n\nWith Git\nThis requires Git to be installed. Check by running git --version in the terminal — if it is not installed, download it from git-scm.com.\nBefore cloning, decide whether to use HTTPS or SSH. If you are unsure, use HTTPS. SSH requires keys to be configured with GitHub but avoids needing to enter credentials each time.\n\nHTTPS URL: https://github.com/daniela-palleschi/publishr-workshop.git\nSSH URL: git@github.com:daniela-palleschi/publishr-workshop.git\n\nVia the terminal:\ngit clone https://github.com/daniela-palleschi/publishr-workshop.git\nVia RStudio: File → New Project → Version Control → Git, then paste the URL into the dialog box.\nVia Positron: File → New Folder from Git Repository, then paste the URL.\n\n\nWithout Git\n\nGo to github.com/daniela-palleschi/publishr-workshop\nClick the green Code button and select Download ZIP\nUnzip the folder somewhere sensible on your machine\n\n\n\nAfter cloning or downloading\n\nOpen publishr-workshop.Rproj in RStudio or Positron\nCopy your data file to data/raw/ (or use the sample dataset; see below)\nOpen exercises/day1.qmd and work through the exercises\n\n\n\n\nOption B: Set up your own RProject\nIf you would prefer to use your own project:\n\nCreate a new RProject: File → New Project → New Directory → New Project\nCreate the following folder structure in the terminal:\n\nmkdir -p data/raw data/processed exercises output/figures output/tables output/models\n\nDownload the sample dataset (a subset from Palleschi et al. (2025); https://osf.io/6sra7) and save it to data/raw/:\n\n👉 Download example dataset\n\nCreate a new Quarto document: File → New File → Quarto Document, and save it as exercises/day1.qmd\nInstall the required packages:\n\ninstall.packages(\"pacman\")\npacman::p_load(here, tidyverse, gt, kableExtra, broom, modelsummary)\n\n\n\n\n\n\nNoteSample dataset\n\n\n\nThe sample dataset used in these exercises is a subset of a reading time study with the following structure: one row per word region per trial per participant, with columns including px (participant ID), item (item ID), region (sentence region), tense, lifetime, gaze (first-pass reading time), tt (total reading time), rpd (regression path duration), first_fix (first fixation duration), and rating (plausibility rating, 1–7).\n\n\n\n\n\n\n\n\nTip\n\n\n\nIf you are using Option B and your data has different column names, adapt the code in the exercises accordingly. The key variables used are region, gaze, tt, and rating.\n\n\n\n\n\n\n\n\nPalleschi, D., Ronderos, C. R., & Knoeferle, P. (2025). Living in the present – how referent lifetime influences processing of past, present (perfect), and future tenses. Glossa Psycholinguistics, 4(1), 1–48. https://doi.org/https://doi.org/10.5070/G601119481",
+    "crumbs": [
+      "Exercises",
+      "Set-up"
+    ]
+  },
+  {
+    "objectID": "exercises/day1.html",
+    "href": "exercises/day1.html",
+    "title": "Session 1 Exercises",
+    "section": "",
+    "text": "Writing in Quarto\nIn the publishr_workshop RProject, open the exercises/session1.qmd Quarto script.",
+    "crumbs": [
+      "Exercises",
+      "Session 1 Exercises"
+    ]
+  },
+  {
+    "objectID": "exercises/day1.html#writing-in-quarto",
+    "href": "exercises/day1.html#writing-in-quarto",
+    "title": "Session 1 Exercises",
+    "section": "",
+    "text": "Exercise 1: Text formatting\nIn the script you’ll see an example sentence (repeated below). Add some text formatting to it: try making some words bold, some italic, and add at least one superscript or subscript.\n\nThe mean first-pass reading time at the verb region was 312 ms (SD = 159 ms).\n\n\n\nExercise 2: Lists and callouts\nAdd an unordered list of three things you want to get out of this workshop. Then add a callout box (any type) with a note about your dataset.\n\n\nExercise 3: Headers\nAdd the following headers to structure this document:\n\nA level-2 header called “Methods”\nA level-3 header called “Participants”\nA level-3 header called “Materials”\n\n\n\nExercise 4: Cross-references\nAdd the label {#sec-methods} to your Methods header from Exercise 3. Then write a sentence below that cross-references it using @sec-methods.\n\n\nExercise 5: Citations\nAdd a citation to your methods section. You will need to:\n\nAdd bibliography: references.bib to your YAML (already done above)\nAdd csl: apa.csl to your YAML (already done above)\nAdd at least one entry to references.bib — you can use the R citation:\n\ntoBibtex(citation(\"base\"))\n\nCite it in prose using @key or [@key] syntax\n\n\n\nExercise 6: References section\nAdd a references section at the end of this document so your citations are listed. Remember to use the .unnumbered class on the heading.\n\n\nExercise 7: Inline arithmetic\nUse inline R code to compute and report the following directly in prose:\nComplete the sentence below:\n2 + 2 = ___, and the square root of 144 is ___.",
+    "crumbs": [
+      "Exercises",
+      "Session 1 Exercises"
+    ]
+  },
+  {
+    "objectID": "exercises/day1.html#output-formats",
+    "href": "exercises/day1.html#output-formats",
+    "title": "Session 1 Exercises",
+    "section": "Output formats",
+    "text": "Output formats\nAdd appropriate headers below to keep your work structured.\n\nExercise 1: HTML with TOC\nThe YAML above already has a toc: true option under html. Render this document to HTML and check that the table of contents appears. Try changing toc-depth to 2 and re-render — what changes?\n\n\nExercise 2: Word output\nChange the active output format to docx and render. Open the .docx file and inspect your citation. How is it formatted? Can you edit it directly in Word?\n\n\n\n\n\n\nNote\n\n\n\nTo render to a specific format from the terminal: quarto render exercises/day1.qmd --to docx\n\n\n\n\nExercise 3: PDF and .tex output (stretch)\nThe YAML already has keep-tex: true under pdf. Render to PDF:\nquarto render exercises/day1.qmd --to pdf\nThen:\n\nOpen the PDF — does your citation look correct?\nOpen the .tex file — is your citation a live \\cite{} command or plain text?\nIf you want to experiment with live citations in the .tex file, try adding cite-method: natbib to your PDF YAML options and re-render. Does the citation look different in the PDF? In the .tex?\n\n\n\n\n\n\n\nNoteThis is a stretch exercise\n\n\n\nGetting APA 7 formatting with live .tex citations working perfectly involves trade-offs — see the Output Formats chapter for a full discussion. The goal here is simply to observe the difference, not necessarily to resolve it.",
+    "crumbs": [
+      "Exercises",
+      "Session 1 Exercises"
+    ]
+  },
+  {
+    "objectID": "exercises/day1.html#data-and-tables",
+    "href": "exercises/day1.html#data-and-tables",
+    "title": "Session 1 Exercises",
+    "section": "Data and tables",
+    "text": "Data and tables\nAdd appropriate headers below to keep your work structured.\n\nExercise 1: A simple code chunk\nAdd a code chunk below that computes 2 + 2 and renders it. Make sure the chunk is both printed (code visible) and evaluated (output visible).\n\n\nExercise 2: Echo without eval\nChange the chunk options on your Exercise 1 chunk so that the code is printed but not evaluated. Render and observe the difference.\n\n\n\n\n\n\nTip\n\n\n\nRelevant chunk option: eval: false\n\n\n\n\nExercise 3: Silent chunk\nAdd a new code chunk that computes 10 * 10. Set the chunk options so that neither the code nor the output appears in the rendered document. Render and verify it is invisible.\n\n\n\n\n\n\nTip\n\n\n\nRelevant chunk option: include: false\n\n\n\n\nExercise 4: Load data\nAdd a code chunk that loads the sample dataset. Set the chunk options so that the code is not printed in the rendered output but the chunk is evaluated.\ndf &lt;- readr::read_csv(here::here(\"data\", \"raw\", \"your-data.csv\"))\n\n\n\n\n\n\nTip\n\n\n\nRelevant chunk option: echo: false\n\n\n\n\nExercise 5: Summary statistics\nCreate a code chunk that filters to the verb region and computes the mean and SD of first-pass reading time (gaze), storing them as named objects. Set the chunk so it runs silently.\nm_gaze  &lt;- # YOUR CODE HERE\nsd_gaze &lt;- # YOUR CODE HERE\n\n\n\n\n\n\nTip\n\n\n\nYou will need filter(region == \"verb\"), mean(..., na.rm = TRUE), sd(..., na.rm = TRUE), and round(..., 1).\n\n\n\n\nExercise 6: Inline reporting\nReport your values from Exercise 5 inline by completing the sentence below:\nMean first-pass reading time at the verb region was ___ ms (SD = ___ ms).\n\n\nExercise 7: Global eval\nAdd the following to your YAML execute: block:\nexecute:\n  eval: false\nRender. What happens? Which exercises break and why?\nNow fix the problem by adding #| eval: true to the chunks that need to run (Exercises 4 and 5). Re-render and confirm everything works.\n\n\n\n\n\n\nNote\n\n\n\nThis exercise illustrates why global chunk options need to be set carefully, and why it is often better to set eval: false only on specific chunks rather than globally.",
+    "crumbs": [
+      "Exercises",
+      "Session 1 Exercises"
+    ]
+  },
+  {
+    "objectID": "exercises/day1.html#references",
+    "href": "exercises/day1.html#references",
+    "title": "Session 1 Exercises",
+    "section": "References",
+    "text": "References",
+    "crumbs": [
+      "Exercises",
+      "Session 1 Exercises"
     ]
   }
 ]
