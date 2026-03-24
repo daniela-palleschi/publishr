@@ -1,6 +1,9 @@
 ---
 title: "Welcome to R for Publication"
 subtitle: "Reproducible Manuscripts from Data to Document"
+author: "Daniela Palleschi"
+date: "2026-03-25"
+date-format: "MMMM D, YYYY"
 day: "Day 1"
 ---
 

@@ -1,6 +1,10 @@
 ---
 title: "Writing in Quarto"
 subtitle: "Markdown, Citations, and Cross-References"
+author: "Daniela Palleschi"
+date: "2026-03-25"
+date-format: "MMMM D, YYYY"
+day: "Day 1"
 ---
 
 ## Overview
@@ -16,13 +20,13 @@ subtitle: "Markdown, Citations, and Cross-References"
 
 ---
 
-# Markdown basics {background-color="#8D203D"}
+## Markdown basics {background-color="#8D203D" data-stack-name="Markdown basics"}
 
 ::: {style="text-align: center; margin-top: 1em; color: white;"}
 *Text formatting and structure*
 :::
 
-## Text formatting
+### Text formatting
 
 | Markdown | Output |
 |---|---|
@@ -34,7 +38,7 @@ subtitle: "Markdown, Citations, and Cross-References"
 | `H~2~O` | H~2~O |
 | `R^2^` | R^2^ |
 
-## Headers
+### Headers
 ````markdown
 # Chapter title (H1)
 ## Section (H2)
@@ -48,7 +52,7 @@ subtitle: "Markdown, Citations, and Cross-References"
 In a Quarto book, H1 (`#`) is reserved for the chapter title in the YAML. Use H2 (`##`) for your first-level sections within a chapter.
 :::
 
-## Lists
+### Lists
 ````markdown
 - unordered item
 - another item
@@ -59,7 +63,7 @@ In a Quarto book, H1 (`#`) is reserved for the chapter title in the YAML. Use H2
    1. nested item
 ````
 
-## Block elements
+### Block elements
 
 ````markdown
 > This is a blockquote.
@@ -71,7 +75,7 @@ In a Quarto book, H1 (`#`) is reserved for the chapter title in the YAML. Use H2
 > Useful for quoting stimuli or definitions.
 > -- Attributed author
 
-## Callout boxes
+### Callout boxes
 
 :::: columns
 ::: {.column width="50%"}
@@ -125,13 +129,13 @@ An important callout.
 
 ---
 
-# Citations {background-color="#8D203D"}
+## Citations {background-color="#8D203D" data-stack-name="Citations"}
 
 ::: {style="text-align: center; margin-top: 1em; color: white;"}
 *BibTeX, Zotero, and APA formatting*
 :::
 
-## Setting up a bibliography
+### Setting up a bibliography
 
 In your YAML:
 ````yaml
@@ -156,7 +160,7 @@ download.file(
 ````
 :::
 
-## Citation syntax
+### Citation syntax
 
 | Syntax | Output |
 |---|---|
@@ -174,7 +178,7 @@ Mixed-effects models were fitted following @Bates2015. All analyses were conduct
 
 Mixed-effects models were fitted following @Bates2015. All analyses were conducted in R [@R2024].
 
-## Getting BibTeX entries
+### Getting BibTeX entries
 
 ::: incremental
 - **Zotero**: export library or single item as BibTeX (recommended)
@@ -189,7 +193,7 @@ citation("lme4")
 toBibtex(citation("lme4"))
 ````
 
-## APA formatting tips
+### APA formatting tips
 
 ::: incremental
 - Use `csl: apa.csl` — Quarto handles the rest automatically
@@ -206,13 +210,13 @@ For APA 7th edition PDF output, use `documentclass: apa7` in your YAML and the `
 
 ---
 
-# Cross-references {background-color="#8D203D"}
+## Cross-references {background-color="#8D203D" data-stack-name="Cross-references"}
 
 ::: {style="text-align: center; margin-top: 1em; color: white;"}
 *Figures, tables, sections, and equations*
 :::
 
-## Cross-reference prefixes
+### Cross-reference prefixes
 
 | Type | Label prefix | Reference |
 |---|---|---|
@@ -222,7 +226,7 @@ For APA 7th edition PDF output, use `documentclass: apa7` in your YAML and the `
 | Equation | `eq-` | `@eq-model` |
 | Example | `exm-` | `@exm-stimulus` |
 
-## Figures
+### Figures
 ````markdown
 ```{{r}}
 #| label: fig-mass
@@ -240,7 +244,7 @@ As shown in @fig-mass, body mass differed by condition.
 
 → "As shown in Figure 1, body mass differed by condition."
 
-## Tables
+### Tables
 ````markdown
 ```{{r}}
 #| label: tbl-desc
@@ -256,7 +260,7 @@ Descriptive statistics are presented in @tbl-desc.
 
 → "Descriptive statistics are presented in Table 1."
 
-## Sections
+### Sections
 ````
 ## Results {#sec-results}
 
@@ -270,7 +274,7 @@ Descriptive statistics are presented in @tbl-desc.
 
 → "As discussed in in Section 4..."
 
-## Equations
+### Equations
 ````
 $$
 y_i = \beta_0 + \beta_1 \text{Tense}_i + \beta_2 \text{Lifetime}_i + \varepsilon_i
@@ -288,27 +292,11 @@ $$ {#eq-model}
 "The model is specified in Equation 1."
 
 
-# Numbered examples {background-color="#8D203D"}
+### Numbered examples
 
-::: {style="text-align: center; margin-top: 1em; color: white;"}
-*Linguistic example sentences*
-:::
+- for linguistic example sentences
+- Pandoc's `(@)` syntax auto-numbers examples continuously across the document:
 
-## Numbered example sentences
-
-Quarto doesn't have built-in linguistic numbering, but you can use ordered lists with a custom class:
-````
-(@) The cat sat on the mat.
-(@) *The mat sat on the cat.
-````
-
-...
-(@) The cat sat on the mat.
-(@) *The mat sat on the cat.
-
-### Pandoc
-
-Pandoc's `(@)` syntax auto-numbers examples continuously across the document:
 ````
 (@ex-good) The manager hired the assistant.
 (@ex-bad) *The assistant was hired the manager.
@@ -323,44 +311,26 @@ As shown in (@ex-good), the active form is grammatical.
 
 As shown in (@ex-good), the active form is grammatical.
 
-## Numbered examples — cross-referencing
-````
-(@cond-a) Der Dirigent hat den Komponisten *gekannt*, 
-          der die Sinfonie geschrieben hat.
-(@cond-b) Der Dirigent hat den Komponisten *gekannt*, 
-          der gestorben ist.
-
-The stimuli (@cond-a)--(@cond-b) varied in lifetime status.
-````
-...
-(@cond-a) Der Dirigent hat den Komponisten *gekannt*, 
-          der die Sinfonie geschrieben hat.
-(@cond-b) Der Dirigent hat den Komponisten *gekannt*, 
-          der gestorben ist.
-
-The stimuli (@cond-a)--(@cond-b) varied in lifetime status.
 . . .
 
 ::: callout-tip
 For more control (e.g. (1a), (1b) sub-examples, glosses), use the `linguex` or `gb4e` LaTeX packages in PDF output, or a custom Lua filter for HTML.
 :::
 
----
-
-# Inline reporting {background-color="#8D203D"}
+## Inline reporting {background-color="#8D203D" data-stack-name="Inline reporting"}
 
 ::: {style="text-align: center; margin-top: 1em; color: white;"}
 *Dynamic values in prose*
 :::
 
-## Inline R code
+### Inline R code
 
 Embed R values directly in prose:
 ````markdown
 The sample comprised `r n_distinct(df$px)` participants (*M*~age~ = `r round(mean(df$age, na.rm = TRUE), 1)` years).
 ````
 
-## APA-style statistics
+### APA-style statistics
 
 | Statistic | Markdown | Output |
 |---|---|---|
@@ -377,7 +347,7 @@ In APA 7, statistical symbols (*M*, *SD*, *t*, *p*, *F*) are italicised. Use `*.
 :::
 
 ::: {style="text-align: center; margin-top: 1em; color: white;"}
-### ✏️ Your turn {background-color="#8D203D"}
+#### ✏️ Your turn {background-color="#8D203D"}
 
 Open `exercises/session1.qmd` and follow the exercises for Session 1.
 

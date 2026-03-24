@@ -1,6 +1,9 @@
 ---
 title: "End of Day 1"
 subtitle: "Recap and Preview"
+author: "Daniela Palleschi"
+date: "2026-03-25"
+date-format: "MMMM D, YYYY"
 day: "Day 1"
 ---
 
