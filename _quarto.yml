@@ -21,6 +21,10 @@ book:
       - icon: github
         href: https://github.com/daniela-palleschi/publishr
         aria-label: Source Code
+      - icon: file-pdf
+        href: R-for-Publication.pdf
+        aria-label: Download PDF
+        text: PDF
   sidebar:
     style: "docked"
     collapse-level: 1
@@ -67,6 +71,8 @@ format:
     number-sections: true
     page-layout: full
     embed-resources: false
+    reference-location: block
+    citations-hover: true
     fig-width: 7
     fig-height: 5
   pdf:
@@ -78,7 +84,10 @@ format:
         \usepackage{booktabs}        % professional table rules (required for kableExtra booktabs = TRUE)
         \usepackage{longtable}       % tables that span multiple pages
         \usepackage{microtype}       % improved text justification and spacing
+        \usepackage{gb4e}
+        \noautomath
     documentclass: scrbook # KOMA-Script book class: better typography than standard LaTeX book
+    classoption: oneside # remove alternating margins intended for double-sided printing; keeps all pages consistently aligned
     papersize: a4
     toc: true
     number-sections: true

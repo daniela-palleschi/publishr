@@ -46,6 +46,61 @@ Tips on code chunk options are woven throughout both days.
 
 Each chapter corresponds to roughly 30 minutes of workshop time. Code chunks are fully executable, work through them in your own RProject alongside the book. Each chapter also has accompanying slides (linked at the top) for the taught portion.
 
+## The dataset
+
+The examples and exercises throughout this book use a real eye-tracking reading dataset based on @palleschi_living_2025 ([osf.io/6sra7](https://osf.io/6sra7)), adapted for teaching purposes. The script used to adapt the data is included on [the GitHub repository](https://github.com/daniela-palleschi/publishr/blob/main/scripts/subset_data.qmd). The data comes from a self-paced reading study with a 2 × 2 factorial design, with **lifetime** (living vs. dead referent) and **verb tense** (present perfect vs. simple future) as independent variables.
+
+The dataset has been preprocessed and restructured to more closely resemble data as it might arrive from a collection pipeline rather than fully cleaned analysis-ready data. It includes a randomly generated participant code column (`px_code`) — not real identifiers — to give you practice handling data that contains linkable information. Anonymisation of this column is covered in the second half of the book (Session 2 of the workshop).
+
+The key variables are summarised in @tbl-dataset.
+
+```{r}
+#| label: tbl-dataset
+#| tbl-cap: "Key variables in the workshop dataset."
+#| echo: false
+pacman::p_load(here, tidyverse, kableExtra)
+if (!knitr::is_latex_output()) pacman::p_load(gt)
+
+tbl_vars <- tibble::tribble(
+  ~Variable,      ~Type,        ~Description,
+  "px_code",      "character",  "Participant code (randomly generated)",
+  "trial",        "integer",    "Trial number",
+  "item",         "integer",    "Item identifier",
+  "lifetime",     "factor",     "Lifetime status of referent: living or dead",
+  "tense",        "factor",     "Verb tense: present perfect or simple future",
+  "congruence",   "factor",     "Congruence between lifetime and tense",
+  "region",       "factor",     "Sentence region label: verb-1, verb, verb+1 to verb+4",
+  "region_text",  "character",  "Text of the sentence region of interest",
+  "gaze",         "continuous", "First-pass reading time (ms)",
+  "rpd",          "continuous", "Regression path duration (ms)",
+  "tt",           "continuous", "Total reading time (ms)",
+  "first_fix",    "continuous", "First fixation duration (ms)",
+  "reg_in",       "binary",     "Regression into the region (0/1)",
+  "reg_out",      "binary",     "Regression out of the region (0/1)",
+  "rt_ms",        "continuous", "Reaction time until plausibility rating (ms)",
+  "rating",       "ordinal",    "Plausibility rating (1 = implausible, 7 = plausible)",
+  "bio",          "character",  "Biographical sentence presented before the critical sentence",
+  "critical",     "character",  "Critical sentence presented to participants"
+)
+
+if (knitr::is_latex_output()) {
+  tbl_vars |>
+    kbl(booktabs = TRUE, format = "latex") |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(3, width = "7cm")
+} else {
+  tbl_vars |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    cols_width(Description ~ px(350))
+}
+```
+
+The verb region is the most theoretically relevant for the study's hypotheses. Reading measures at this region are used in the exercises throughout Day 1 and Day 2. The `rating` variable is used in the tables chapter to illustrate frequency tables for ordinal data, and `rt_ms` provides an additional continuous outcome for practice.
+
 ## Required software
 
 Before the first session, please make sure you have the following installed:
@@ -111,5 +166,9 @@ You only need to install `pacman` once. After that, `pacman::p_load()` handles l
 These materials were developed with the assistance of an AI language model (Claude, Anthropic) for outlining and editorial refinement using guided prompts. All content was fully reviewed, improved (I hope), and edited by the author. Every topic and reference included falls within the author's own expertise; the use of AI assistance was a practical decision about time and effort, not a substitution for subject knowledge. Any errors, inaccuracies, or omissions are the author's own responsibility.
 
 These chapters also lean heavily on materials I previously created (without AI assistance) on R for Reproducibility, both in a semester-length course [	Open Science Practices: Implementing a Reproducible Analysis Workflow](https://daniela-palleschi.github.io/r4repro_SoSe2024/), a 4-day workshop [Open Science Practices for Linguistic Research: Reproducible Analyses in R](https://daniela-palleschi.github.io/SSOL24-reproducibility-workshop/), and a 2-part workshop [Reproducible Workflow in R](https://daniela-palleschi.github.io/zas-reproducibility-2024/). Unlike these previous materials which covered reproducibility and dynamic reports more broadly (and more in-depth), this book focuses on dynamic reports and reproducible analyses in the context of reporting results for publication and writing a manuscript in general.
+
+An example prompt used for the slides for Output Formats: 
+
+> let's resturcture this to show how to render each format individually (only one in the yaml), shown in three columns where they have no options; then a slide on options (maybe just show toc: true for each); then a slide showing how to have them all in the yaml together in columns: left side where `: default` is used, right side where you see the toc option as well; add a callout warning that indentation is very important
 
 

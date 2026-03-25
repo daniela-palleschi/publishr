@@ -167,11 +167,3 @@ For a standalone manuscript or report (not a book), place the `.qmd` file at the
 ::: callout-tip
 A Quarto project and an RProject are complementary but independent. The `.Rproj` file manages the R environment and working directory; the `_quarto.yml` file manages document rendering. Both can coexist in the same folder, and together they provide a fully self-contained, reproducible research project.
 :::
-
-### Chapter slides {.slides-link}
-
-```{=html}
-<a href="../slides/01_setup.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
-```

@@ -36,31 +36,50 @@ The sections below cover the main output formats, their YAML options, and the pr
 
 ## Rendering formats
 
-Quarto separates the source document from its output format. The same `.qmd` file can be rendered to multiple formats by specifying them in the YAML `format:` block:
+Quarto separates the source document from its output format. The same `.qmd` file can be rendered to HTML, Word, or PDF by specifying the target in the YAML `format:` block. Start with a single format and only add others when you have a specific need:
+```yaml
+format:
+  html: default
+```
 
-````yaml
+Render from the terminal:
+```bash
+quarto render manuscript.qmd
+```
+
+Or specify the format explicitly:
+```bash
+quarto render manuscript.qmd --to html
+quarto render manuscript.qmd --to pdf
+quarto render manuscript.qmd --to docx
+```
+
+When you are ready to render to multiple formats, add them together:
+
+```yaml
+format:
+  html: default
+  pdf: default
+  docx: default
+```
+
+Or you can add options (more on these below). Here we add a table of contents to all the output formats:
+
+```yaml
 format:
   html:
-    embed-resources: true
+    toc: true
   pdf:
-    keep-tex: true
+    toc: true
   docx:
-    reference-doc: custom-reference.docx
-````
+    toc: custom-reference.docx
+```
 
-Render all formats at once from the terminal:
+This separation of content from presentation is one of Quarto's core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents.
 
-````bash
-quarto render manuscript.qmd
-````
-
-Or a single format:
-
-````bash
-quarto render manuscript.qmd --to docx
-````
-
-This separation of content from presentation is one of Quarto's core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents. However, I suggest you choose *one* output format until you have a specific need to render to different formats.
+::: callout-warning
+Indentation is critical in YAML. Options must be consistently indented under the format name. Mixing spaces and tabs, or inconsistent indentation, will cause render errors.
+:::
 
 ## HTML
 
@@ -237,12 +256,4 @@ format:
     keep-tex: true
     cite-method: biblatex
     biblio-style: apa
-````
-
-
-## Chapter slides
-````{=html}
-<a href="../slides/08_formats.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
 ````

@@ -21,6 +21,28 @@ Writing in Quarto means that your prose and your analysis live in the same docum
 
 This chapter focuses on the writing side: Markdown syntax, document structure, citations, and cross-references. Connecting prose to data and models is covered in later chapters.
 
+::: {.callout-tip collapse="true"}
+## Source editor vs. visual editor
+
+I recommend writing in the **source editor** (the default plain text view) rather than the visual editor. The source editor keeps the Markdown syntax visible, which helps you understand what Quarto is doing and makes it easier to debug rendering issues.
+
+That said, the **visual editor** (enabled via the toolbar or `editor: visual` in the YAML) has its advantages:
+
+- Formatting is applied visually, similar to Word
+- Citations can be inserted via a built-in Zotero integration
+- Tables can be edited with a point-and-click interface
+
+The trade-off is that the visual editor can silently reformat your Markdown in unexpected ways, and it is easier to lose track of the underlying syntax. For beginners, the source editor builds better habits.
+
+To set the source editor as default, add to your YAML:
+
+```yaml
+editor: source
+```
+
+Or toggle the button just above the top left corner of your script (Script/Visual).
+:::
+
 ## Text formatting
 
 Quarto uses Markdown for text formatting. Markdown is a lightweight plain-text syntax that is readable in its raw form and renders to formatted output. Unlike Word or Overleaf, formatting in Quarto is entirely handled by the source document: there are no toolbar buttons or style menus, only text.
@@ -190,22 +212,74 @@ Cross-references are one of the most practical advantages of writing in Quarto (
 
 ## Numbered example sentences {#sec-examples}
 
-
-Pandoc's `(@)` syntax auto-numbers linguistic examples continuously across the document:
+Pandoc's `(@)` syntax auto-numbers linguistic examples continuously across the document. Labels are optional but allow cross-referencing in prose:
 ````markdown
 (@cond-a) Example sentence 1.
 (@cond-b) Example sentence 2.
 
-Sentences (@cond-a) and (@cond-b)...
+Sentences (@cond-a) and (@cond-b) differed in lifetime status.
 ````
 
 (@cond-a) Example sentence 1.
 (@cond-b) Example sentence 2.
 
-Sentences (@cond-a) and (@cond-b)...
+Sentences (@cond-a) and (@cond-b) differed in lifetime status.
 
-::: callout-tip
-For sub-examples (1a, 1b), interlinear glosses, or full linguistic formatting in PDF output, use the `linguex` or `gb4e` LaTeX packages via `include-in-header` in your YAML.
+This syntax works across all output formats — HTML, Word, and PDF — making it the most portable option for linguistic examples.
+
+### gb4e for PDF output
+
+For more control (sub-examples (1a, 1b), interlinear glosses, or aligned formatting) the `gb4e` LaTeX package is the standard choice in linguistics. Add it to your PDF YAML header:
+
+````yaml
+format:
+  pdf:
+    include-in-header:
+      text: |
+        \usepackage{gb4e}
+        \noautomath
+````
+
+Then use raw LaTeX blocks in your `.qmd`.
+
+````markdown
+\begin{exe}
+  \ex \label{ex-good} The manager hired the assistant.
+  \ex \label{ex-bad}  *The assistant was hired the manager.
+\end{exe}
+````
+
+```{=latex}
+\begin{exe}
+  \ex \label{ex-good} The manager hired the assistant.
+  \ex \label{ex-bad}  *The assistant was hired the manager.
+\end{exe}
+```
+
+```{=html}
+<ol>
+  <li>The manager hired the assistant.</li>
+  <li>*The assistant was hired the manager.</li>
+</ol>
+```
+
+Cross-reference in prose using standard LaTeX `\ref{}` inside a raw inline span:
+
+````markdown
+As shown in example (\ref{ex-good}), the active form is grammatical.
+````
+
+```{=latex}
+As shown in example (\ref{ex-good}), the active form is grammatical.
+```
+
+
+```{=html}
+As shown in example 1a, the active form is grammatical.
+```
+
+::: callout-warning
+`gb4e` cross-references only resolve in PDF output and have no effect in HTML or Word. Use `(@)` syntax if you need cross-references to work across all formats.
 :::
 
 ## Citations {#sec-citations}
@@ -301,11 +375,4 @@ You can also extract estimates directly from fitted model objects and report the
 
 ::: callout-tip
 Any number that appears in your manuscript should be computed, not typed. This is the single most effective way to eliminate reporting errors in academic writing.
-:::
-
-
-
-## References {.unnumbered .unlisted}
-
-::: {#refs}
 :::

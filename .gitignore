@@ -8,3 +8,4 @@
 _book/
 renv/library/
 data/raw/exp1_data_tidy.csv
+publishr-Administrator*.Rproj
