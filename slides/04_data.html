@@ -11,7 +11,7 @@
 
   <meta name="author" content="Daniela Palleschi">
   <meta name="dcterms.date" content="2026-03-25">
-  <title>Data in Quarto</title>
+  <title>Data and Code in Quarto</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -195,7 +195,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Data in Quarto</h1>
+  <h1 class="title">Data and Code in Quarto</h1>
   <p class="subtitle">Code Chunks, Loading Data, and Inline Reporting</p>
 
 <div class="quarto-title-authors">
@@ -239,7 +239,14 @@ Daniela Palleschi
 </div>
 </div>
 <div class="fragment">
-<p>Each chunk is executed in sequence when the document renders — output is inserted at that position.</p>
+<ul>
+<li class="fragment">Code chunks are fenced with <code>```{r}</code> at the top and <code>```</code> at the bottom</li>
+<li class="fragment">Each chunk is executed in sequence when the document renders
+<ul>
+<li class="fragment">Output is inserted at that position</li>
+<li class="fragment">Code must be written <em>linearly</em>: it must run from top to bottom</li>
+</ul></li>
+</ul>
 </div>
 </section>
 
@@ -252,20 +259,26 @@ Daniela Palleschi
 <li class="fragment">Observable JS: <code>{ojs}</code></li>
 </ul>
 <div class="fragment">
-<p>Different languages can coexist in the same document — each runs in its own engine. <code>reticulate</code> is only needed to share objects between R and Python chunks.</p>
+<ul>
+<li class="fragment">different languages can coexist in the same document, each runs in its own engine</li>
+<li class="fragment">use the <code>reticulate</code> package to share objects between R and Python chunks (and to render Python to PDF)</li>
+</ul>
 </div>
 </section>
 
 <section id="chunk-options" class="title-slide slide level2 center">
 <h2>Chunk options</h2>
-<p>Options are set with the <code>#|</code> prefix:</p>
+<ul>
+<li class="fragment">Options are set with the <code>#|</code> prefix directly under <code>```{r}</code></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:40%;">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href=""></a><span class="in">```{r}</span></span>
 <span id="cb3-2"><a href=""></a><span class="co">#| echo: false</span></span>
 <span id="cb3-3"><a href=""></a><span class="co">#| warning: false</span></span>
-<span id="cb3-4"><a href=""></a><span class="co">#| label: tbl-desc</span></span>
-<span id="cb3-5"><a href=""></a><span class="co">#| tbl-cap: "Descriptive statistics."</span></span>
-<span id="cb3-6"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
+<span id="cb3-4"><a href=""></a><span class="dv">5</span> <span class="sc">*</span> <span class="dv">6</span></span>
+<span id="cb3-5"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:60%;">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -300,18 +313,22 @@ Daniela Palleschi
 </tr>
 </tbody>
 </table>
-</div>
+</div></div>
 </section>
 
 <section id="global-defaults" class="title-slide slide level2 center">
 <h2>Global defaults</h2>
-<p>Set once in YAML, override per chunk:</p>
+<ul>
+<li class="fragment">you can set these options once in YAML and override per chunk:</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href=""></a><span class="fu">execute</span><span class="kw">:</span></span>
 <span id="cb4-2"><a href=""></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">      # hide code from output</span></span>
 <span id="cb4-3"><a href=""></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">   # suppress warnings</span></span>
 <span id="cb4-4"><a href=""></a><span class="at">  </span><span class="fu">message</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">   # suppress messages</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Override for a specific chunk:</p>
+<ul>
+<li class="fragment">to override for a specific chunk:</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href=""></a><span class="in">```{r}</span></span>
 <span id="cb5-2"><a href=""></a><span class="co">#| echo: true</span></span>
 <span id="cb5-3"><a href=""></a><span class="co">#| label: tbl-desc</span></span>
@@ -320,20 +337,23 @@ Daniela Palleschi
 <span id="cb5-6"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-
-<section id="section" class="title-slide slide level2 center" data-background-color="#8D203D">
-<h2></h2>
-
-</section>
-<section id="echo-true-or-false" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;">
+<section id="echo-true-or-false" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
 <h3>💬 <code>echo: true</code> or <code>false</code>?</h3>
-<p><em>Teaching materials</em> — <code>echo: true</code> so participants see the code</p>
-<div class="fragment">
-<p><em>Manuscript submission</em> — <code>echo: false</code> for clean output</p>
-</div>
-<div class="fragment">
-<p><em>Internal analysis report</em> — <code>echo: true</code> for auditability and reproducibility</p>
-</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><em>Teaching materials</em></p>
+<p>. . .</p>
+<p><em>Manuscript submission</em></p>
+<p>. . .</p>
+<p><em>Internal analysis report</em></p>
+</div><div class="column" style="width:50%;">
+<p>. . .</p>
+<p><code>echo: true</code>: participants see the code</p>
+<p>. . .</p>
+<p><code>echo: false</code>: clean output</p>
+<p>. . .</p>
+<p><code>echo: true</code>: auditability and reproducibility</p>
+</div></div>
 </section>
 
 
@@ -361,18 +381,14 @@ Daniela Palleschi
 </div>
 </section>
 
-<section id="section-1" class="title-slide slide level2 center" data-background-color="#8D203D">
+<section id="section" class="title-slide slide level2 center" data-background-color="#8D203D">
 <h2></h2>
 
 </section>
-<section id="exercise-1-5-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;">
-<h3>✏️ Exercise 1 — 5 minutes</h3>
-<p>Open <code>exercises/day1.qmd</code></p>
-<ol type="1">
-<li class="fragment">Add a code chunk that computes <code>2 + 2</code> — render</li>
-<li class="fragment">Change the options so the code is shown but not evaluated — render</li>
-<li class="fragment">Add another chunk with <code>10 * 10</code> — set it so neither code nor output appears — render</li>
-</ol>
+<section id="exercise-5-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;">
+<h3>✏️ Exercise — 5 minutes</h3>
+<p>Open <code>exercises/day1.qmd</code> and go to this chapter’s webbook exercises <a href="https://daniela-palleschi.github.io/publishr/exercises/day1.html#data-and-tables">(Exercises &gt; Data and Tables)</a>.</p>
+<p>Do exercises 1-3.</p>
 </section>
 
 <section class="slide level4">
@@ -386,12 +402,17 @@ Daniela Palleschi
 </section>
 <section id="with-herehere" class="title-slide slide level2 center">
 <h2>With here::here()</h2>
-<p>Always use <code>here::here()</code> for file paths — portable across machines and operating systems:</p>
+<ul>
+<li class="fragment">always use <code>here::here()</code> for project-relative file paths
+<ul>
+<li class="fragment">portable across machines and operating systems:</li>
+</ul></li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>df <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw"</span>, <span class="st">"your-data.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>For processed data and saved model objects:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>df_clean <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"data_clean.rds"</span>))</span>
-<span id="cb8-2"><a href=""></a>m1       <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"output"</span>, <span class="st">"models"</span>, <span class="st">"m1.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>df_clean <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"data_example.rds"</span>))</span>
+<span id="cb8-2"><a href=""></a>fit_gaze       <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"output"</span>, <span class="st">"models"</span>, <span class="st">"fit_gaze.rds"</span>)) <span class="co"># we don't have this yet</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
@@ -400,7 +421,7 @@ Daniela Palleschi
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>Workflow tip</strong></p>
 </div>
 <div class="callout-content">
 <p>Load all data in a single setup chunk at the top of the document with <code>#| output: false</code>.</p>
@@ -413,7 +434,7 @@ Daniela Palleschi
 <section id="saving-processed-data" class="title-slide slide level2 center">
 <h2>Saving processed data</h2>
 <p>Save processed objects so subsequent documents don’t need to re-run the full pipeline:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">saveRDS</span>(df_clean, here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"data_clean.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">saveRDS</span>(df_clean, here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"data_example.rds"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -430,19 +451,9 @@ Daniela Palleschi
 </div>
 </div>
 </section>
-
-<section id="section-2" class="title-slide slide level2 center" data-background-color="#8D203D">
-<h2></h2>
-
-</section>
-<section id="exercise-2-5-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;">
-<h3>✏️ Exercise 2 — 5 minutes</h3>
-<p>Open <code>exercises/day1.qmd</code></p>
-<ol type="1">
-<li class="fragment">Add a chunk that loads the sample dataset</li>
-<li class="fragment">Set chunk options so the code is not printed but the chunk runs</li>
-<li class="fragment">Render and check there are no errors</li>
-</ol>
+<section id="exercise-4-5-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
+<h3>✏️ Exercise 4 — 5 minutes</h3>
+<p>Do <a href="https://daniela-palleschi.github.io/publishr/exercises/day1.html#exercise-4-load-data">Exercise 4</a>.</p>
 </section>
 
 <section class="slide level4">
@@ -465,7 +476,7 @@ Daniela Palleschi
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href=""></a>The sample comprised <span class="in">` r dplyr::n_distinct(df$px)`</span> participants.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
-<p>When data changes, re-render — the number updates automatically.</p>
+<p>When data changes, re-render; the number updates automatically</p>
 </div>
 </section>
 
@@ -478,10 +489,12 @@ Daniela Palleschi
 <span id="cb11-4"><a href=""></a>sd_tt <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">sd</span>(df_clean<span class="sc">$</span>tt,   <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>Then in prose:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href=""></a>The sample comprised <span class="in">` r n_px`</span> participants </span>
-<span id="cb12-2"><a href=""></a>(*N* observations = <span class="in">` r n_obs`</span>).</span>
-<span id="cb12-3"><a href=""></a>Mean total reading time was <span class="in">` r m_tt`</span> ms </span>
-<span id="cb12-4"><a href=""></a>(*SD* = <span class="in">` r sd_tt`</span>).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href=""></a>The sample comprised <span class="in">` r n_px`</span> participants (*N* observations = ` r n_obs`). Mean total reading time was ` r m_tt` ms (*SD* = <span class="in">` r sd_tt`</span>).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<blockquote>
+<p>The sample comprised 24 participants (<em>N</em> observations = 1800). Mean total reading time was 350 ms (<em>SD</em> = 56).</p>
+</blockquote>
 </div>
 </section>
 
@@ -499,38 +512,9 @@ Daniela Palleschi
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href=""></a>The effect was significant (*p* <span class="in">` r fmt_p(p_value)`</span>).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-
-<section id="section-3" class="title-slide slide level2 center" data-background-color="#8D203D">
-<h2></h2>
-
-</section>
-<section id="exercise-3-10-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;">
-<h3>✏️ Exercise 3 — 10 minutes</h3>
-<p>Open <code>exercises/day1.qmd</code></p>
-<ol type="1">
-<li class="fragment">Create a chunk that computes <code>m_gaze</code> and <code>sd_gaze</code> — mean and SD of <code>gaze</code> at the verb region, rounded to 1 decimal</li>
-<li class="fragment">Report these values inline in a sentence</li>
-<li class="fragment">Render and check the values appear correctly</li>
-</ol>
-<div class="fragment">
-<p><strong>Stretch:</strong> Add <code>eval: false</code> globally in the YAML. What breaks? How do you fix it?</p>
-</div>
-</section>
-
-
-<section id="section-4" class="title-slide slide level2 center" data-background-color="#8D203D">
-<h2></h2>
-
-</section>
-<section id="debrief" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;">
-<h3>💬 Debrief</h3>
-<p><em>Did your inline values update when you changed the filter?</em></p>
-<div class="fragment">
-<p><em>What happened when you set <code>eval: false</code> globally?</em></p>
-</div>
-<div class="fragment">
-<p><em>Any questions before we wrap up Day 1?</em></p>
-</div>
+<section id="exercises-10-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
+<h3>✏️ Exercises — 10 minutes</h3>
+<p>Do Exercises 5-7.</p>
 </section>
 
 
@@ -550,7 +534,7 @@ Daniela Palleschi
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="logos/ZAS_Marke-Lang_weiss.svg" class="slide-logo"></p>
 <div class="footer footer-default">
-<p>R for Publication - Day 1: Data in Quarto</p>
+<p>R for Publication - Day 1: Data and Code in Quarto</p>
 </div>
 </div></div>
 

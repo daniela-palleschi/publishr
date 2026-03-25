@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniela Palleschi">
-<meta name="dcterms.date" content="2026-03-24">
+<meta name="dcterms.date" content="2026-03-25">
 
 <title>R for Publication</title>
 <style>
@@ -57,7 +57,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -335,6 +355,11 @@ window.Quarto = {
 </i> 
 <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./R-for-Publication.pdf"> <i class="bi bi-file-pdf" role="img" aria-label="Download PDF">
+</i> 
+<span class="menu-text">PDF</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -403,7 +428,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./chapters/04_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></span></a>
   </div>
 </li>
       </ul>
@@ -457,6 +482,7 @@ window.Quarto = {
   <li><a href="#what-you-will-learn" id="toc-what-you-will-learn" class="nav-link" data-scroll-target="#what-you-will-learn">What you will learn</a></li>
   <li><a href="#sessions" id="toc-sessions" class="nav-link" data-scroll-target="#sessions">Sessions</a></li>
   <li><a href="#how-to-use-this-book" id="toc-how-to-use-this-book" class="nav-link" data-scroll-target="#how-to-use-this-book">How to use this book</a></li>
+  <li><a href="#the-dataset" id="toc-the-dataset" class="nav-link" data-scroll-target="#the-dataset">The dataset</a></li>
   <li><a href="#required-software" id="toc-required-software" class="nav-link" data-scroll-target="#required-software">Required software</a>
   <ul class="collapse">
   <li><a href="#installing-r-rstudio-and-quarto" id="toc-installing-r-rstudio-and-quarto" class="nav-link" data-scroll-target="#installing-r-rstudio-and-quarto">Installing R, RStudio, and Quarto</a></li>
@@ -503,7 +529,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 24, 2026</p>
+      <p class="date">March 25, 2026</p>
     </div>
   </div>
   
@@ -552,6 +578,579 @@ window.Quarto = {
 <section id="how-to-use-this-book" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-use-this-book">How to use this book</h2>
 <p>Each chapter corresponds to roughly 30 minutes of workshop time. Code chunks are fully executable, work through them in your own RProject alongside the book. Each chapter also has accompanying slides (linked at the top) for the taught portion.</p>
+</section>
+<section id="the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="the-dataset">The dataset</h2>
+<p>The examples and exercises throughout this book use a real eye-tracking reading dataset based on <span class="citation" data-cites="palleschi_living_2025">Palleschi et al. (<a href="chapters/02_writing.html#ref-palleschi_living_2025" role="doc-biblioref">2025</a>)</span> (<a href="https://osf.io/6sra7">osf.io/6sra7</a>), adapted for teaching purposes. The script used to adapt the data is included on <a href="https://github.com/daniela-palleschi/publishr/blob/main/scripts/subset_data.qmd">the GitHub repository</a>. The data comes from a self-paced reading study with a 2 × 2 factorial design, with <strong>lifetime</strong> (living vs.&nbsp;dead referent) and <strong>verb tense</strong> (present perfect vs.&nbsp;simple future) as independent variables.</p>
+<p>The dataset has been preprocessed and restructured to more closely resemble data as it might arrive from a collection pipeline rather than fully cleaned analysis-ready data. It includes a randomly generated participant code column (<code>px_code</code>) — not real identifiers — to give you practice handling data that contains linkable information. Anonymisation of this column is covered in the second half of the book (Session 2 of the workshop).</p>
+<p>The key variables are summarised in <a href="#tbl-dataset" class="quarto-xref">Table&nbsp;<span>1</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div id="tbl-dataset" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Key variables in the workshop dataset.
+</figcaption>
+<div aria-describedby="tbl-dataset-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div id="spmbvqfslk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#spmbvqfslk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#spmbvqfslk thead, #spmbvqfslk tbody, #spmbvqfslk tfoot, #spmbvqfslk tr, #spmbvqfslk td, #spmbvqfslk th {
+  border-style: none;
+}
+
+#spmbvqfslk p {
+  margin: 0;
+  padding: 0;
+}
+
+#spmbvqfslk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#spmbvqfslk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#spmbvqfslk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#spmbvqfslk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#spmbvqfslk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#spmbvqfslk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#spmbvqfslk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#spmbvqfslk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#spmbvqfslk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#spmbvqfslk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#spmbvqfslk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#spmbvqfslk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#spmbvqfslk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#spmbvqfslk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#spmbvqfslk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#spmbvqfslk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#spmbvqfslk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#spmbvqfslk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#spmbvqfslk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#spmbvqfslk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#spmbvqfslk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#spmbvqfslk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#spmbvqfslk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#spmbvqfslk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#spmbvqfslk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#spmbvqfslk .gt_left {
+  text-align: left;
+}
+
+#spmbvqfslk .gt_center {
+  text-align: center;
+}
+
+#spmbvqfslk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#spmbvqfslk .gt_font_normal {
+  font-weight: normal;
+}
+
+#spmbvqfslk .gt_font_bold {
+  font-weight: bold;
+}
+
+#spmbvqfslk .gt_font_italic {
+  font-style: italic;
+}
+
+#spmbvqfslk .gt_super {
+  font-size: 65%;
+}
+
+#spmbvqfslk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#spmbvqfslk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#spmbvqfslk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#spmbvqfslk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#spmbvqfslk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#spmbvqfslk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#spmbvqfslk .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#spmbvqfslk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#spmbvqfslk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="Variable" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Variable</th>
+<th id="Type" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Type</th>
+<th id="Description" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Description</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">px_code</td>
+<td class="gt_row gt_left" headers="Type">character</td>
+<td class="gt_row gt_left" headers="Description">Participant code (randomly generated)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">trial</td>
+<td class="gt_row gt_left" headers="Type">integer</td>
+<td class="gt_row gt_left" headers="Description">Trial number</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">item</td>
+<td class="gt_row gt_left" headers="Type">integer</td>
+<td class="gt_row gt_left" headers="Description">Item identifier</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">lifetime</td>
+<td class="gt_row gt_left" headers="Type">factor</td>
+<td class="gt_row gt_left" headers="Description">Lifetime status of referent: living or dead</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">tense</td>
+<td class="gt_row gt_left" headers="Type">factor</td>
+<td class="gt_row gt_left" headers="Description">Verb tense: present perfect or simple future</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">congruence</td>
+<td class="gt_row gt_left" headers="Type">factor</td>
+<td class="gt_row gt_left" headers="Description">Congruence between lifetime and tense</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">region</td>
+<td class="gt_row gt_left" headers="Type">factor</td>
+<td class="gt_row gt_left" headers="Description">Sentence region label: verb-1, verb, verb+1 to verb+4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">region_text</td>
+<td class="gt_row gt_left" headers="Type">character</td>
+<td class="gt_row gt_left" headers="Description">Text of the sentence region of interest</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">gaze</td>
+<td class="gt_row gt_left" headers="Type">continuous</td>
+<td class="gt_row gt_left" headers="Description">First-pass reading time (ms)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">rpd</td>
+<td class="gt_row gt_left" headers="Type">continuous</td>
+<td class="gt_row gt_left" headers="Description">Regression path duration (ms)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">tt</td>
+<td class="gt_row gt_left" headers="Type">continuous</td>
+<td class="gt_row gt_left" headers="Description">Total reading time (ms)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">first_fix</td>
+<td class="gt_row gt_left" headers="Type">continuous</td>
+<td class="gt_row gt_left" headers="Description">First fixation duration (ms)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">reg_in</td>
+<td class="gt_row gt_left" headers="Type">binary</td>
+<td class="gt_row gt_left" headers="Description">Regression into the region (0/1)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">reg_out</td>
+<td class="gt_row gt_left" headers="Type">binary</td>
+<td class="gt_row gt_left" headers="Description">Regression out of the region (0/1)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">rt_ms</td>
+<td class="gt_row gt_left" headers="Type">continuous</td>
+<td class="gt_row gt_left" headers="Description">Reaction time until plausibility rating (ms)</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">rating</td>
+<td class="gt_row gt_left" headers="Type">ordinal</td>
+<td class="gt_row gt_left" headers="Description">Plausibility rating (1 = implausible, 7 = plausible)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Variable">bio</td>
+<td class="gt_row gt_left" headers="Type">character</td>
+<td class="gt_row gt_left" headers="Description">Biographical sentence presented before the critical sentence</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Variable">critical</td>
+<td class="gt_row gt_left" headers="Type">character</td>
+<td class="gt_row gt_left" headers="Description">Critical sentence presented to participants</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The verb region is the most theoretically relevant for the study’s hypotheses. Reading measures at this region are used in the exercises throughout Day 1 and Day 2. The <code>rating</code> variable is used in the tables chapter to illustrate frequency tables for ordinal data, and <code>rt_ms</code> provides an additional continuous outcome for practice.</p>
 </section>
 <section id="required-software" class="level2">
 <h2 class="anchored" data-anchor-id="required-software">Required software</h2>
@@ -608,10 +1207,19 @@ window.Quarto = {
 <h2 class="unnumbered anchored" data-anchor-id="disclaimer">Disclaimer</h2>
 <p>These materials were developed with the assistance of an AI language model (Claude, Anthropic) for outlining and editorial refinement using guided prompts. All content was fully reviewed, improved (I hope), and edited by the author. Every topic and reference included falls within the author’s own expertise; the use of AI assistance was a practical decision about time and effort, not a substitution for subject knowledge. Any errors, inaccuracies, or omissions are the author’s own responsibility.</p>
 <p>These chapters also lean heavily on materials I previously created (without AI assistance) on R for Reproducibility, both in a semester-length course <a href="https://daniela-palleschi.github.io/r4repro_SoSe2024/">Open Science Practices: Implementing a Reproducible Analysis Workflow</a>, a 4-day workshop <a href="https://daniela-palleschi.github.io/SSOL24-reproducibility-workshop/">Open Science Practices for Linguistic Research: Reproducible Analyses in R</a>, and a 2-part workshop <a href="https://daniela-palleschi.github.io/zas-reproducibility-2024/">Reproducible Workflow in R</a>. Unlike these previous materials which covered reproducibility and dynamic reports more broadly (and more in-depth), this book focuses on dynamic reports and reproducible analyses in the context of reporting results for publication and writing a manuscript in general.</p>
+<p>An example prompt used for the slides for Output Formats:</p>
+<blockquote class="blockquote">
+<p>let’s resturcture this to show how to render each format individually (only one in the yaml), shown in three columns where they have no options; then a slide on options (maybe just show toc: true for each); then a slide showing how to have them all in the yaml together in columns: left side where <code>: default</code> is used, right side where you see the toc option as well; add a callout warning that indentation is very important</p>
+</blockquote>
 
 
 <!-- -->
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-palleschi_living_2025" class="csl-entry" role="listitem">
+Palleschi, D., Ronderos, C. R., &amp; Knoeferle, P. (2025). Living in the present – how referent lifetime influences processing of past, present (perfect), and future tenses. <em>Glossa Psycholinguistics</em>, <em>4</em>(1), 1–48. https://doi.org/<a href="https://doi.org/10.5070/G601119481">https://doi.org/10.5070/G601119481</a>
+</div>
+</div>
 </section>
 </section>
 
@@ -1137,72 +1745,131 @@ window.Quarto = {
 <span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>Each chapter corresponds to roughly 30 minutes of workshop time. Code chunks are fully executable, work through them in your own RProject alongside the book. Each chapter also has accompanying slides (linked at the top) for the taught portion.</span>
 <span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## Required software</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="fu">## The dataset</span></span>
 <span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>Before the first session, please make sure you have the following installed:</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>The examples and exercises throughout this book use a real eye-tracking reading dataset based on @palleschi_living_2025 (<span class="co">[</span><span class="ot">osf.io/6sra7</span><span class="co">](https://osf.io/6sra7)</span>), adapted for teaching purposes. The script used to adapt the data is included on <span class="co">[</span><span class="ot">the GitHub repository</span><span class="co">](https://github.com/daniela-palleschi/publishr/blob/main/scripts/subset_data.qmd)</span>. The data comes from a self-paced reading study with a 2 × 2 factorial design, with **lifetime** (living vs. dead referent) and **verb tense** (present perfect vs. simple future) as independent variables.</span>
 <span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R** ($\geq$ 4.2): <span class="ot">&lt;https://cran.r-project.org&gt;</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**RStudio** ($\geq$ 2022.07): <span class="ot">&lt;https://posit.co/download/rstudio-desktop&gt;</span></span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quarto** (latest): <span class="ot">&lt;https://quarto.org/docs/download&gt;</span></span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**TinyTeX** (for PDF output) — see <span class="co">[</span><span class="ot">Installing TinyTeX</span><span class="co">]</span> below</span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="fu">### Installing R, RStudio, and Quarto</span></span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>Download and install each from the links above, following the instructions </span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>for your operating system. Install them in order: R first, then RStudio, </span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>then Quarto.</span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### Installing TinyTeX</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>The dataset has been preprocessed and restructured to more closely resemble data as it might arrive from a collection pipeline rather than fully cleaned analysis-ready data. It includes a randomly generated participant code column (<span class="in">`px_code`</span>) — not real identifiers — to give you practice handling data that contains linkable information. Anonymisation of this column is covered in the second half of the book (Session 2 of the workshop).</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>The key variables are summarised in @tbl-dataset.</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-dataset</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Key variables in the workshop dataset."</span></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(here, tidyverse, kableExtra)</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) pacman<span class="sc">::</span><span class="fu">p_load</span>(gt)</span>
 <span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>TinyTeX is a lightweight LaTeX distribution installable directly from R:</span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tinytex"</span>)</span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a><span class="fu">### Checking your versions</span></span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>In the R console:</span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>R.version.string</span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">is_tinytex</span>()</span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">tlmgr</span>(<span class="st">"--version"</span>)</span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>tbl_vars <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Variable,      <span class="sc">~</span>Type,        <span class="sc">~</span>Description,</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>  <span class="st">"px_code"</span>,      <span class="st">"character"</span>,  <span class="st">"Participant code (randomly generated)"</span>,</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>  <span class="st">"trial"</span>,        <span class="st">"integer"</span>,    <span class="st">"Trial number"</span>,</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>  <span class="st">"item"</span>,         <span class="st">"integer"</span>,    <span class="st">"Item identifier"</span>,</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>  <span class="st">"lifetime"</span>,     <span class="st">"factor"</span>,     <span class="st">"Lifetime status of referent: living or dead"</span>,</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tense"</span>,        <span class="st">"factor"</span>,     <span class="st">"Verb tense: present perfect or simple future"</span>,</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>  <span class="st">"congruence"</span>,   <span class="st">"factor"</span>,     <span class="st">"Congruence between lifetime and tense"</span>,</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>  <span class="st">"region"</span>,       <span class="st">"factor"</span>,     <span class="st">"Sentence region label: verb-1, verb, verb+1 to verb+4"</span>,</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  <span class="st">"region_text"</span>,  <span class="st">"character"</span>,  <span class="st">"Text of the sentence region of interest"</span>,</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gaze"</span>,         <span class="st">"continuous"</span>, <span class="st">"First-pass reading time (ms)"</span>,</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rpd"</span>,          <span class="st">"continuous"</span>, <span class="st">"Regression path duration (ms)"</span>,</span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tt"</span>,           <span class="st">"continuous"</span>, <span class="st">"Total reading time (ms)"</span>,</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>  <span class="st">"first_fix"</span>,    <span class="st">"continuous"</span>, <span class="st">"First fixation duration (ms)"</span>,</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reg_in"</span>,       <span class="st">"binary"</span>,     <span class="st">"Regression into the region (0/1)"</span>,</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>  <span class="st">"reg_out"</span>,      <span class="st">"binary"</span>,     <span class="st">"Regression out of the region (0/1)"</span>,</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rt_ms"</span>,        <span class="st">"continuous"</span>, <span class="st">"Reaction time until plausibility rating (ms)"</span>,</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rating"</span>,       <span class="st">"ordinal"</span>,    <span class="st">"Plausibility rating (1 = implausible, 7 = plausible)"</span>,</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bio"</span>,          <span class="st">"character"</span>,  <span class="st">"Biographical sentence presented before the critical sentence"</span>,</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>  <span class="st">"critical"</span>,     <span class="st">"character"</span>,  <span class="st">"Critical sentence presented to participants"</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>In the **Terminal** tab:</span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> <span class="at">--version</span></span>
-<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>RStudio's version is visible under *Help → About RStudio*.</span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="fu">### Updating</span></span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R**: download the latest version from <span class="ot">&lt;https://cran.r-project.org&gt;</span></span>
-<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**RStudio**: *Help → Check for Updates*</span>
-<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quarto**: download the latest version from <span class="ot">&lt;https://quarto.org/docs/download&gt;</span></span>
-<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**TinyTeX**: <span class="in">`tinytex::tlmgr_update()`</span></span>
-<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a><span class="fu">### Packages</span></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>  tbl_vars <span class="sc">|&gt;</span></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kbl</span>(<span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">format =</span> <span class="st">"latex"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">latex_options =</span> <span class="fu">c</span>(<span class="st">"hold_position"</span>, <span class="st">"scale_down"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_spec</span>(<span class="dv">3</span>, <span class="at">width =</span> <span class="st">"7cm"</span>)</span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>  tbl_vars <span class="sc">|&gt;</span></span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_style</span>(</span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>      <span class="at">style     =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cols_width</span>(Description <span class="sc">~</span> <span class="fu">px</span>(<span class="dv">350</span>))</span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>We'll be using the <span class="in">`pacman`</span> package to load and install required (CRAN) packages. As long as you have this package installed you should be able to run the example and exercise code.</span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>The verb region is the most theoretically relevant for the study's hypotheses. Reading measures at this region are used in the exercises throughout Day 1 and Day 2. The <span class="in">`rating`</span> variable is used in the tables chapter to illustrate frequency tables for ordinal data, and <span class="in">`rt_ms`</span> provides an additional continuous outcome for practice.</span>
 <span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>You only need to install <span class="in">`pacman`</span> once. After that, <span class="in">`pacman::p_load()`</span> handles loading and installing any missing packages automatically. Avoid leaving <span class="in">`install.packages()`</span> calls uncommented in your scripts as they will re-run every time the script is executed or the document is rendered, which is slow and can cause unexpected package version changes. In other words, run this in the Console, or comment it out if you have it in a script.</span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## Required software</span></span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>Before the first session, please make sure you have the following installed:</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R** ($\geq$ 4.2): <span class="ot">&lt;https://cran.r-project.org&gt;</span></span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**RStudio** ($\geq$ 2022.07): <span class="ot">&lt;https://posit.co/download/rstudio-desktop&gt;</span></span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quarto** (latest): <span class="ot">&lt;https://quarto.org/docs/download&gt;</span></span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**TinyTeX** (for PDF output) — see <span class="co">[</span><span class="ot">Installing TinyTeX</span><span class="co">]</span> below</span>
 <span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## Disclaimer {.unnumbered}</span></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a><span class="fu">### Installing R, RStudio, and Quarto</span></span>
 <span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>These materials were developed with the assistance of an AI language model (Claude, Anthropic) for outlining and editorial refinement using guided prompts. All content was fully reviewed, improved (I hope), and edited by the author. Every topic and reference included falls within the author's own expertise; the use of AI assistance was a practical decision about time and effort, not a substitution for subject knowledge. Any errors, inaccuracies, or omissions are the author's own responsibility.</span>
-<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>These chapters also lean heavily on materials I previously created (without AI assistance) on R for Reproducibility, both in a semester-length course <span class="co">[</span><span class="ot"> Open Science Practices: Implementing a Reproducible Analysis Workflow</span><span class="co">](https://daniela-palleschi.github.io/r4repro_SoSe2024/)</span>, a 4-day workshop <span class="co">[</span><span class="ot">Open Science Practices for Linguistic Research: Reproducible Analyses in R</span><span class="co">](https://daniela-palleschi.github.io/SSOL24-reproducibility-workshop/)</span>, and a 2-part workshop <span class="co">[</span><span class="ot">Reproducible Workflow in R</span><span class="co">](https://daniela-palleschi.github.io/zas-reproducibility-2024/)</span>. Unlike these previous materials which covered reproducibility and dynamic reports more broadly (and more in-depth), this book focuses on dynamic reports and reproducible analyses in the context of reporting results for publication and writing a manuscript in general.</span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>Download and install each from the links above, following the instructions </span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>for your operating system. Install them in order: R first, then RStudio, </span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>then Quarto.</span>
 <span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a><span class="fu">### Installing TinyTeX</span></span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>TinyTeX is a lightweight LaTeX distribution installable directly from R:</span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tinytex"</span>)</span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a><span class="fu">### Checking your versions</span></span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>In the R console:</span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a>R.version.string</span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">is_tinytex</span>()</span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>tinytex<span class="sc">::</span><span class="fu">tlmgr</span>(<span class="st">"--version"</span>)</span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a>In the **Terminal** tab:</span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> <span class="at">--version</span></span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a>RStudio's version is visible under *Help → About RStudio*.</span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a><span class="fu">### Updating</span></span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**R**: download the latest version from <span class="ot">&lt;https://cran.r-project.org&gt;</span></span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**RStudio**: *Help → Check for Updates*</span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Quarto**: download the latest version from <span class="ot">&lt;https://quarto.org/docs/download&gt;</span></span>
+<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**TinyTeX**: <span class="in">`tinytex::tlmgr_update()`</span></span>
+<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a><span class="fu">### Packages</span></span>
+<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>We'll be using the <span class="in">`pacman`</span> package to load and install required (CRAN) packages. As long as you have this package installed you should be able to run the example and exercise code.</span>
+<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a>You only need to install <span class="in">`pacman`</span> once. After that, <span class="in">`pacman::p_load()`</span> handles loading and installing any missing packages automatically. Avoid leaving <span class="in">`install.packages()`</span> calls uncommented in your scripts as they will re-run every time the script is executed or the document is rendered, which is slow and can cause unexpected package version changes. In other words, run this in the Console, or comment it out if you have it in a script.</span>
+<span id="cb5-171"><a href="#cb5-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## Disclaimer {.unnumbered}</span></span>
+<span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a>These materials were developed with the assistance of an AI language model (Claude, Anthropic) for outlining and editorial refinement using guided prompts. All content was fully reviewed, improved (I hope), and edited by the author. Every topic and reference included falls within the author's own expertise; the use of AI assistance was a practical decision about time and effort, not a substitution for subject knowledge. Any errors, inaccuracies, or omissions are the author's own responsibility.</span>
+<span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a>These chapters also lean heavily on materials I previously created (without AI assistance) on R for Reproducibility, both in a semester-length course <span class="co">[</span><span class="ot"> Open Science Practices: Implementing a Reproducible Analysis Workflow</span><span class="co">](https://daniela-palleschi.github.io/r4repro_SoSe2024/)</span>, a 4-day workshop <span class="co">[</span><span class="ot">Open Science Practices for Linguistic Research: Reproducible Analyses in R</span><span class="co">](https://daniela-palleschi.github.io/SSOL24-reproducibility-workshop/)</span>, and a 2-part workshop <span class="co">[</span><span class="ot">Reproducible Workflow in R</span><span class="co">](https://daniela-palleschi.github.io/zas-reproducibility-2024/)</span>. Unlike these previous materials which covered reproducibility and dynamic reports more broadly (and more in-depth), this book focuses on dynamic reports and reproducible analyses in the context of reporting results for publication and writing a manuscript in general.</span>
+<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a>An example prompt used for the slides for Output Formats: </span>
+<span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-180"><a href="#cb5-180" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; let's resturcture this to show how to render each format individually (only one in the yaml), shown in three columns where they have no options; then a slide on options (maybe just show toc: true for each); then a slide showing how to have them all in the yaml together in columns: left side where </span><span class="in">`: default`</span><span class="at"> is used, right side where you see the toc option as well; add a callout warning that indentation is very important</span></span>
+<span id="cb5-181"><a href="#cb5-181" aria-hidden="true" tabindex="-1"></a></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

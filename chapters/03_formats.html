@@ -305,6 +305,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </i> 
 <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../R-for-Publication.pdf"> <i class="bi bi-file-pdf" role="img" aria-label="Download PDF">
+</i> 
+<span class="menu-text">PDF</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -373,7 +378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/04_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></span></a>
   </div>
 </li>
       </ul>
@@ -428,7 +433,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#pdf" id="toc-pdf" class="nav-link" data-scroll-target="#pdf"><span class="header-section-number">3.5</span> PDF</a></li>
   <li><a href="#format-comparison" id="toc-format-comparison" class="nav-link" data-scroll-target="#format-comparison"><span class="header-section-number">3.6</span> Format comparison</a></li>
   <li><a href="#sec-apa7" id="toc-sec-apa7" class="nav-link" data-scroll-target="#sec-apa7"><span class="header-section-number">3.7</span> APA 7 and <code>.tex</code> output</a></li>
-  <li><a href="#chapter-slides" id="toc-chapter-slides" class="nav-link" data-scroll-target="#chapter-slides"><span class="header-section-number">3.8</span> Chapter slides</a></li>
   </ul>
 </nav>
     <div class="quarto-margin-footer"><div class="margin-footer-item">
@@ -480,30 +484,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="rendering-formats" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="rendering-formats"><span class="header-section-number">3.2</span> Rendering formats</h2>
-<p>Quarto separates the source document from its output format. The same <code>.qmd</code> file can be rendered to multiple formats by specifying them in the YAML <code>format:</code> block:</p>
+<p>Quarto separates the source document from its output format. The same <code>.qmd</code> file can be rendered to HTML, Word, or PDF by specifying the target in the YAML <code>format:</code> block. Start with a single format and only add others when you have a specific need:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Render all formats at once from the terminal:</p>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Render from the terminal:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or a single format:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> docx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>This separation of content from presentation is one of Quarto’s core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents. However, I suggest you choose <em>one</em> output format until you have a specific need to render to different formats.</p>
+<p>Or specify the format explicitly:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> html</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> pdf</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> docx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When you are ready to render to multiple formats, add them together:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or you can add options (more on these below). Here we add a table of contents to all the output formats:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This separation of content from presentation is one of Quarto’s core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Indentation is critical in YAML. Options must be consistently indented under the format name. Mixing spaces and tabs, or inconsistent indentation, will cause render errors.</p>
+</div>
+</div>
 </section>
 <section id="html" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="html"><span class="header-section-number">3.3</span> HTML</h2>
 <p>HTML is the most flexible output format. It supports interactive elements, renders equations via MathJax, and can be hosted online (like this book, written in Quarto) or shared as a standalone file. For internal reports, supplementary materials, or workshop books, HTML is usually the best default.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> flatly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> flatly</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -522,13 +549,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="word" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="word"><span class="header-section-number">3.4</span> Word</h2>
 <p>Word output is the most practical format for sharing with co-authors who are not using Quarto, and is widely accepted by journals for submission. The rendered <code>.docx</code> looks and behaves like any other Word document, co-authors can annotate, track changes, and comment without needing to know anything about Quarto.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A reference <code>.docx</code> controls the visual styling of the output (fonts, margins, heading styles, and spacing) by mapping Quarto’s document elements to Word styles. Generate a default one and then customise it:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> pandoc <span class="at">-o</span> custom-reference.docx <span class="at">--print-default-data-file</span> reference.docx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> pandoc <span class="at">-o</span> custom-reference.docx <span class="at">--print-default-data-file</span> reference.docx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Open the generated file in Word, modify the paragraph and heading styles to match your journal’s requirements, and point your YAML to it with <code>reference-doc: custom-reference.docx</code>.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -548,20 +575,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="pdf" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="pdf"><span class="header-section-number">3.5</span> PDF</h2>
 <p>PDF output is produced by rendering the <code>.qmd</code> to LaTeX and then compiling with a LaTeX engine (by default <code>pdflatex</code>). This gives access to the full power of LaTeX for typesetting, including precise control over layout, fonts, and mathematical notation. PDF is the appropriate format for journal submission when a <code>.pdf</code> or <code>.tex</code> file is required.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span><span class="co">   # or scrartcl, apa7</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">papersize</span><span class="kw">:</span><span class="at"> a4</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fontsize</span><span class="kw">:</span><span class="at"> 12pt</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span><span class="at"> margin=2.5cm</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">linestretch</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.5</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        \usepackage{booktabs}    % professional table rules</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        \usepackage{longtable}   % tables spanning multiple pages</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        \usepackage{microtype}   % improved text justification</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span><span class="co">   # or scrartcl, apa7</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">papersize</span><span class="kw">:</span><span class="at"> a4</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fontsize</span><span class="kw">:</span><span class="at"> 12pt</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span><span class="at"> margin=2.5cm</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">linestretch</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.5</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        \usepackage{booktabs}    % professional table rules</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        \usepackage{longtable}   % tables spanning multiple pages</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        \usepackage{microtype}   % improved text justification</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -587,23 +614,23 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
 </figcaption>
 <div aria-describedby="tbl-formats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="yklxulsoyv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yklxulsoyv table {
+<div id="nozjusivsf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nozjusivsf table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yklxulsoyv thead, #yklxulsoyv tbody, #yklxulsoyv tfoot, #yklxulsoyv tr, #yklxulsoyv td, #yklxulsoyv th {
+#nozjusivsf thead, #nozjusivsf tbody, #nozjusivsf tfoot, #nozjusivsf tr, #nozjusivsf td, #nozjusivsf th {
   border-style: none;
 }
 
-#yklxulsoyv p {
+#nozjusivsf p {
   margin: 0;
   padding: 0;
 }
 
-#yklxulsoyv .gt_table {
+#nozjusivsf .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -629,12 +656,12 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-left-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_caption {
+#nozjusivsf .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yklxulsoyv .gt_title {
+#nozjusivsf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -646,7 +673,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-bottom-width: 0;
 }
 
-#yklxulsoyv .gt_subtitle {
+#nozjusivsf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -658,7 +685,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-top-width: 0;
 }
 
-#yklxulsoyv .gt_heading {
+#nozjusivsf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -670,13 +697,13 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-right-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_bottom_border {
+#nozjusivsf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_col_headings {
+#nozjusivsf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -691,7 +718,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-right-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_col_heading {
+#nozjusivsf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -711,7 +738,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   overflow-x: hidden;
 }
 
-#yklxulsoyv .gt_column_spanner_outer {
+#nozjusivsf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -723,15 +750,15 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   padding-right: 4px;
 }
 
-#yklxulsoyv .gt_column_spanner_outer:first-child {
+#nozjusivsf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yklxulsoyv .gt_column_spanner_outer:last-child {
+#nozjusivsf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yklxulsoyv .gt_column_spanner {
+#nozjusivsf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -743,11 +770,11 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   width: 100%;
 }
 
-#yklxulsoyv .gt_spanner_row {
+#nozjusivsf .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yklxulsoyv .gt_group_heading {
+#nozjusivsf .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -773,7 +800,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   text-align: left;
 }
 
-#yklxulsoyv .gt_empty_group_heading {
+#nozjusivsf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -788,15 +815,15 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   vertical-align: middle;
 }
 
-#yklxulsoyv .gt_from_md > :first-child {
+#nozjusivsf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yklxulsoyv .gt_from_md > :last-child {
+#nozjusivsf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yklxulsoyv .gt_row {
+#nozjusivsf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -815,7 +842,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   overflow-x: hidden;
 }
 
-#yklxulsoyv .gt_stub {
+#nozjusivsf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -828,7 +855,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   padding-right: 5px;
 }
 
-#yklxulsoyv .gt_stub_row_group {
+#nozjusivsf .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -842,15 +869,15 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   vertical-align: top;
 }
 
-#yklxulsoyv .gt_row_group_first td {
+#nozjusivsf .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yklxulsoyv .gt_row_group_first th {
+#nozjusivsf .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yklxulsoyv .gt_summary_row {
+#nozjusivsf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -860,16 +887,16 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   padding-right: 5px;
 }
 
-#yklxulsoyv .gt_first_summary_row {
+#nozjusivsf .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_first_summary_row.thick {
+#nozjusivsf .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yklxulsoyv .gt_last_summary_row {
+#nozjusivsf .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -879,7 +906,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-bottom-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_grand_summary_row {
+#nozjusivsf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -889,7 +916,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   padding-right: 5px;
 }
 
-#yklxulsoyv .gt_first_grand_summary_row {
+#nozjusivsf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -899,7 +926,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-top-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_last_grand_summary_row_top {
+#nozjusivsf .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -909,11 +936,11 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-bottom-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_striped {
+#nozjusivsf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yklxulsoyv .gt_table_body {
+#nozjusivsf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -922,7 +949,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-bottom-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_footnotes {
+#nozjusivsf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -936,7 +963,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-right-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_footnote {
+#nozjusivsf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -945,7 +972,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   padding-right: 5px;
 }
 
-#yklxulsoyv .gt_sourcenotes {
+#nozjusivsf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -959,7 +986,7 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   border-right-color: #D3D3D3;
 }
 
-#yklxulsoyv .gt_sourcenote {
+#nozjusivsf .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -967,72 +994,72 @@ Table&nbsp;3.1: Comparison of output formats for common manuscript features.
   padding-right: 5px;
 }
 
-#yklxulsoyv .gt_left {
+#nozjusivsf .gt_left {
   text-align: left;
 }
 
-#yklxulsoyv .gt_center {
+#nozjusivsf .gt_center {
   text-align: center;
 }
 
-#yklxulsoyv .gt_right {
+#nozjusivsf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yklxulsoyv .gt_font_normal {
+#nozjusivsf .gt_font_normal {
   font-weight: normal;
 }
 
-#yklxulsoyv .gt_font_bold {
+#nozjusivsf .gt_font_bold {
   font-weight: bold;
 }
 
-#yklxulsoyv .gt_font_italic {
+#nozjusivsf .gt_font_italic {
   font-style: italic;
 }
 
-#yklxulsoyv .gt_super {
+#nozjusivsf .gt_super {
   font-size: 65%;
 }
 
-#yklxulsoyv .gt_footnote_marks {
+#nozjusivsf .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yklxulsoyv .gt_asterisk {
+#nozjusivsf .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yklxulsoyv .gt_indent_1 {
+#nozjusivsf .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yklxulsoyv .gt_indent_2 {
+#nozjusivsf .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yklxulsoyv .gt_indent_3 {
+#nozjusivsf .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yklxulsoyv .gt_indent_4 {
+#nozjusivsf .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yklxulsoyv .gt_indent_5 {
+#nozjusivsf .gt_indent_5 {
   text-indent: 25px;
 }
 
-#yklxulsoyv .katex-display {
+#nozjusivsf .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#yklxulsoyv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#nozjusivsf div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1117,23 +1144,23 @@ Table&nbsp;3.2: Citation backend options for .tex output.
 </figcaption>
 <div aria-describedby="tbl-apa7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="okaefziqva" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#okaefziqva table {
+<div id="rflznytwnr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rflznytwnr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#okaefziqva thead, #okaefziqva tbody, #okaefziqva tfoot, #okaefziqva tr, #okaefziqva td, #okaefziqva th {
+#rflznytwnr thead, #rflznytwnr tbody, #rflznytwnr tfoot, #rflznytwnr tr, #rflznytwnr td, #rflznytwnr th {
   border-style: none;
 }
 
-#okaefziqva p {
+#rflznytwnr p {
   margin: 0;
   padding: 0;
 }
 
-#okaefziqva .gt_table {
+#rflznytwnr .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1159,12 +1186,12 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-left-color: #D3D3D3;
 }
 
-#okaefziqva .gt_caption {
+#rflznytwnr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#okaefziqva .gt_title {
+#rflznytwnr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1176,7 +1203,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-bottom-width: 0;
 }
 
-#okaefziqva .gt_subtitle {
+#rflznytwnr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1188,7 +1215,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-top-width: 0;
 }
 
-#okaefziqva .gt_heading {
+#rflznytwnr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1200,13 +1227,13 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-right-color: #D3D3D3;
 }
 
-#okaefziqva .gt_bottom_border {
+#rflznytwnr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#okaefziqva .gt_col_headings {
+#rflznytwnr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1221,7 +1248,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-right-color: #D3D3D3;
 }
 
-#okaefziqva .gt_col_heading {
+#rflznytwnr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1241,7 +1268,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   overflow-x: hidden;
 }
 
-#okaefziqva .gt_column_spanner_outer {
+#rflznytwnr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1253,15 +1280,15 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   padding-right: 4px;
 }
 
-#okaefziqva .gt_column_spanner_outer:first-child {
+#rflznytwnr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#okaefziqva .gt_column_spanner_outer:last-child {
+#rflznytwnr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#okaefziqva .gt_column_spanner {
+#rflznytwnr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1273,11 +1300,11 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   width: 100%;
 }
 
-#okaefziqva .gt_spanner_row {
+#rflznytwnr .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#okaefziqva .gt_group_heading {
+#rflznytwnr .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1303,7 +1330,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   text-align: left;
 }
 
-#okaefziqva .gt_empty_group_heading {
+#rflznytwnr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1318,15 +1345,15 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   vertical-align: middle;
 }
 
-#okaefziqva .gt_from_md > :first-child {
+#rflznytwnr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#okaefziqva .gt_from_md > :last-child {
+#rflznytwnr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#okaefziqva .gt_row {
+#rflznytwnr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1345,7 +1372,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   overflow-x: hidden;
 }
 
-#okaefziqva .gt_stub {
+#rflznytwnr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1358,7 +1385,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   padding-right: 5px;
 }
 
-#okaefziqva .gt_stub_row_group {
+#rflznytwnr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1372,15 +1399,15 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   vertical-align: top;
 }
 
-#okaefziqva .gt_row_group_first td {
+#rflznytwnr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#okaefziqva .gt_row_group_first th {
+#rflznytwnr .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#okaefziqva .gt_summary_row {
+#rflznytwnr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1390,16 +1417,16 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   padding-right: 5px;
 }
 
-#okaefziqva .gt_first_summary_row {
+#rflznytwnr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#okaefziqva .gt_first_summary_row.thick {
+#rflznytwnr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#okaefziqva .gt_last_summary_row {
+#rflznytwnr .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1409,7 +1436,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-bottom-color: #D3D3D3;
 }
 
-#okaefziqva .gt_grand_summary_row {
+#rflznytwnr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1419,7 +1446,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   padding-right: 5px;
 }
 
-#okaefziqva .gt_first_grand_summary_row {
+#rflznytwnr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1429,7 +1456,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-top-color: #D3D3D3;
 }
 
-#okaefziqva .gt_last_grand_summary_row_top {
+#rflznytwnr .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1439,11 +1466,11 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-bottom-color: #D3D3D3;
 }
 
-#okaefziqva .gt_striped {
+#rflznytwnr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#okaefziqva .gt_table_body {
+#rflznytwnr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1452,7 +1479,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-bottom-color: #D3D3D3;
 }
 
-#okaefziqva .gt_footnotes {
+#rflznytwnr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1466,7 +1493,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-right-color: #D3D3D3;
 }
 
-#okaefziqva .gt_footnote {
+#rflznytwnr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1475,7 +1502,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   padding-right: 5px;
 }
 
-#okaefziqva .gt_sourcenotes {
+#rflznytwnr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1489,7 +1516,7 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   border-right-color: #D3D3D3;
 }
 
-#okaefziqva .gt_sourcenote {
+#rflznytwnr .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1497,72 +1524,72 @@ Table&nbsp;3.2: Citation backend options for .tex output.
   padding-right: 5px;
 }
 
-#okaefziqva .gt_left {
+#rflznytwnr .gt_left {
   text-align: left;
 }
 
-#okaefziqva .gt_center {
+#rflznytwnr .gt_center {
   text-align: center;
 }
 
-#okaefziqva .gt_right {
+#rflznytwnr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#okaefziqva .gt_font_normal {
+#rflznytwnr .gt_font_normal {
   font-weight: normal;
 }
 
-#okaefziqva .gt_font_bold {
+#rflznytwnr .gt_font_bold {
   font-weight: bold;
 }
 
-#okaefziqva .gt_font_italic {
+#rflznytwnr .gt_font_italic {
   font-style: italic;
 }
 
-#okaefziqva .gt_super {
+#rflznytwnr .gt_super {
   font-size: 65%;
 }
 
-#okaefziqva .gt_footnote_marks {
+#rflznytwnr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#okaefziqva .gt_asterisk {
+#rflznytwnr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#okaefziqva .gt_indent_1 {
+#rflznytwnr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#okaefziqva .gt_indent_2 {
+#rflznytwnr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#okaefziqva .gt_indent_3 {
+#rflznytwnr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#okaefziqva .gt_indent_4 {
+#rflznytwnr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#okaefziqva .gt_indent_5 {
+#rflznytwnr .gt_indent_5 {
   text-indent: 25px;
 }
 
-#okaefziqva .katex-display {
+#rflznytwnr .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#okaefziqva div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#rflznytwnr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1605,27 +1632,21 @@ Table&nbsp;3.2: Citation backend options for .tex output.
 </div>
 </div>
 <p>Choose based on your priority: APA 7 accuracy or Overleaf compatibility. To switch from the default citeproc:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># natbib</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> natbib</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        \usepackage[natbibapa]{apacite}</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># biblatex</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> biblatex</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">biblio-style</span><span class="kw">:</span><span class="at"> apa</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="chapter-slides" class="level2" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="chapter-slides"><span class="header-section-number">3.8</span> Chapter slides</h2>
-<a href="../slides/08_formats.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># natbib</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> natbib</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        \usepackage[natbibapa]{apacite}</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># biblatex</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> biblatex</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">biblio-style</span><span class="kw">:</span><span class="at"> apa</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 <!-- -->
@@ -2104,259 +2125,270 @@ Table&nbsp;3.2: Citation backend options for .tex output.
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/04_data.html" class="pagination-link" aria-label="Data and Tables">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/04_data.html" class="pagination-link" aria-label="Data and code">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Output Formats"</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "HTML, Word, PDF, and LaTeX"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="an">day:</span><span class="co"> "Day 1"</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>::: {style="text-align: right; margin-bottom: 1em;"}</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="in">````{=html}</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;a href="../slides/03_formats.html" class="btn btn-outline-primary" target="_blank"&gt;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="in">  Open slides ↗</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/a&gt;</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, kableExtra)</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) pacman<span class="sc">::</span><span class="fu">p_load</span>(gt)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Purpose</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>This chapter covers rendering a Quarto document to different output formats. The same <span class="in">`.qmd`</span> source file can produce HTML, Word, PDF, and a LaTeX <span class="in">`.tex`</span> file, but each format has specific YAML options and some practical differences worth understanding before committing to a workflow.</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>Rather than trying to support all formats simultaneously, the most pragmatic approach is to decide early which format best fits your collaboration context. The right choice depends on who your co-authors are, how they prefer to give feedback, and what the target journal requires. A workflow that is technically reproducible but creates friction for collaborators is unlikely to be sustainable in practice.</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>To illustrate: my own workflow has evolved considerably over time. Writing my dissertation entirely in R Markdown (with separate <span class="in">`.Rmd`</span> files per chapter knitted together) worked well for a sole-author project but would have been impractical with collaborators. Sharing PDF output for feedback from co-authors on a journal article was workable but painful: comments arrived as annotations on a PDF, had to be manually transferred back to the source (by me), and any revision meant re-rendering and re-sharing (2/10, would not recommend). More recently, rendering a first draft from Rmarkdown to PDF, uploading the produced <span class="in">`.tex`</span> document to Overleaf, and inviting collaborators to edit there directly has been a reasonable compromise, as it preserves the reproducible analysis pipeline while giving collaborators a familiar LaTeX editing environment (8/10: not perfect for reproducibility at the writing stage, but it facilitates collaboration in a way that a pure Quarto workflow currently cannot).</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>A further option is to collaborate in Google Docs, rendering results text and tables to Word and copying them across. This is admittedly imperfect from a reproducibility standpoint, as prose edits made in Google Docs are not tracked in the source <span class="in">`.qmd`</span>. However, it can be a pragmatic workflow when collaborators are not willing or able to use anything else. Crucially, the analysis itself remains fully documented in R scripts and output files, even if the manuscript prose lives elsewhere. The results are still reproducible; only the writing layer is decoupled.</span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>The sections below cover the main output formats, their YAML options, and the practical trade-offs involved.</span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rendering formats</span></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>Quarto separates the source document from its output format. The same <span class="in">`.qmd`</span> file can be rendered to multiple formats by specifying them in the YAML <span class="in">`format:`</span> block:</span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>Render all formats at once from the terminal:</span>
-<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="in">````bash</span></span>
-<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd</span>
-<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>Or a single format:</span>
-<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a><span class="in">````bash</span></span>
-<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> docx</span>
-<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>This separation of content from presentation is one of Quarto's core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents. However, I suggest you choose *one* output format until you have a specific need to render to different formats.</span>
-<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## HTML</span></span>
-<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>HTML is the most flexible output format. It supports interactive elements, renders equations via MathJax, and can be hosted online (like this book, written in Quarto) or shared as a standalone file. For internal reports, supplementary materials, or workshop books, HTML is usually the best default.</span>
-<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
-<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
-<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> flatly</span></span>
-<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
-<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a><span class="fu">## Self-contained HTML with `embed-resources`</span></span>
-<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>By default, Quarto renders HTML with external dependencies (CSS, JavaScript, figures) stored in a separate folder alongside the <span class="in">`.html`</span> file. This means sharing the file alone — by email, for example — will result in missing images and broken styling. Setting <span class="in">`embed-resources: true`</span> bundles everything into a single self-contained <span class="in">`.html`</span> file that can be shared without any accompanying folder.</span>
-<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>The trade-off is file size and render time: <span class="in">`embed-resources: true`</span> produces larger files and renders more slowly. For a book or website that will be hosted online and served from a web server, leave it as <span class="in">`false`</span>.</span>
-<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Word</span></span>
-<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>Word output is the most practical format for sharing with co-authors who are not using Quarto, and is widely accepted by journals for submission. The rendered <span class="in">`.docx`</span> looks and behaves like any other Word document, co-authors can annotate, track changes, and comment without needing to know anything about Quarto.</span>
-<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
-<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
-<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span>
-<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>A reference <span class="in">`.docx`</span> controls the visual styling of the output (fonts, margins, heading styles, and spacing) by mapping Quarto's document elements to Word styles. Generate a default one and then customise it:</span>
-<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a><span class="in">````bash</span></span>
-<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> pandoc <span class="at">-o</span> custom-reference.docx <span class="at">--print-default-data-file</span> reference.docx</span>
-<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>Open the generated file in Word, modify the paragraph and heading styles to match your journal's requirements, and point your YAML to it with <span class="in">`reference-doc: custom-reference.docx`</span>.</span>
-<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
-<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citations in Word</span></span>
-<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>Citations are rendered as plain formatted text in <span class="in">`.docx`</span> output. They are not live fields linked to your <span class="in">`.bib`</span> file, so editing them directly in Word — or adding new ones — will have no effect on the source document and will be overwritten on re-render. Always treat the <span class="in">`.qmd`</span> as the source of truth, and re-render to update the <span class="in">`.docx`</span> rather than editing it directly.</span>
-<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a>If co-authors need to edit citations in Word, the most practical solution is to use Zotero's Word plugin for the final submission copy, keeping the Quarto document as the reproducible record of the analysis.</span>
-<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a><span class="fu">## PDF</span></span>
-<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>PDF output is produced by rendering the <span class="in">`.qmd`</span> to LaTeX and then compiling with a LaTeX engine (by default <span class="in">`pdflatex`</span>). This gives access to the full power of LaTeX for typesetting, including precise control over layout, fonts, and mathematical notation. PDF is the appropriate format for journal submission when a <span class="in">`.pdf`</span> or <span class="in">`.tex`</span> file is required.</span>
-<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
-<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span><span class="co">   # or scrartcl, apa7</span></span>
-<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">papersize</span><span class="kw">:</span><span class="at"> a4</span></span>
-<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fontsize</span><span class="kw">:</span><span class="at"> 12pt</span></span>
-<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span><span class="at"> margin=2.5cm</span></span>
-<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">linestretch</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.5</span></span>
-<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
-<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a>        \usepackage{booktabs}    % professional table rules</span>
-<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a>        \usepackage{longtable}   % tables spanning multiple pages</span>
-<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>        \usepackage{microtype}   % improved text justification</span>
-<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## keep-tex</span></span>
-<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>Setting <span class="in">`keep-tex: true`</span> saves the intermediate <span class="in">`.tex`</span> file alongside the rendered PDF. This is useful in two situations: if the journal requires a raw <span class="in">`.tex`</span> file for submission, or if you want to upload to Overleaf for final formatting tweaks or co-author editing. See @sec-apa7 for important caveats about citation handling in <span class="in">`.tex`</span> output.</span>
-<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## Format comparison</span></span>
-<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>The table below summarises the key differences between output formats for common manuscript features.</span>
-<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a><span class="in">````{r}</span></span>
-<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-formats</span></span>
-<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Comparison of output formats for common manuscript features."</span></span>
-<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a>check <span class="ot">&lt;-</span> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) <span class="st">"yes"</span>     <span class="cf">else</span> <span class="st">"✅"</span></span>
-<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a>cross <span class="ot">&lt;-</span> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) <span class="st">"no"</span>      <span class="cf">else</span> <span class="st">"❌"</span></span>
-<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>warn  <span class="ot">&lt;-</span> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) <span class="st">"limited"</span> <span class="cf">else</span> <span class="st">"⚠️"</span></span>
-<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>tbl_formats <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Feature,           <span class="sc">~</span>HTML,                       <span class="sc">~</span>PDF,                                  <span class="sc">~</span>Word,</span>
-<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Citations"</span>,        <span class="fu">paste</span>(check, <span class="st">"from .bib"</span>),   <span class="fu">paste</span>(check, <span class="st">"from .bib"</span>),             <span class="fu">paste</span>(check, <span class="st">"rendered as text"</span>),</span>
-<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Live .bib link"</span>,   check,                       <span class="fu">paste</span>(warn, <span class="st">"depends on cite-method"</span>), cross,</span>
-<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Cross-references"</span>, check,                       check,                                 check,</span>
-<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Equations"</span>,        <span class="fu">paste</span>(check, <span class="st">"MathJax"</span>),     <span class="fu">paste</span>(check, <span class="st">"native LaTeX"</span>),          <span class="fu">paste</span>(warn, <span class="st">"limited"</span>),</span>
-<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Table formatting"</span>, <span class="st">"`gt`"</span>,                      <span class="st">"`kableExtra`"</span>,                        <span class="st">"`flextable`"</span>,</span>
-<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Custom styles"</span>,    <span class="st">"CSS"</span>,                       <span class="st">"LaTeX"</span>,                               <span class="st">"reference .docx"</span>,</span>
-<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Self-contained"</span>,   <span class="st">"`embed-resources: true`"</span>,   <span class="st">"always"</span>,                              <span class="st">"always"</span></span>
-<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
-<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>  tbl_formats <span class="sc">|&gt;</span></span>
-<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kbl</span>(<span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">format =</span> <span class="st">"latex"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">latex_options =</span> <span class="fu">c</span>(<span class="st">"hold_position"</span>, <span class="st">"scale_down"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">width =</span> <span class="st">"3cm"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_spec</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">width =</span> <span class="st">"3.5cm"</span>)</span>
-<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>  tbl_formats <span class="sc">|&gt;</span></span>
-<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_style</span>(</span>
-<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a>      <span class="at">style     =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
-<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
-<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## APA 7 and `.tex` output {#sec-apa7}</span></span>
-<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a>The following considerations are only relevant if you intend to edit the <span class="in">`.tex`</span> file after rendering — for example, uploading to Overleaf for final formatting or co-author editing. If you render directly to PDF, Word, or HTML from Quarto, citations will be formatted correctly by the default citeproc engine regardless of which option you choose. The issue is specifically about whether the <span class="in">`.tex`</span> file contains live <span class="in">`\cite{}`</span> commands that a LaTeX editor like Overleaf can resolve, or plain formatted text that it cannot.</span>
-<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a>For <span class="in">`.tex`</span> editing workflows, there is no perfect solution. The three main options involve trade-offs between APA 7 accuracy and Overleaf compatibility:</span>
-<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a>**citeproc (default)**  </span>
-<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a>Uses <span class="in">`csl: apa.csl`</span> to format citations at render time. Produces the most accurate APA 7 output of the three options, but resolves citations to plain text in the <span class="in">`.tex`</span> file. Overleaf receives a fully formatted document but with no live citation commands — adding or editing references requires going back to the Quarto source.</span>
-<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a>**natbib + apacite**  </span>
-<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a>Passes citations through to LaTeX as live <span class="in">`\cite{}`</span> commands, which Overleaf can resolve using your uploaded <span class="in">`.bib`</span> file. However, <span class="in">`apacite`</span> was written to APA 6th edition standards and has known formatting issues with APA 7 requirements, including author name truncation rules and DOI formatting.</span>
-<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-195"><a href="#cb9-195" aria-hidden="true" tabindex="-1"></a>**biblatex + biblatex-apa**  </span>
-<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a>The most APA 7-compliant LaTeX citation option, with live citations. Requires <span class="in">`biber`</span> as the backend processor, which must be set manually in Overleaf's compiler settings. More complex to set up than the other options but the best choice if both APA 7 accuracy and live Overleaf citations are required.</span>
-<span id="cb9-197"><a href="#cb9-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a><span class="in">````{r}</span></span>
-<span id="cb9-199"><a href="#cb9-199" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-apa7</span></span>
-<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Citation backend options for .tex output."</span></span>
-<span id="cb9-201"><a href="#cb9-201" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb9-202"><a href="#cb9-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-203"><a href="#cb9-203" aria-hidden="true" tabindex="-1"></a>tbl_apa7 <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Option,                   <span class="sc">~</span><span class="st">`</span><span class="at">APA 7 accuracy</span><span class="st">`</span>,    <span class="sc">~</span><span class="st">`</span><span class="at">Live .tex citations</span><span class="st">`</span>, <span class="sc">~</span>Overleaf,</span>
-<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a>  <span class="st">"citeproc + apa.csl"</span>,      <span class="fu">paste</span>(check, <span class="st">"best"</span>), cross,                  <span class="fu">paste</span>(warn, <span class="st">"upload .tex only"</span>),</span>
-<span id="cb9-206"><a href="#cb9-206" aria-hidden="true" tabindex="-1"></a>  <span class="st">"natbib + apacite"</span>,        <span class="fu">paste</span>(warn, <span class="st">"APA 6"</span>), check,                  <span class="fu">paste</span>(check, <span class="st">"with .bib"</span>),</span>
-<span id="cb9-207"><a href="#cb9-207" aria-hidden="true" tabindex="-1"></a>  <span class="st">"biblatex + biblatex-apa"</span>, <span class="fu">paste</span>(check, <span class="st">"good"</span>), check,                  <span class="fu">paste</span>(check, <span class="st">"set biber in compiler"</span>)</span>
-<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
-<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a>  tbl_apa7 <span class="sc">|&gt;</span></span>
-<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kbl</span>(<span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">format =</span> <span class="st">"latex"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">latex_options =</span> <span class="fu">c</span>(<span class="st">"hold_position"</span>, <span class="st">"scale_down"</span>))</span>
-<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>  tbl_apa7 <span class="sc">|&gt;</span></span>
-<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_style</span>(</span>
-<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a>      <span class="at">style     =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
-<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
-<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-221"><a href="#cb9-221" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a>Choose based on your priority: APA 7 accuracy or Overleaf compatibility. To switch from the default citeproc:</span>
-<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
-<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a><span class="co"># natbib</span></span>
-<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> natbib</span></span>
-<span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
-<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a>        \usepackage[natbibapa]{apacite}</span>
-<span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a><span class="co"># biblatex</span></span>
-<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb9-238"><a href="#cb9-238" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb9-239"><a href="#cb9-239" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb9-240"><a href="#cb9-240" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> biblatex</span></span>
-<span id="cb9-241"><a href="#cb9-241" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">biblio-style</span><span class="kw">:</span><span class="at"> apa</span></span>
-<span id="cb9-242"><a href="#cb9-242" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb9-243"><a href="#cb9-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-244"><a href="#cb9-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-245"><a href="#cb9-245" aria-hidden="true" tabindex="-1"></a><span class="fu">## Chapter slides</span></span>
-<span id="cb9-246"><a href="#cb9-246" aria-hidden="true" tabindex="-1"></a><span class="in">````{=html}</span></span>
-<span id="cb9-247"><a href="#cb9-247" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;a href="../slides/08_formats.html" class="btn btn-outline-primary" target="_blank"&gt;</span></span>
-<span id="cb9-248"><a href="#cb9-248" aria-hidden="true" tabindex="-1"></a><span class="in">  Open slides ↗</span></span>
-<span id="cb9-249"><a href="#cb9-249" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/a&gt;</span></span>
-<span id="cb9-250"><a href="#cb9-250" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Output Formats"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "HTML, Word, PDF, and LaTeX"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">day:</span><span class="co"> "Day 1"</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>::: {style="text-align: right; margin-bottom: 1em;"}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="in">````{=html}</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;a href="../slides/03_formats.html" class="btn btn-outline-primary" target="_blank"&gt;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="in">  Open slides ↗</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/a&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, kableExtra)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) pacman<span class="sc">::</span><span class="fu">p_load</span>(gt)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Purpose</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>This chapter covers rendering a Quarto document to different output formats. The same <span class="in">`.qmd`</span> source file can produce HTML, Word, PDF, and a LaTeX <span class="in">`.tex`</span> file, but each format has specific YAML options and some practical differences worth understanding before committing to a workflow.</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>Rather than trying to support all formats simultaneously, the most pragmatic approach is to decide early which format best fits your collaboration context. The right choice depends on who your co-authors are, how they prefer to give feedback, and what the target journal requires. A workflow that is technically reproducible but creates friction for collaborators is unlikely to be sustainable in practice.</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>To illustrate: my own workflow has evolved considerably over time. Writing my dissertation entirely in R Markdown (with separate <span class="in">`.Rmd`</span> files per chapter knitted together) worked well for a sole-author project but would have been impractical with collaborators. Sharing PDF output for feedback from co-authors on a journal article was workable but painful: comments arrived as annotations on a PDF, had to be manually transferred back to the source (by me), and any revision meant re-rendering and re-sharing (2/10, would not recommend). More recently, rendering a first draft from Rmarkdown to PDF, uploading the produced <span class="in">`.tex`</span> document to Overleaf, and inviting collaborators to edit there directly has been a reasonable compromise, as it preserves the reproducible analysis pipeline while giving collaborators a familiar LaTeX editing environment (8/10: not perfect for reproducibility at the writing stage, but it facilitates collaboration in a way that a pure Quarto workflow currently cannot).</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>A further option is to collaborate in Google Docs, rendering results text and tables to Word and copying them across. This is admittedly imperfect from a reproducibility standpoint, as prose edits made in Google Docs are not tracked in the source <span class="in">`.qmd`</span>. However, it can be a pragmatic workflow when collaborators are not willing or able to use anything else. Crucially, the analysis itself remains fully documented in R scripts and output files, even if the manuscript prose lives elsewhere. The results are still reproducible; only the writing layer is decoupled.</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>The sections below cover the main output formats, their YAML options, and the practical trade-offs involved.</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rendering formats</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>Quarto separates the source document from its output format. The same <span class="in">`.qmd`</span> file can be rendered to HTML, Word, or PDF by specifying the target in the YAML <span class="in">`format:`</span> block. Start with a single format and only add others when you have a specific need:</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>Render from the terminal:</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>Or specify the format explicitly:</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> html</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> pdf</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> docx</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>When you are ready to render to multiple formats, add them together:</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>Or you can add options (more on these below). Here we add a table of contents to all the output formats:</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="in">```yaml</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>This separation of content from presentation is one of Quarto's core strengths: you write once and render to whatever format a collaborator, journal, or audience requires, without maintaining separate documents.</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>Indentation is critical in YAML. Options must be consistently indented under the format name. Mixing spaces and tabs, or inconsistent indentation, will cause render errors.</span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## HTML</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>HTML is the most flexible output format. It supports interactive elements, renders equations via MathJax, and can be hosted online (like this book, written in Quarto) or shared as a standalone file. For internal reports, supplementary materials, or workshop books, HTML is usually the best default.</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> flatly</span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## Self-contained HTML with `embed-resources`</span></span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>By default, Quarto renders HTML with external dependencies (CSS, JavaScript, figures) stored in a separate folder alongside the <span class="in">`.html`</span> file. This means sharing the file alone — by email, for example — will result in missing images and broken styling. Setting <span class="in">`embed-resources: true`</span> bundles everything into a single self-contained <span class="in">`.html`</span> file that can be shared without any accompanying folder.</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>The trade-off is file size and render time: <span class="in">`embed-resources: true`</span> produces larger files and renders more slowly. For a book or website that will be hosted online and served from a web server, leave it as <span class="in">`false`</span>.</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a><span class="fu">## Word</span></span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>Word output is the most practical format for sharing with co-authors who are not using Quarto, and is widely accepted by journals for submission. The rendered <span class="in">`.docx`</span> looks and behaves like any other Word document, co-authors can annotate, track changes, and comment without needing to know anything about Quarto.</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>A reference <span class="in">`.docx`</span> controls the visual styling of the output (fonts, margins, heading styles, and spacing) by mapping Quarto's document elements to Word styles. Generate a default one and then customise it:</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a><span class="in">````bash</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> pandoc <span class="at">-o</span> custom-reference.docx <span class="at">--print-default-data-file</span> reference.docx</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a>Open the generated file in Word, modify the paragraph and heading styles to match your journal's requirements, and point your YAML to it with <span class="in">`reference-doc: custom-reference.docx`</span>.</span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## Citations in Word</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>Citations are rendered as plain formatted text in <span class="in">`.docx`</span> output. They are not live fields linked to your <span class="in">`.bib`</span> file, so editing them directly in Word — or adding new ones — will have no effect on the source document and will be overwritten on re-render. Always treat the <span class="in">`.qmd`</span> as the source of truth, and re-render to update the <span class="in">`.docx`</span> rather than editing it directly.</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>If co-authors need to edit citations in Word, the most practical solution is to use Zotero's Word plugin for the final submission copy, keeping the Quarto document as the reproducible record of the analysis.</span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a><span class="fu">## PDF</span></span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a>PDF output is produced by rendering the <span class="in">`.qmd`</span> to LaTeX and then compiling with a LaTeX engine (by default <span class="in">`pdflatex`</span>). This gives access to the full power of LaTeX for typesetting, including precise control over layout, fonts, and mathematical notation. PDF is the appropriate format for journal submission when a <span class="in">`.pdf`</span> or <span class="in">`.tex`</span> file is required.</span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span><span class="co">   # or scrartcl, apa7</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">papersize</span><span class="kw">:</span><span class="at"> a4</span></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fontsize</span><span class="kw">:</span><span class="at"> 12pt</span></span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span><span class="at"> margin=2.5cm</span></span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">linestretch</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.5</span></span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a>        \usepackage{booktabs}    % professional table rules</span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a>        \usepackage{longtable}   % tables spanning multiple pages</span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>        \usepackage{microtype}   % improved text justification</span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## keep-tex</span></span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>Setting <span class="in">`keep-tex: true`</span> saves the intermediate <span class="in">`.tex`</span> file alongside the rendered PDF. This is useful in two situations: if the journal requires a raw <span class="in">`.tex`</span> file for submission, or if you want to upload to Overleaf for final formatting tweaks or co-author editing. See @sec-apa7 for important caveats about citation handling in <span class="in">`.tex`</span> output.</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a><span class="fu">## Format comparison</span></span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a>The table below summarises the key differences between output formats for common manuscript features.</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a><span class="in">````{r}</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-formats</span></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Comparison of output formats for common manuscript features."</span></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>check <span class="ot">&lt;-</span> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) <span class="st">"yes"</span>     <span class="cf">else</span> <span class="st">"✅"</span></span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a>cross <span class="ot">&lt;-</span> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) <span class="st">"no"</span>      <span class="cf">else</span> <span class="st">"❌"</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a>warn  <span class="ot">&lt;-</span> <span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) <span class="st">"limited"</span> <span class="cf">else</span> <span class="st">"⚠️"</span></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a>tbl_formats <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Feature,           <span class="sc">~</span>HTML,                       <span class="sc">~</span>PDF,                                  <span class="sc">~</span>Word,</span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Citations"</span>,        <span class="fu">paste</span>(check, <span class="st">"from .bib"</span>),   <span class="fu">paste</span>(check, <span class="st">"from .bib"</span>),             <span class="fu">paste</span>(check, <span class="st">"rendered as text"</span>),</span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Live .bib link"</span>,   check,                       <span class="fu">paste</span>(warn, <span class="st">"depends on cite-method"</span>), cross,</span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Cross-references"</span>, check,                       check,                                 check,</span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Equations"</span>,        <span class="fu">paste</span>(check, <span class="st">"MathJax"</span>),     <span class="fu">paste</span>(check, <span class="st">"native LaTeX"</span>),          <span class="fu">paste</span>(warn, <span class="st">"limited"</span>),</span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Table formatting"</span>, <span class="st">"`gt`"</span>,                      <span class="st">"`kableExtra`"</span>,                        <span class="st">"`flextable`"</span>,</span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Custom styles"</span>,    <span class="st">"CSS"</span>,                       <span class="st">"LaTeX"</span>,                               <span class="st">"reference .docx"</span>,</span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Self-contained"</span>,   <span class="st">"`embed-resources: true`"</span>,   <span class="st">"always"</span>,                              <span class="st">"always"</span></span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a>  tbl_formats <span class="sc">|&gt;</span></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kbl</span>(<span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">format =</span> <span class="st">"latex"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">latex_options =</span> <span class="fu">c</span>(<span class="st">"hold_position"</span>, <span class="st">"scale_down"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_spec</span>(<span class="dv">1</span>, <span class="at">width =</span> <span class="st">"3cm"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_spec</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">width =</span> <span class="st">"3.5cm"</span>)</span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a>  tbl_formats <span class="sc">|&gt;</span></span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-195"><a href="#cb11-195" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_style</span>(</span>
+<span id="cb11-196"><a href="#cb11-196" aria-hidden="true" tabindex="-1"></a>      <span class="at">style     =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## APA 7 and `.tex` output {#sec-apa7}</span></span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a>The following considerations are only relevant if you intend to edit the <span class="in">`.tex`</span> file after rendering — for example, uploading to Overleaf for final formatting or co-author editing. If you render directly to PDF, Word, or HTML from Quarto, citations will be formatted correctly by the default citeproc engine regardless of which option you choose. The issue is specifically about whether the <span class="in">`.tex`</span> file contains live <span class="in">`\cite{}`</span> commands that a LaTeX editor like Overleaf can resolve, or plain formatted text that it cannot.</span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a>For <span class="in">`.tex`</span> editing workflows, there is no perfect solution. The three main options involve trade-offs between APA 7 accuracy and Overleaf compatibility:</span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a>**citeproc (default)**  </span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a>Uses <span class="in">`csl: apa.csl`</span> to format citations at render time. Produces the most accurate APA 7 output of the three options, but resolves citations to plain text in the <span class="in">`.tex`</span> file. Overleaf receives a fully formatted document but with no live citation commands — adding or editing references requires going back to the Quarto source.</span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a>**natbib + apacite**  </span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a>Passes citations through to LaTeX as live <span class="in">`\cite{}`</span> commands, which Overleaf can resolve using your uploaded <span class="in">`.bib`</span> file. However, <span class="in">`apacite`</span> was written to APA 6th edition standards and has known formatting issues with APA 7 requirements, including author name truncation rules and DOI formatting.</span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a>**biblatex + biblatex-apa**  </span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a>The most APA 7-compliant LaTeX citation option, with live citations. Requires <span class="in">`biber`</span> as the backend processor, which must be set manually in Overleaf's compiler settings. More complex to set up than the other options but the best choice if both APA 7 accuracy and live Overleaf citations are required.</span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a><span class="in">````{r}</span></span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-apa7</span></span>
+<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Citation backend options for .tex output."</span></span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a>tbl_apa7 <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Option,                   <span class="sc">~</span><span class="st">`</span><span class="at">APA 7 accuracy</span><span class="st">`</span>,    <span class="sc">~</span><span class="st">`</span><span class="at">Live .tex citations</span><span class="st">`</span>, <span class="sc">~</span>Overleaf,</span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a>  <span class="st">"citeproc + apa.csl"</span>,      <span class="fu">paste</span>(check, <span class="st">"best"</span>), cross,                  <span class="fu">paste</span>(warn, <span class="st">"upload .tex only"</span>),</span>
+<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a>  <span class="st">"natbib + apacite"</span>,        <span class="fu">paste</span>(warn, <span class="st">"APA 6"</span>), check,                  <span class="fu">paste</span>(check, <span class="st">"with .bib"</span>),</span>
+<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a>  <span class="st">"biblatex + biblatex-apa"</span>, <span class="fu">paste</span>(check, <span class="st">"good"</span>), check,                  <span class="fu">paste</span>(check, <span class="st">"set biber in compiler"</span>)</span>
+<span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
+<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a>  tbl_apa7 <span class="sc">|&gt;</span></span>
+<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kbl</span>(<span class="at">booktabs =</span> <span class="cn">TRUE</span>, <span class="at">format =</span> <span class="st">"latex"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">latex_options =</span> <span class="fu">c</span>(<span class="st">"hold_position"</span>, <span class="st">"scale_down"</span>))</span>
+<span id="cb11-233"><a href="#cb11-233" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb11-234"><a href="#cb11-234" aria-hidden="true" tabindex="-1"></a>  tbl_apa7 <span class="sc">|&gt;</span></span>
+<span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-236"><a href="#cb11-236" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_style</span>(</span>
+<span id="cb11-237"><a href="#cb11-237" aria-hidden="true" tabindex="-1"></a>      <span class="at">style     =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">"bold"</span>),</span>
+<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a>      <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
+<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>Choose based on your priority: APA 7 accuracy or Overleaf compatibility. To switch from the default citeproc:</span>
+<span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-245"><a href="#cb11-245" aria-hidden="true" tabindex="-1"></a><span class="in">````yaml</span></span>
+<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a><span class="co"># natbib</span></span>
+<span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> natbib</span></span>
+<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
+<span id="cb11-252"><a href="#cb11-252" aria-hidden="true" tabindex="-1"></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a>        \usepackage[natbibapa]{apacite}</span>
+<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a><span class="co"># biblatex</span></span>
+<span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">cite-method</span><span class="kw">:</span><span class="at"> biblatex</span></span>
+<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">biblio-style</span><span class="kw">:</span><span class="at"> apa</span></span>
+<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

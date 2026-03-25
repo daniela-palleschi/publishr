@@ -208,9 +208,8 @@ Daniela Palleschi
 
   <p class="date">March 25, 2026</p>
 </section>
-<section>
-<section id="overview" class="title-slide slide level1 center">
-<h1>Overview</h1>
+<section id="overview" class="title-slide slide level2 center">
+<h2>Overview</h2>
 <ul>
 <li class="fragment">Rendering to multiple formats from one source file</li>
 <li class="fragment">HTML: sharing and the web</li>
@@ -219,35 +218,9 @@ Daniela Palleschi
 <li class="fragment">APA 7 and <code>.tex</code> trade-offs</li>
 </ul>
 </section>
-<section class="slide level4">
 
-</section></section>
-<section>
-<section id="rendering-formats" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="Rendering formats">
-<h1>Rendering formats</h1>
-<div style="text-align: center; margin-top: 1em; color: white;">
-<p><em>One source file, multiple outputs</em></p>
-</div>
-</section>
-<section id="the-format-block" class="title-slide slide level2 center">
-<h2>The format block</h2>
-<p>Specify output formats in the YAML <code>format:</code> block:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb1-2"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb1-3"><a href=""></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb1-4"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb1-5"><a href=""></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb1-6"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
-<span id="cb1-7"><a href=""></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>Render all formats at once:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href=""></a><span class="ex">quarto</span> render manuscript.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Or a single format:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href=""></a><span class="ex">quarto</span> render manuscript.qmd <span class="at">--to</span> docx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="think-about-your-workflow" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
-<h3>💬 Think about your workflow</h3>
+<section id="think-about-your-workflow" class="title-slide slide level2 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
+<h2>💬 Think about your workflow</h2>
 <p><em>Which output format do you need most?</em></p>
 <div class="fragment">
 <p><em>Do your co-authors use Word, LaTeX, or something else?</em></p>
@@ -260,30 +233,125 @@ Daniela Palleschi
 </div>
 </section>
 
+<section>
+<section id="rendering-formats" class="title-slide slide level2 center">
+<h2>Rendering formats</h2>
+<p>Render to a single format by specifying it in the YAML <code>format:</code> block:</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>HTML</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:33%;">
+<p><strong>PDF</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:33%;">
+<p><strong>Word</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+</section>
+<section id="format-options" class="title-slide slide level3 center">
+<h3>Format options</h3>
+<p>Add options by replacing <code>default</code> with indented key-value pairs; here we add table of contents:</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>HTML</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb4-3"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:33%;">
+<p><strong>PDF</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:33%;">
+<p><strong>Word</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Indentation is critical in YAML. Options must be indented consistently under the format name. Mixing spaces and tabs, or inconsistent indentation, will cause render errors.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="multiple-formats" class="title-slide slide level3 center">
+<h3>Multiple formats</h3>
+<p>Specify all formats together to render all at once with <code>quarto render manuscript.qmd</code> in the Terminal (or individually via the <code>Render</code> button):</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Minimal</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb7-3"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb7-4"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span><span class="at"> default</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<p><strong>With options</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb8-3"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-4"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb8-5"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-6"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb8-7"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Indentation is critical. <code>toc: true</code> must be indented under <code>html:</code>, <code>pdf:</code>, or <code>docx:</code>, not at the same level as the format name.</p>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section>
-<section id="html" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="HTML">
-<h1>HTML</h1>
+<section id="html" class="title-slide slide level2 center" data-background-color="#8D203D" data-stack-name="HTML">
+<h2>HTML</h2>
 <div style="text-align: center; margin-top: 1em; color: white;">
 <p><em>The most flexible output format</em></p>
 </div>
 </section>
-<section id="yaml-options" class="title-slide slide level2 center">
-<h2>YAML options</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="yaml-options" class="title-slide slide level3 center">
+<h3>YAML options</h3>
+<ul>
+<li class="fragment">without options:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb5-2"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb5-3"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">              # include table of contents</span></span>
-<span id="cb5-4"><a href=""></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span><span class="co">           # show headings up to H3 in the TOC</span></span>
-<span id="cb5-5"><a href=""></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">  # number all sections and subsections</span></span>
-<span id="cb5-6"><a href=""></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">  # bundle everything into a single .html file</span></span>
-<span id="cb5-7"><a href=""></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> flatly</span><span class="co">          # Bootswatch theme (flatly = clean, modern look)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li class="fragment">with some useful options:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb10-2"><a href=""></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">              # include table of contents</span></span>
+<span id="cb10-4"><a href=""></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span><span class="co">           # show headings up to H3 in the TOC</span></span>
+<span id="cb10-5"><a href=""></a><span class="at">    </span><span class="fu">toc-float</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">        # keep the TOC visible as you scroll (floating sidebar)</span></span>
+<span id="cb10-6"><a href=""></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">  # number all sections and subsections</span></span>
+<span id="cb10-7"><a href=""></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">  # bundle everything into a single .html file</span></span>
+<span id="cb10-8"><a href=""></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> flatly</span><span class="co">          # Bootswatch theme (flatly = clean, modern look)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 
-<section id="embed-resources" class="title-slide slide level2 center">
-<h2><code>embed-resources</code></h2>
+<section id="embed-resources" class="title-slide slide level3 center">
+<h3><code>embed-resources</code></h3>
 <ul>
 <li class="fragment">By default, Quarto renders HTML with external dependencies stored in a separate folder</li>
 <li class="fragment">Setting <code>embed-resources: true</code> bundles everything into a single <code>.html</code> file</li>
@@ -307,29 +375,38 @@ Daniela Palleschi
 </section>
 </section>
 <section>
-<section id="word" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="Word">
-<h1>Word</h1>
+<section id="word" class="title-slide slide level2 center" data-background-color="#8D203D" data-stack-name="Word">
+<h2>Word</h2>
 <div style="text-align: center; margin-top: 1em; color: white;">
 <p><em>Co-authors and journal submission</em></p>
 </div>
 </section>
-<section id="yaml-options-1" class="title-slide slide level2 center">
-<h2>YAML options</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb6-2"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
-<span id="cb6-3"><a href=""></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span><span class="co">  # Word template defining fonts, margins, and heading styles</span></span>
-<span id="cb6-4"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">                             # no table of contents in the Word output</span></span>
-<span id="cb6-5"><a href=""></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">                 # no section numbering in the Word output</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="yaml-options-1" class="title-slide slide level3 center">
+<h3>YAML options</h3>
+<ul>
+<li class="fragment">without options:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span><span class="at"> docx</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li class="fragment">with some useful options</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb12-2"><a href=""></a><span class="at">  </span><span class="fu">docx</span><span class="kw">:</span></span>
+<span id="cb12-3"><a href=""></a><span class="at">    </span><span class="fu">reference-doc</span><span class="kw">:</span><span class="at"> custom-reference.docx</span><span class="co">  # Word template defining fonts, margins, and heading styles</span></span>
+<span id="cb12-4"><a href=""></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">                             # no table of contents in the Word output</span></span>
+<span id="cb12-5"><a href=""></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span><span class="co">                 # no section numbering in the Word output</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <div class="fragment">
 <p>A reference <code>.docx</code> sets the styles (fonts, margins, heading levels) for the output. Generate a default one:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href=""></a><span class="ex">quarto</span> pandoc <span class="at">-o</span> custom-reference.docx <span class="dt">\</span></span>
-<span id="cb7-2"><a href=""></a>  <span class="at">--print-default-data-file</span> reference.docx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href=""></a><span class="ex">quarto</span> pandoc <span class="at">-o</span> custom-reference.docx <span class="dt">\</span></span>
+<span id="cb13-2"><a href=""></a>  <span class="at">--print-default-data-file</span> reference.docx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Then open in Word and modify styles to match your journal.</p>
 </div>
 </section>
 
-<section id="citations" class="title-slide slide level2 center">
-<h2>Citations</h2>
+<section id="citations" class="title-slide slide level3 center">
+<h3>Citations</h3>
 <ul>
 <li class="fragment">Citations are rendered as plain formatted text in <code>.docx</code> output</li>
 <li class="fragment">They are not live fields linked to your <code>.bib</code> file</li>
@@ -352,6 +429,7 @@ Daniela Palleschi
 </div>
 </div>
 </section>
+
 <section id="turn-talk" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
 <h3>💬 Turn &amp; talk</h3>
 <p><em>Do your co-authors use Word?</em></p>
@@ -372,54 +450,62 @@ Daniela Palleschi
 
 <section class="slide level4">
 
-</section>
-</section>
+</section></section>
 <section>
-<section id="pdf" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="PDF">
-<h1>PDF</h1>
+<section id="pdf" class="title-slide slide level2 center" data-background-color="#8D203D" data-stack-name="PDF">
+<h2>PDF</h2>
 <div style="text-align: center; margin-top: 1em; color: white;">
-<p><em>LaTeX and Overleaf</em></p>
+<p><em>PDF and LaTeX output</em></p>
 </div>
 </section>
-<section id="yaml-options-2" class="title-slide slide level2 center">
-<h2>YAML options</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb8-2"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb8-3"><a href=""></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span><span class="co">  # document class: article, scrartcl (KOMA), or apa7</span></span>
-<span id="cb8-4"><a href=""></a><span class="at">    </span><span class="fu">papersize</span><span class="kw">:</span><span class="at"> a4</span><span class="co">            # paper size</span></span>
-<span id="cb8-5"><a href=""></a><span class="at">    </span><span class="fu">fontsize</span><span class="kw">:</span><span class="at"> 12pt</span><span class="co">           # base font size</span></span>
-<span id="cb8-6"><a href=""></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span><span class="at"> margin=2.5cm</span><span class="co">  # page margins (requires geometry LaTeX package)</span></span>
-<span id="cb8-7"><a href=""></a><span class="at">    </span><span class="fu">linestretch</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.5</span><span class="co">         # line spacing (1.5 = one-and-a-half, 2 = double)</span></span>
-<span id="cb8-8"><a href=""></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">    # number all sections and subsections</span></span>
-<span id="cb8-9"><a href=""></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">           # save intermediate .tex file alongside the PDF</span></span>
-<span id="cb8-10"><a href=""></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
-<span id="cb8-11"><a href=""></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb8-12"><a href=""></a>        \usepackage{booktabs}   % professional table rules (required for kableExtra)</span>
-<span id="cb8-13"><a href=""></a>        \usepackage{longtable}  % tables that span multiple pages</span>
-<span id="cb8-14"><a href=""></a>        \usepackage{microtype}  % improved text justification and spacing</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="yaml-options-2" class="title-slide slide level3 center">
+<h3>YAML options</h3>
+<ul>
+<li class="fragment">without options:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span><span class="at"> pdf</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li class="fragment">with some useful options</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb15-2"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb15-3"><a href=""></a><span class="at">    </span><span class="fu">documentclass</span><span class="kw">:</span><span class="at"> article</span><span class="co">  # document class: article, scrartcl (KOMA), or apa7</span></span>
+<span id="cb15-4"><a href=""></a><span class="at">    </span><span class="fu">papersize</span><span class="kw">:</span><span class="at"> a4</span><span class="co">            # paper size</span></span>
+<span id="cb15-5"><a href=""></a><span class="at">    </span><span class="fu">fontsize</span><span class="kw">:</span><span class="at"> 12pt</span><span class="co">           # base font size</span></span>
+<span id="cb15-6"><a href=""></a><span class="at">    </span><span class="fu">geometry</span><span class="kw">:</span><span class="at"> margin=2.5cm</span><span class="co">  # page margins (requires geometry LaTeX package)</span></span>
+<span id="cb15-7"><a href=""></a><span class="at">    </span><span class="fu">linestretch</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.5</span><span class="co">         # line spacing (1.5 = one-and-a-half, 2 = double)</span></span>
+<span id="cb15-8"><a href=""></a><span class="at">    </span><span class="fu">number-sections</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">    # number all sections and subsections</span></span>
+<span id="cb15-9"><a href=""></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">           # save intermediate .tex file alongside the PDF</span></span>
+<span id="cb15-10"><a href=""></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
+<span id="cb15-11"><a href=""></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb15-12"><a href=""></a>        \usepackage{booktabs}   % professional table rules (required for kableExtra)</span>
+<span id="cb15-13"><a href=""></a>        \usepackage{longtable}  % tables that span multiple pages</span>
+<span id="cb15-14"><a href=""></a>        \usepackage{microtype}  % improved text justification and spacing</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 
-<section id="keep-tex" class="title-slide slide level2 center">
-<h2><code>keep-tex</code></h2>
+<section id="keep-tex" class="title-slide slide level3 center">
+<h3><code>keep-tex</code></h3>
 <ul>
 <li class="fragment"><code>keep-tex: true</code> saves the intermediate <code>.tex</code> file alongside the PDF</li>
 <li class="fragment">Useful for making final tweaks in Overleaf before submission</li>
 <li class="fragment">Required if the journal needs a raw <code>.tex</code> file</li>
 </ul>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb9-2"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
-<span id="cb9-3"><a href=""></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb16-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb16-2"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb16-3"><a href=""></a><span class="at">    </span><span class="fu">keep-tex</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section>
-<section id="format-comparison" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="Comparison">
-<h1>Format comparison</h1>
+<section id="format-comparison" class="title-slide slide level2 center" data-background-color="#8D203D" data-stack-name="Comparison">
+<h2>Format comparison</h2>
 
 </section>
-<section id="at-a-glance" class="title-slide slide level2 center">
-<h2>At a glance</h2>
+<section id="at-a-glance" class="title-slide slide level3 center">
+<h3>At a glance</h3>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -475,16 +561,14 @@ Daniela Palleschi
 </tbody>
 </table>
 </section>
-<section id="your-turn" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
-<h3>✏️ Your turn</h3>
+<section id="your-turn" class="slide level4" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
+<h4>✏️ Your turn</h4>
 <p>Open <code>exercises/session1.qmd</code> and follow the exercises for .</p>
 <p><em>~15 minutes</em></p>
 </section>
-
 </section>
-<section>
-<section id="summary" class="title-slide slide level1 center">
-<h1>Summary</h1>
+<section id="summary" class="title-slide slide level2 center">
+<h2>Summary</h2>
 <ul>
 <li class="fragment">One <code>.qmd</code> file renders to HTML, Word, and PDF</li>
 <li class="fragment"><code>embed-resources: true</code> for shareable standalone HTML</li>
@@ -493,6 +577,8 @@ Daniela Palleschi
 <li class="fragment">APA 7 in <code>.tex</code> involves trade-offs — choose based on your priority</li>
 </ul>
 </section>
+
+<section>
 <section id="up-next" class="title-slide slide level2 center" data-background-color="#8D203D">
 <h2>Up next…</h2>
 
@@ -501,7 +587,6 @@ Daniela Palleschi
 <h3><a href="04_data.html">Incorporating Data</a></h3>
 <p><em>Summary tables and inline reporting</em></p>
 </section>
-
 
 </section>
     </div>

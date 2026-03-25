@@ -325,6 +325,11 @@ div.csl-indent {
 </i> 
 <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../R-for-Publication.pdf"> <i class="bi bi-file-pdf" role="img" aria-label="Download PDF">
+</i> 
+<span class="menu-text">PDF</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -393,7 +398,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/04_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></span></a>
   </div>
 </li>
       </ul>
@@ -452,10 +457,7 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#an-alternative-pacman" id="toc-an-alternative-pacman" class="nav-link" data-scroll-target="#an-alternative-pacman"><span class="header-section-number">1.5.1</span> An alternative: pacman</a></li>
   </ul></li>
-  <li><a href="#quarto-in-an-rproject" id="toc-quarto-in-an-rproject" class="nav-link" data-scroll-target="#quarto-in-an-rproject"><span class="header-section-number">1.6</span> Quarto in an RProject</a>
-  <ul class="collapse">
-  <li><a href="#chapter-slides" id="toc-chapter-slides" class="nav-link" data-scroll-target="#chapter-slides"><span class="header-section-number">1.6.1</span> Chapter slides</a></li>
-  </ul></li>
+  <li><a href="#quarto-in-an-rproject" id="toc-quarto-in-an-rproject" class="nav-link" data-scroll-target="#quarto-in-an-rproject"><span class="header-section-number">1.6</span> Quarto in an RProject</a></li>
   </ul>
 </nav>
     <div class="quarto-margin-footer"><div class="margin-footer-item">
@@ -546,6 +548,7 @@ Tip
     ├── tables/
     └── models/
 </pre>
+
 <p>The <code>R/</code> folder contains numbered scripts following a modular analysis workflow <span class="citation" data-cites="Nagler1995">(<a href="02_writing.html#ref-Nagler1995" role="doc-biblioref">Nagler, 1995</a>)</span>: each script has a single responsibility, takes clearly defined inputs, and produces clearly defined outputs. Scripts are numbered to indicate the order in which they should be run. The <code>data/raw/</code> folder contains the original, unmodified data — this is the source of truth and should never be altered directly.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -658,11 +661,6 @@ Tip
 <p>A Quarto project and an RProject are complementary but independent. The <code>.Rproj</code> file manages the R environment and working directory; the <code>_quarto.yml</code> file manages document rendering. Both can coexist in the same folder, and together they provide a fully self-contained, reproducible research project.</p>
 </div>
 </div>
-<section id="chapter-slides" class="level3 slides-link" data-number="1.6.1">
-<h3 class="slides-link anchored" data-number="1.6.1" data-anchor-id="chapter-slides"><span class="header-section-number">1.6.1</span> Chapter slides</h3>
-<a href="../slides/01_setup.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
 
 
 <!-- -->
@@ -681,7 +679,6 @@ Nagler, J. (1995). Coding style and good computing practices. <em>PS: Political 
 Wilkinson, M. D. et al. (2016). The <span>FAIR</span> guiding principles for scientific data management and stewardship. <em>Scientific Data</em>, <em>3</em>, 160018. <a href="https://doi.org/10.1038/sdata.2016.18">https://doi.org/10.1038/sdata.2016.18</a>
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1330,14 +1327,6 @@ Wilkinson, M. D. et al. (2016). The <span>FAIR</span> guiding principles for sci
 <span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
 <span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a>A Quarto project and an RProject are complementary but independent. The <span class="in">`.Rproj`</span> file manages the R environment and working directory; the <span class="in">`_quarto.yml`</span> file manages document rendering. Both can coexist in the same folder, and together they provide a fully self-contained, reproducible research project.</span>
 <span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a><span class="fu">### Chapter slides {.slides-link}</span></span>
-<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
-<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;a href="../slides/01_setup.html" class="btn btn-outline-primary" target="_blank"&gt;</span></span>
-<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a><span class="in">  Open slides ↗</span></span>
-<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/a&gt;</span></span>
-<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -215,14 +215,35 @@ Daniela Palleschi
 <li class="fragment">Markdown basics: text formatting and structure</li>
 <li class="fragment">Headers and document organisation</li>
 <li class="fragment">Citations and APA formatting</li>
-<li class="fragment">Cross-referencing figures, tables, and sections</li>
-<li class="fragment">Numbered example sentences</li>
+<li class="fragment">Cross-referencing sections and example sentences</li>
 <li class="fragment">Inline R for dynamic reporting</li>
 </ul>
 </section>
-<section class="slide level4">
-
-</section></section>
+<section id="source-vs.-visual-editor" class="title-slide slide level3 center">
+<h3>Source vs.&nbsp;visual editor</h3>
+<p>I recommend using the Source editor (e.g., in YAML <code>editor: source</code>), as it helps you understand the underlying syntax</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Source editor</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href=""></a><span class="fu">editor</span><span class="kw">:</span><span class="at"> source</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li class="fragment">Write raw Markdown</li>
+<li class="fragment">Syntax always visible</li>
+<li class="fragment">Easier to debug</li>
+<li class="fragment">Builds better habits</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Visual editor</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href=""></a><span class="fu">editor</span><span class="kw">:</span><span class="at"> visual</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li class="fragment">Formatting applied visually</li>
+<li class="fragment">Point-and-click tables</li>
+<li class="fragment">Built-in Zotero integration</li>
+<li class="fragment">Can silently reformat Markdown</li>
+</ul>
+</div></div>
+</section>
+</section>
 <section>
 <section id="markdown-basics" class="title-slide slide level2 center" data-background-color="#8D203D" data-stack-name="Markdown basics">
 <h2>Markdown basics</h2>
@@ -274,10 +295,10 @@ Daniela Palleschi
 
 <section id="headers" class="title-slide slide level3 center">
 <h3>Headers</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href=""></a><span class="fu"># Chapter title (H1)</span></span>
-<span id="cb1-2"><a href=""></a><span class="fu">## Section (H2)</span></span>
-<span id="cb1-3"><a href=""></a><span class="fu">### Subsection (H3)</span></span>
-<span id="cb1-4"><a href=""></a><span class="fu">#### Subsubsection (H4)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href=""></a><span class="fu"># Chapter title (H1)</span></span>
+<span id="cb3-2"><a href=""></a><span class="fu">## Section (H2)</span></span>
+<span id="cb3-3"><a href=""></a><span class="fu">### Subsection (H3)</span></span>
+<span id="cb3-4"><a href=""></a><span class="fu">#### Subsubsection (H4)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
@@ -297,22 +318,42 @@ Daniela Palleschi
 
 <section id="lists" class="title-slide slide level3 center">
 <h3>Lists</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href=""></a><span class="ss">- </span>unordered item</span>
-<span id="cb2-2"><a href=""></a><span class="ss">- </span>another item</span>
-<span id="cb2-3"><a href=""></a><span class="ss">  - </span>nested item</span>
-<span id="cb2-4"><a href=""></a></span>
-<span id="cb2-5"><a href=""></a><span class="ss">1. </span>ordered item</span>
-<span id="cb2-6"><a href=""></a><span class="ss">2. </span>another item</span>
-<span id="cb2-7"><a href=""></a><span class="ss">   1. </span>nested item</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href=""></a><span class="ss">- </span>unordered item</span>
+<span id="cb4-2"><a href=""></a><span class="ss">- </span>another item</span>
+<span id="cb4-3"><a href=""></a><span class="ss">  - </span>nested item</span>
+<span id="cb4-4"><a href=""></a></span>
+<span id="cb4-5"><a href=""></a><span class="ss">1. </span>ordered item</span>
+<span id="cb4-6"><a href=""></a><span class="ss">2. </span>another item</span>
+<span id="cb4-7"><a href=""></a><span class="ss">   1. </span>nested item</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment">unordered item</li>
+<li class="fragment">another item
+<ul>
+<li class="fragment">nested item</li>
+</ul></li>
+</ul>
+<ol type="1">
+<li class="fragment">ordered item</li>
+<li class="fragment">another item
+<ol type="1">
+<li class="fragment">nested item</li>
+</ol></li>
+</ol>
+</div></div>
 </section>
 
 <section id="block-elements" class="title-slide slide level3 center">
 <h3>Block elements</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href=""></a><span class="at">&gt; This is a blockquote.</span></span>
-<span id="cb3-2"><a href=""></a><span class="at">&gt; Useful for quoting stimuli or definitions.</span></span>
-<span id="cb3-3"><a href=""></a><span class="at">&gt; -- Attributed author</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href=""></a><span class="at">&gt; This is a blockquote.</span></span>
+<span id="cb5-2"><a href=""></a><span class="at">&gt; Useful for quoting stimuli or definitions.</span></span>
+<span id="cb5-3"><a href=""></a><span class="at">&gt;</span></span>
+<span id="cb5-4"><a href=""></a><span class="at">&gt; -- Attributed author</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote>
-<p>This is a blockquote. Useful for quoting stimuli or definitions. – Attributed author</p>
+<p>This is a blockquote. Useful for quoting stimuli or definitions.</p>
+<p>– Attributed author</p>
 </blockquote>
 </section>
 
@@ -320,20 +361,20 @@ Daniela Palleschi
 <h3>Callout boxes</h3>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href=""></a><span class="at">&gt; This is a blockquote.</span></span>
-<span id="cb4-2"><a href=""></a><span class="at">&gt; Useful for quoting stimuli.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href=""></a>::: callout-tip</span>
-<span id="cb5-2"><a href=""></a>A tip callout.</span>
-<span id="cb5-3"><a href=""></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href=""></a>::: callout-note</span>
-<span id="cb6-2"><a href=""></a>A note callout.</span>
-<span id="cb6-3"><a href=""></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href=""></a>::: callout-warning</span>
-<span id="cb7-2"><a href=""></a>A warning callout.</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href=""></a><span class="at">&gt; This is a blockquote.</span></span>
+<span id="cb6-2"><a href=""></a><span class="at">&gt; Useful for quoting stimuli.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href=""></a>::: callout-tip</span>
+<span id="cb7-2"><a href=""></a>A tip callout.</span>
 <span id="cb7-3"><a href=""></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href=""></a>::: callout-important</span>
-<span id="cb8-2"><a href=""></a>An important callout.</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href=""></a>::: callout-note</span>
+<span id="cb8-2"><a href=""></a>A note callout.</span>
 <span id="cb8-3"><a href=""></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href=""></a>::: callout-warning</span>
+<span id="cb9-2"><a href=""></a>A warning callout.</span>
+<span id="cb9-3"><a href=""></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href=""></a>::: callout-important</span>
+<span id="cb10-2"><a href=""></a>An important callout.</span>
+<span id="cb10-3"><a href=""></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <blockquote>
 <p>This is a blockquote. Useful for quoting stimuli.</p>
@@ -392,9 +433,6 @@ Daniela Palleschi
 </div>
 </div></div>
 </section>
-<section class="slide level4">
-
-</section>
 </section>
 <section>
 <section id="citations" class="title-slide slide level2 center" data-background-color="#8D203D" data-stack-name="Citations">
@@ -406,11 +444,11 @@ Daniela Palleschi
 <section id="setting-up-a-bibliography" class="title-slide slide level3 center">
 <h3>Setting up a bibliography</h3>
 <p>In your YAML:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href=""></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> references.bib</span></span>
-<span id="cb9-2"><a href=""></a><span class="fu">csl</span><span class="kw">:</span><span class="at"> apa.csl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href=""></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> references.bib</span></span>
+<span id="cb11-2"><a href=""></a><span class="fu">csl</span><span class="kw">:</span><span class="at"> apa.csl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p><code>references.bib</code> — BibTeX file with your references<br>
-<code>apa.csl</code> — Citation Style Language file for APA formatting</p>
+<p><code>references.bib</code>: BibTeX file with your references<br>
+<code>apa.csl</code>: Citation Style Language file for APA formatting</p>
 </div>
 <div class="fragment">
 <div class="callout callout-tip callout-titled callout-style-default">
@@ -423,10 +461,10 @@ Daniela Palleschi
 </div>
 <div class="callout-content">
 <p>Download <code>apa.csl</code> from the <a href="https://www.zotero.org/styles">Zotero CSL repository</a> or run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">download.file</span>(</span>
-<span id="cb10-2"><a href=""></a>  <span class="st">"https://www.zotero.org/styles/apa"</span>,</span>
-<span id="cb10-3"><a href=""></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"apa.csl"</span>)</span>
-<span id="cb10-4"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">download.file</span>(</span>
+<span id="cb12-2"><a href=""></a>  <span class="st">"https://www.zotero.org/styles/apa"</span>,</span>
+<span id="cb12-3"><a href=""></a>  here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"apa.csl"</span>)</span>
+<span id="cb12-4"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -466,7 +504,7 @@ Daniela Palleschi
 </tbody>
 </table>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href=""></a>Mixed-effects models were fitted following @Bates2015. All analyses were conducted in R <span class="co">[</span><span class="ot">@R2024</span><span class="co">]</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href=""></a>Mixed-effects models were fitted following @Bates2015. All analyses were conducted in R <span class="co">[</span><span class="ot">@R2024</span><span class="co">]</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Mixed-effects models were fitted following <span class="citation" data-cites="Bates2015">@Bates2015</span>. All analyses were conducted in R <span class="citation" data-cites="R2024">[@R2024]</span>.</p>
 </div>
 </section>
@@ -480,15 +518,15 @@ Daniela Palleschi
 <li class="fragment"><strong>R packages</strong>: <code>citation("lme4")</code> gives a citable reference</li>
 </ul>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">citation</span>(<span class="st">"lme4"</span>)</span>
-<span id="cb12-2"><a href=""></a><span class="fu">toBibtex</span>(<span class="fu">citation</span>(<span class="st">"lme4"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">citation</span>(<span class="st">"lme4"</span>)</span>
+<span id="cb14-2"><a href=""></a><span class="fu">toBibtex</span>(<span class="fu">citation</span>(<span class="st">"lme4"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 
 <section id="apa-formatting-tips" class="title-slide slide level3 center">
 <h3>APA formatting tips</h3>
 <ul>
-<li class="fragment">Use <code>csl: apa.csl</code> — Quarto handles the rest automatically</li>
+<li class="fragment">Use <code>csl: apa.csl</code>: Quarto handles the rest automatically</li>
 <li class="fragment">Author-date in text: <code>@Bates2015</code> → Bates et al.&nbsp;(2015)</li>
 <li class="fragment">References section: add <code>references.qmd</code> with <code>::: {#refs} :::</code></li>
 <li class="fragment">Running head, double spacing, line spacing: set in YAML or reference <code>.docx</code></li>
@@ -562,27 +600,27 @@ Daniela Palleschi
 
 <section id="figures" class="title-slide slide level3 center">
 <h3>Figures</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb13-2"><a href=""></a><span class="co">#| label: fig-mass</span></span>
-<span id="cb13-3"><a href=""></a><span class="co">#| fig-cap: "Body mass by condition."</span></span>
-<span id="cb13-4"><a href=""></a><span class="fu">ggplot</span>(...)</span>
-<span id="cb13-5"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href=""></a><span class="in">```{r}</span></span>
+<span id="cb15-2"><a href=""></a><span class="co">#| label: fig-mass</span></span>
+<span id="cb15-3"><a href=""></a><span class="co">#| fig-cap: "Body mass by condition."</span></span>
+<span id="cb15-4"><a href=""></a><span class="fu">ggplot</span>(...)</span>
+<span id="cb15-5"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>In prose:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href=""></a>As shown in @fig-mass, body mass differed by condition.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href=""></a>As shown in @fig-mass, body mass differed by condition.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>→ “As shown in Figure 1, body mass differed by condition.”</p>
 </div>
 </section>
 
 <section id="tables" class="title-slide slide level3 center">
 <h3>Tables</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb15-2"><a href=""></a><span class="co">#| label: tbl-desc</span></span>
-<span id="cb15-3"><a href=""></a><span class="co">#| tbl-cap: "Descriptive statistics by condition."</span></span>
-<span id="cb15-4"><a href=""></a>tbl3 <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span>
-<span id="cb15-5"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href=""></a><span class="in">```{r}</span></span>
+<span id="cb17-2"><a href=""></a><span class="co">#| label: tbl-desc</span></span>
+<span id="cb17-3"><a href=""></a><span class="co">#| tbl-cap: "Descriptive statistics by condition."</span></span>
+<span id="cb17-4"><a href=""></a>tbl3 <span class="sc">|&gt;</span> <span class="fu">gt</span>()</span>
+<span id="cb17-5"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href=""></a>Descriptive statistics are presented in @tbl-desc.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href=""></a>Descriptive statistics are presented in @tbl-desc.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>→ “Descriptive statistics are presented in Table 1.”</p>
 </div>
 </section>
@@ -610,7 +648,7 @@ The model is specified in @eq-model.</code></pre>
 <p><span id="eq-model"><span class="math display">\[
 y_i = \beta_0 + \beta_1 \text{Tense}_i + \beta_2 \text{Lifetime}_i + \varepsilon_i
 \tag{1}\]</span></span></p>
-<p>“The model is specified in Equation 1.”</p>
+<p>The model is specified in Equation 1.</p>
 </div>
 </section>
 
@@ -631,18 +669,49 @@ As shown in (@ex-good), the active form is grammatical.</code></pre>
 </ol>
 <p>As shown in (1), the active form is grammatical.</p>
 </div>
+</section>
+
+<section id="gb4e-for-pdf" class="title-slide slide level3 center">
+<h3><code>gb4e</code> for PDF</h3>
+<ul>
+<li class="fragment">for more control (e.g., sub-examples (1a, 1b), glosses, alignment) use the <code>gb4e</code> LaTeX package in PDF output</li>
+</ul>
+<p>Add to your YAML:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb22-1"><a href=""></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb22-2"><a href=""></a><span class="at">  </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb22-3"><a href=""></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span></span>
+<span id="cb22-4"><a href=""></a><span class="fu">      text</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb22-5"><a href=""></a>        \usepackage{gb4e}</span>
+<span id="cb22-6"><a href=""></a>        \noautomath</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li class="fragment"><code>gb4e</code> is a LaTeX package and <em>only</em> works in PDF output!!</li>
+</ul>
 <div class="fragment">
-<div class="callout callout-tip callout-titled callout-style-default">
+<p>Then use raw LaTeX blocks in your <code>.qmd</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href=""></a>\begin{exe}</span>
+<span id="cb23-2"><a href=""></a>  \ex \label{ex-good} The manager hired the assistant.</span>
+<span id="cb23-3"><a href=""></a>  \ex \label{ex-bad}  *The assistant was hired the manager.</span>
+<span id="cb23-4"><a href=""></a>\end{exe}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol>
+  <li>The manager hired the assistant.</li>
+  <li>*The assistant was hired the manager.</li>
+</ol>
+</div>
+</section>
+
+<section id="cross-referencing-gb4e" class="title-slide slide level3 center">
+<h3>Cross-referencing <code>gb4e</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href=""></a>As shown in example (\ref{ex-good}), the active form is grammatical.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Tip</strong></p>
+<p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
-<p>For more control (e.g.&nbsp;(1a), (1b) sub-examples, glosses), use the <code>linguex</code> or <code>gb4e</code> LaTeX packages in PDF output, or a custom Lua filter for HTML.</p>
-</div>
+<p><code>gb4e</code> cross-references only resolve in PDF output. Use <code>(@)</code> syntax if you need cross-references in both HTML and PDF.</p>
 </div>
 </div>
 </div>
@@ -658,7 +727,10 @@ As shown in (@ex-good), the active form is grammatical.</code></pre>
 <section id="inline-r-code" class="title-slide slide level3 center">
 <h3>Inline R code</h3>
 <p>Embed R values directly in prose:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href=""></a>The sample comprised <span class="in">`r n_distinct(df$px)`</span> participants (*M*~age~ = <span class="in">`r round(mean(df$age, na.rm = TRUE), 1)`</span> years).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href=""></a>The sample comprised <span class="in">`r n_distinct(df$px)`</span> participants (*M*~age~ = <span class="in">`r round(mean(df$age, na.rm = TRUE), 1)`</span> years).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>The sample comprised 48 participants (<em>M</em><sub>age</sub> = 23.4 years).</p>
+</div>
 </section>
 
 <section id="apa-style-statistics" class="title-slide slide level3 center">

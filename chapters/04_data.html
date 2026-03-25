@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Data and Tables – R for Publication</title>
+<title>4&nbsp; Data and code – R for Publication</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -111,7 +111,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta name="twitter:title" content="4&nbsp; Data and Tables – R for Publication">
+<meta name="twitter:title" content="4&nbsp; Data and code – R for Publication">
 <meta name="twitter:description" content="Code Chunks, Loading Data, and Summary Tables">
 <meta name="twitter:card" content="summary">
 </head>
@@ -305,6 +305,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </i> 
 <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../R-for-Publication.pdf"> <i class="bi bi-file-pdf" role="img" aria-label="Download PDF">
+</i> 
+<span class="menu-text">PDF</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -317,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01_intro.html">Session 1: Quarto foundations</a></li><li class="breadcrumb-item"><a href="../chapters/04_data.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01_intro.html">Session 1: Quarto foundations</a></li><li class="breadcrumb-item"><a href="../chapters/04_data.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -373,7 +378,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/04_data.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></span></a>
   </div>
 </li>
       </ul>
@@ -432,7 +437,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#saving-processed-data" id="toc-saving-processed-data" class="nav-link" data-scroll-target="#saving-processed-data"><span class="header-section-number">4.3.1</span> Saving processed data</a></li>
   </ul></li>
   <li><a href="#inline-reporting" id="toc-inline-reporting" class="nav-link" data-scroll-target="#inline-reporting"><span class="header-section-number">4.4</span> Inline reporting</a></li>
-  <li><a href="#chapter-slides" id="toc-chapter-slides" class="nav-link" data-scroll-target="#chapter-slides"><span class="header-section-number">4.5</span> Chapter slides</a></li>
   </ul>
 </nav>
     <div class="quarto-margin-footer"><div class="margin-footer-item">
@@ -449,9 +453,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content column-body" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01_intro.html">Session 1: Quarto foundations</a></li><li class="breadcrumb-item"><a href="../chapters/04_data.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01_intro.html">Session 1: Quarto foundations</a></li><li class="breadcrumb-item"><a href="../chapters/04_data.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Tables</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and code</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 <p class="subtitle lead">Code Chunks, Loading Data, and Summary Tables</p>
 </div>
 
@@ -477,7 +481,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="purpose" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="purpose"><span class="header-section-number">4.1</span> Purpose</h2>
 <p>This chapter introduces the practical side of working with data in Quarto. Rather than running analyses in a separate R script and copying results into a document, Quarto allows you to load data, compute summaries, and produce formatted tables directly within the manuscript. The result is a document in which every number, table, and figure is generated from the underlying data at render time.</p>
-<p>We cover the essentials of code chunk options, loading data from file, producing summary tables with <code>gt</code> and <code>kableExtra</code>, cross-referencing tables in prose, and reporting values inline. Together these form the foundation of a reproducible results section.</p>
+<p>We cover the essentials of code chunk options, loading data from file, producing summary tables with <code>gt</code> and <code>kableExtra</code>, cross-referencing tables in prose, and reporting values inline. Together these form the foundation of a reproducible results section. All examples use R, though Quarto natively supports other languages including Python, Julia, and Observable JavaScript, with chunk options and rendering behaviour consistent across languages.</p>
 </section>
 <section id="code-chunks" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="code-chunks"><span class="header-section-number">4.2</span> Code chunks</h2>
@@ -528,23 +532,23 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
 </figcaption>
 <div aria-describedby="tbl-chunk-options-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="nkpdtjpwle" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#nkpdtjpwle table {
+<div id="mpuwlzazgw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mpuwlzazgw table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nkpdtjpwle thead, #nkpdtjpwle tbody, #nkpdtjpwle tfoot, #nkpdtjpwle tr, #nkpdtjpwle td, #nkpdtjpwle th {
+#mpuwlzazgw thead, #mpuwlzazgw tbody, #mpuwlzazgw tfoot, #mpuwlzazgw tr, #mpuwlzazgw td, #mpuwlzazgw th {
   border-style: none;
 }
 
-#nkpdtjpwle p {
+#mpuwlzazgw p {
   margin: 0;
   padding: 0;
 }
 
-#nkpdtjpwle .gt_table {
+#mpuwlzazgw .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -570,12 +574,12 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-left-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_caption {
+#mpuwlzazgw .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#nkpdtjpwle .gt_title {
+#mpuwlzazgw .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -587,7 +591,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-bottom-width: 0;
 }
 
-#nkpdtjpwle .gt_subtitle {
+#mpuwlzazgw .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -599,7 +603,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-top-width: 0;
 }
 
-#nkpdtjpwle .gt_heading {
+#mpuwlzazgw .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -611,13 +615,13 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-right-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_bottom_border {
+#mpuwlzazgw .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_col_headings {
+#mpuwlzazgw .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -632,7 +636,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-right-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_col_heading {
+#mpuwlzazgw .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -652,7 +656,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   overflow-x: hidden;
 }
 
-#nkpdtjpwle .gt_column_spanner_outer {
+#mpuwlzazgw .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -664,15 +668,15 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   padding-right: 4px;
 }
 
-#nkpdtjpwle .gt_column_spanner_outer:first-child {
+#mpuwlzazgw .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nkpdtjpwle .gt_column_spanner_outer:last-child {
+#mpuwlzazgw .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nkpdtjpwle .gt_column_spanner {
+#mpuwlzazgw .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -684,11 +688,11 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   width: 100%;
 }
 
-#nkpdtjpwle .gt_spanner_row {
+#mpuwlzazgw .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#nkpdtjpwle .gt_group_heading {
+#mpuwlzazgw .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -714,7 +718,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   text-align: left;
 }
 
-#nkpdtjpwle .gt_empty_group_heading {
+#mpuwlzazgw .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -729,15 +733,15 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   vertical-align: middle;
 }
 
-#nkpdtjpwle .gt_from_md > :first-child {
+#mpuwlzazgw .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nkpdtjpwle .gt_from_md > :last-child {
+#mpuwlzazgw .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nkpdtjpwle .gt_row {
+#mpuwlzazgw .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -756,7 +760,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   overflow-x: hidden;
 }
 
-#nkpdtjpwle .gt_stub {
+#mpuwlzazgw .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -769,7 +773,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   padding-right: 5px;
 }
 
-#nkpdtjpwle .gt_stub_row_group {
+#mpuwlzazgw .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -783,15 +787,15 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   vertical-align: top;
 }
 
-#nkpdtjpwle .gt_row_group_first td {
+#mpuwlzazgw .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nkpdtjpwle .gt_row_group_first th {
+#mpuwlzazgw .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#nkpdtjpwle .gt_summary_row {
+#mpuwlzazgw .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -801,16 +805,16 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   padding-right: 5px;
 }
 
-#nkpdtjpwle .gt_first_summary_row {
+#mpuwlzazgw .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_first_summary_row.thick {
+#mpuwlzazgw .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nkpdtjpwle .gt_last_summary_row {
+#mpuwlzazgw .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -820,7 +824,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-bottom-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_grand_summary_row {
+#mpuwlzazgw .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -830,7 +834,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   padding-right: 5px;
 }
 
-#nkpdtjpwle .gt_first_grand_summary_row {
+#mpuwlzazgw .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -840,7 +844,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-top-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_last_grand_summary_row_top {
+#mpuwlzazgw .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -850,11 +854,11 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-bottom-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_striped {
+#mpuwlzazgw .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nkpdtjpwle .gt_table_body {
+#mpuwlzazgw .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -863,7 +867,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-bottom-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_footnotes {
+#mpuwlzazgw .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -877,7 +881,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-right-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_footnote {
+#mpuwlzazgw .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -886,7 +890,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   padding-right: 5px;
 }
 
-#nkpdtjpwle .gt_sourcenotes {
+#mpuwlzazgw .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -900,7 +904,7 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   border-right-color: #D3D3D3;
 }
 
-#nkpdtjpwle .gt_sourcenote {
+#mpuwlzazgw .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -908,72 +912,72 @@ Table&nbsp;4.1: Common code chunk options for manuscript writing.
   padding-right: 5px;
 }
 
-#nkpdtjpwle .gt_left {
+#mpuwlzazgw .gt_left {
   text-align: left;
 }
 
-#nkpdtjpwle .gt_center {
+#mpuwlzazgw .gt_center {
   text-align: center;
 }
 
-#nkpdtjpwle .gt_right {
+#mpuwlzazgw .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nkpdtjpwle .gt_font_normal {
+#mpuwlzazgw .gt_font_normal {
   font-weight: normal;
 }
 
-#nkpdtjpwle .gt_font_bold {
+#mpuwlzazgw .gt_font_bold {
   font-weight: bold;
 }
 
-#nkpdtjpwle .gt_font_italic {
+#mpuwlzazgw .gt_font_italic {
   font-style: italic;
 }
 
-#nkpdtjpwle .gt_super {
+#mpuwlzazgw .gt_super {
   font-size: 65%;
 }
 
-#nkpdtjpwle .gt_footnote_marks {
+#mpuwlzazgw .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#nkpdtjpwle .gt_asterisk {
+#mpuwlzazgw .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nkpdtjpwle .gt_indent_1 {
+#mpuwlzazgw .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nkpdtjpwle .gt_indent_2 {
+#mpuwlzazgw .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nkpdtjpwle .gt_indent_3 {
+#mpuwlzazgw .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nkpdtjpwle .gt_indent_4 {
+#mpuwlzazgw .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nkpdtjpwle .gt_indent_5 {
+#mpuwlzazgw .gt_indent_5 {
   text-indent: 25px;
 }
 
-#nkpdtjpwle .katex-display {
+#mpuwlzazgw .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#nkpdtjpwle div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mpuwlzazgw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1143,12 +1147,6 @@ Tip
 <p>Storing computed values as named objects keeps inline expressions short and readable. It also means the value is only computed once, reducing the risk of inconsistencies if the expression is used in multiple places.</p>
 </div>
 </div>
-</section>
-<section id="chapter-slides" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="chapter-slides"><span class="header-section-number">4.5</span> Chapter slides</h2>
-<a href="../slides/04_data.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
 
 
 <!-- -->
@@ -1633,7 +1631,7 @@ Tip
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Data and Tables"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Data and code"</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Code Chunks, Loading Data, and Summary Tables"</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -1658,7 +1656,7 @@ Tip
 <span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>This chapter introduces the practical side of working with data in Quarto. Rather than running analyses in a separate R script and copying results into a document, Quarto allows you to load data, compute summaries, and produce formatted tables directly within the manuscript. The result is a document in which every number, table, and figure is generated from the underlying data at render time.</span>
 <span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>We cover the essentials of code chunk options, loading data from file, producing summary tables with <span class="in">`gt`</span> and <span class="in">`kableExtra`</span>, cross-referencing tables in prose, and reporting values inline. Together these form the foundation of a reproducible results section.</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>We cover the essentials of code chunk options, loading data from file, producing summary tables with <span class="in">`gt`</span> and <span class="in">`kableExtra`</span>, cross-referencing tables in prose, and reporting values inline. Together these form the foundation of a reproducible results section. All examples use R, though Quarto natively supports other languages including Python, Julia, and Observable JavaScript, with chunk options and rendering behaviour consistent across languages.</span>
 <span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code chunks</span></span>
 <span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a></span>
@@ -1800,21 +1798,15 @@ Tip
 <span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>m_tt  <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(df_clean<span class="sc">$</span>tt, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>)</span>
 <span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a>sd_tt <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">sd</span>(df_clean<span class="sc">$</span>tt,   <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>)</span>
 <span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a><span class="in">````markdown</span></span>
-<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>The sample comprised <span class="in">` r n_px`</span> participants (*N* observations = <span class="in">` r n_obs`</span>).</span>
-<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a>Mean total reading time was <span class="in">` r m_tt`</span> ms (*SD* = <span class="in">` r sd_tt`</span>).</span>
-<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
-<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a>Storing computed values as named objects keeps inline expressions short and readable. It also means the value is only computed once, reducing the risk of inconsistencies if the expression is used in multiple places.</span>
-<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## Chapter slides</span></span>
-<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a><span class="in">````{=html}</span></span>
-<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;a href="../slides/04_data.html" class="btn btn-outline-primary" target="_blank"&gt;</span></span>
-<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a><span class="in">  Open slides ↗</span></span>
-<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;/a&gt;</span></span>
-<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a><span class="in">````markdown</span></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a>The sample comprised <span class="in">` r n_px`</span> participants (*N* observations = <span class="in">` r n_obs`</span>).</span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a>Mean total reading time was <span class="in">` r m_tt`</span> ms (*SD* = <span class="in">` r sd_tt`</span>).</span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a><span class="in">````</span></span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>Storing computed values as named objects keeps inline expressions short and readable. It also means the value is only computed once, reducing the risk of inconsistencies if the expression is used in multiple places.</span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
