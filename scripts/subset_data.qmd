@@ -33,8 +33,10 @@ glimpse(df_osf)
 ```{r}
 df_subset <- df_osf |> 
   filter(type == "critical", region != "end") |> 
-  select(px, trial, item, lifetime, tense, congruence, region, gaze, rpd, tt, ia_first_fixation_duration, rt_value, rating, bio, critical) |> 
+  select(px, trial, item, lifetime, tense, congruence, region, gaze, rpd, tt, ia_first_fixation_duration, ia_regression_in, ia_regression_out, rt_value, rating, bio, critical) |> 
   rename(first_fix = ia_first_fixation_duration,
+         reg_in = ia_regression_in,
+         reg_out = ia_regression_out,
          rt_ms = rt_value)
 ```
 
@@ -88,20 +90,17 @@ df_subset <- df_subset |>
   select(-px)
 ```
 
+Same number of participants?
+
+```{r}
+length(unique(df_osf$px)) == length(unique(df_subset$px_code))
+```
 
 ## Save dataset
 
 This will then be loaded into `data/raw/` in the participant materials to act as toy raw data.
 
 ```{r}
-write_csv(df_subset, here("data", "processed", "data_example.csv"))
 write_csv(df_subset, here("data", "raw", "data_example.csv"))
 ```
-
-
-
-
-
-
-
 
