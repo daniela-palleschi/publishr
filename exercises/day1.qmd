@@ -1,0 +1,97 @@
+---
+editor: source
+---
+
+# Session 1 Exercises {.unnumbered}
+
+In the `publishr_workshop` RProject, open the `exercises/session1.qmd` Quarto script.
+
+## Writing in Quarto
+
+### Exercise 1: Text formatting
+
+In the script you'll see an example sentence (repeated below). Add some text formatting to it: try making some words bold, some italic, and add at least one superscript or subscript.
+
+> The mean first-pass reading time at the verb region was 312 ms (SD = 159 ms).
+
+### Exercise 2: Lists and callouts
+
+Add an unordered list of three things you want to get out of this workshop. Then add a callout box (any type) with a note about your dataset.
+
+### Exercise 3: Headers
+
+Add the following headers to structure this document:
+
+- A level-2 header called "Methods"
+- A level-3 header called "Participants"
+- A level-3 header called "Materials"
+
+### Exercise 4: Cross-references
+
+Add the label `{#sec-methods}` to your Methods header from Exercise 3. Then write a sentence below that cross-references it using `@sec-methods`.
+
+### Exercise 5: Citations
+
+Add a citation to your methods section. You will need to:
+
+1. Add `bibliography: references.bib` to your YAML (already done above)
+2. Add `csl: apa.csl` to your YAML (already done above)
+3. Add at least one entry to `references.bib` — you can use the R citation:
+
+```r
+toBibtex(citation("base"))
+```
+
+4. Cite it in prose using `@key` or `[@key]` syntax
+
+### Exercise 6: References section
+
+Add a references section at the end of this document so your citations are listed. Remember to use the `.unnumbered` class on the heading.
+
+### Exercise 7: Inline arithmetic
+
+Use inline R code to compute and report the following directly in prose:
+
+Complete the sentence below:
+
+2 + 2 = \_\_\_, and the square root of 144 is \_\_\_.
+
+
+## Output formats
+
+*Add appropriate headers below to keep your work structured.*
+
+### Exercise 1: HTML with TOC
+
+The YAML above already has a `toc: true` option under `html`. Render this document to HTML and check that the table of contents appears. Try changing `toc-depth` to 2 and re-render — what changes?
+
+### Exercise 2: Word output
+
+Change the active output format to `docx` and render. Open the `.docx` file and inspect your citation. How is it formatted? Can you edit it directly in Word?
+
+::: callout-note
+To render to a specific format from the terminal: `quarto render exercises/day1.qmd --to docx`
+:::
+
+### Exercise 3: PDF and `.tex` output (stretch)
+
+The YAML already has `keep-tex: true` under `pdf`. Render to PDF:
+```bash
+quarto render exercises/day1.qmd --to pdf
+```
+
+Then:
+
+1. Open the PDF — does your citation look correct?
+2. Open the `.tex` file — is your citation a live `\cite{}` command or plain text?
+3. If you want to experiment with live citations in the `.tex` file, try adding `cite-method: natbib` to your PDF YAML options and re-render. Does the citation look different in the PDF? In the `.tex`?
+
+::: callout-note
+## This is a stretch exercise
+Getting APA 7 formatting with live `.tex` citations working perfectly involves trade-offs — see the Output Formats chapter for a full discussion. The goal here is simply to observe the difference, not necessarily to resolve it.
+:::
+
+## References {.unnumbered}
+
+::: {#refs}
+:::

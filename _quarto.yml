@@ -2,7 +2,7 @@ project:
   type: book
   output-dir: _book
   post-render:
-    - cp -r logos _book/slides/logos
+    - cp -r logos _book/slides/logos # so that the logo files get transferred
 
 filters:
   - slides-margin.lua # for 'Open Slides' to appear below the TOC on the right
@@ -37,10 +37,12 @@ book:
       - chapters/01_intro.qmd
       - chapters/02_writing.qmd
       - chapters/03_formats.qmd
-      - chapters/04_data.qmd
-    - part: "Session 2: Model Outputs & Reporting"
+    - part: "Session 2: Data and results"
+      chapters:
+      - chapters/04_open-science.qmd
+      - chapters/05_data.qmd
+      - chapters/06_models.qmd
       # chapters:
-      # - chapters/05_open-science.qmd
       # - chapters/06_tables.qmd
         # #- chapters/07_manuscripts.qmd
         # - chapters/08_exporting.qmd
@@ -48,6 +50,7 @@ book:
       chapters: 
       - exercises/setup.qmd
       - exercises/day1.qmd 
+      - exercises/day2.qmd 
     - references.qmd
 
 bibliography: references.bib
@@ -67,7 +70,8 @@ format:
         - custom.scss
     code-tools: true
     toc: true
-    toc-depth: 3
+    toc-depth: 5
+    toc-expand: false
     number-sections: true
     page-layout: full
     embed-resources: false

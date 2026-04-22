@@ -1,0 +1,83 @@
+---
+editor: source
+---
+
+# Session 2 Exercises {.unnumbered}
+
+In the `publishr_workshop` RProject, open the `exercises/session2.qmd` Quarto script. Before you make any changes, render it.
+
+## Data and Code
+
+*Add appropriate headers below to keep your work structured.*
+
+### Exercise 1: A simple code chunk
+
+Add a code chunk below that computes `2 + 2` and renders it. Make sure the chunk is both printed (code visible) and evaluated (output visible).
+
+### Exercise 2: Echo without eval
+
+Change the chunk options on your Exercise 1 chunk so that the code is printed but not evaluated. Render and observe the difference.
+
+::: callout-tip
+Relevant chunk option: `eval: false`
+:::
+
+### Exercise 3: Silent chunk
+
+Add a new code chunk that computes `10 * 10`. Set the chunk options so that neither the code nor the output appears in the rendered document. Render and verify it is invisible.
+
+::: callout-tip
+Relevant chunk option: `include: false`
+:::
+
+### Exercise 4: Load data
+
+Add a code chunk that loads the sample dataset. Set the chunk options so that the code is not printed in the rendered output but the chunk is evaluated.
+```r
+df <- readr::read_csv(here::here("data", "raw", "your-data.csv"))
+```
+
+::: callout-tip
+Relevant chunk option: `echo: false`
+:::
+
+### Exercise 5: Summary statistics
+
+Create a code chunk that filters to the verb region and computes the mean and SD of first-pass reading time (`gaze`), storing them as named objects. Set the chunk so it runs silently.
+```r
+m_gaze  <- # YOUR CODE HERE
+sd_gaze <- # YOUR CODE HERE
+```
+
+::: callout-tip
+You will need `filter(region == "verb")`, `mean(..., na.rm = TRUE)`, `sd(..., na.rm = TRUE)`, and `round(..., 1)`.
+:::
+
+### Exercise 6: Inline reporting
+
+Report your values from Exercise 5 inline by completing the sentence below:
+
+Mean first-pass reading time at the verb region was \_\_\_ ms (SD = \_\_\_ ms).
+
+### Exercise 7: Global eval
+
+Add the following to your YAML `execute:` block:
+```yaml
+execute:
+  eval: false
+```
+
+Render. What happens? Which exercises break and why?
+
+Now fix the problem by adding `#| eval: true` to the chunks that need to run (Exercises 4 and 5). Re-render and confirm everything works.
+
+::: callout-note
+This exercise illustrates why global chunk options need to be set carefully, and why it is often better to set `eval: false` only on specific chunks rather than globally.
+:::
+
+---
+
+## References {.unnumbered}
+
+::: {#refs}
+:::

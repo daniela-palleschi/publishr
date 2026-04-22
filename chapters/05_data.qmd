@@ -1,0 +1,357 @@
+---
+title: "Data and code"
+subtitle: "Code Chunks, Loading Data, and Summary Tables"
+---
+
+::: {style="text-align: right; margin-bottom: 1em;"}
+````{=html}
+<a href="../slides/04_data.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````
+:::
+
+````{r}
+#| label: setup
+#| echo: false
+#| output: false
+#| message: false
+pacman::p_load(here, tidyverse, kableExtra, reticulate)
+if (!knitr::is_latex_output()) pacman::p_load(gt)
+
+df_clean <- read_csv(here("data", "raw", "data_example.csv"))
+````
+
+## Purpose
+
+This chapter introduces the practical side of working with data in Quarto. Rather than running analyses in a separate R script and copying results into a document, Quarto allows you to load data, compute summaries, and produce formatted tables directly within the manuscript. The result is a document in which every number, table, and figure is generated from the underlying data at render time.
+
+We cover the essentials of code chunk options, loading data from file, producing summary tables with `gt` and `kableExtra`, cross-referencing tables in prose, and reporting values inline. Together these form the foundation of a reproducible results section. All examples use R, though Quarto natively supports other languages including Python, Julia, and Observable JavaScript, with chunk options and rendering behaviour consistent across languages.
+
+## Code chunks
+
+Code chunks are the blocks of R code embedded in a `.qmd` document. They are delimited by triple backticks and a language identifier:
+
+````{r}
+#| echo: fenced
+1 + 1
+````
+
+Each chunk is executed in sequence when the document is rendered, and the output (a number, a table, or a figure) is inserted into the document at that position.
+
+::: callout-note
+### Note: Quarto beyond R
+While this workshop focuses on R, Quarto supports multiple languages in code chunks, including Python (`{python}`), Julia (`{julia}`), and Observable JavaScript (`{ojs}`). Different languages can be used in the same document without any additional packages, with each chunk executed by its respective engine. You can use the `reticulate` package if you want to share objects between R and Python chunks within the same session (also required to render Python chunks to PDF).
+
+For example, a Python chunk in the same document as R code:
+
+````{python}
+#| echo: fenced
+import numpy as np # numpy is Python's main numerical computing library, similar to base R
+
+1 + 1
+````
+:::
+
+### Chunk options {#sec-chunk-options}
+
+Chunk behaviour is controlled by options written at the top of the chunk using the `#|` prefix. The most important options for manuscript writing are:
+
+````{r}
+#| label: tbl-chunk-options
+#| tbl-cap: "Common code chunk options for manuscript writing."
+#| echo: false
+chunk_opts <- tibble::tribble(
+  ~Option,    ~Values,              ~Effect,
+  "echo",     "`true` / `false`",       "Show or hide the code",
+  "output",   "`true` / `false`",       "Show or hide the output",
+  "eval",     "`true` / `false`",       "Run or skip the chunk",
+  "include",  "`true` / `false`",       "Include chunk and output in document",
+  "warning",  "`true` / `false`",       "Show or hide warnings",
+  "message",  "`true` / `false`",       "Show or hide messages",
+  "label",    "string",             "Chunk identifier for cross-references",
+  "fig-cap",  "string",             "Figure caption",
+  "tab-cap",  "string",             "Table caption"
+) |>
+  mutate(Option = paste0("`", Option, "`"))
+
+if (knitr::is_latex_output()) {
+  chunk_opts |>
+    kbl(booktabs = TRUE, format = "latex", escape = FALSE) |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(3, width = "6cm")
+} else {
+  chunk_opts |>
+    gt() |>
+    fmt_markdown(columns = c(Option, Values)) |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    cols_width(Effect ~ px(300))
+}
+````
+
+For a manuscript, you typically want to hide code and show only output. Set global defaults in `_quarto.yml` or the document YAML, then override per chunk where needed:
+
+````yaml
+execute:
+  echo: false      # hide code from output
+  warning: false   # suppress R warnings
+  message: false   # suppress R messages (e.g. package loading messages)
+````
+
+Then override for specific chunks:
+
+````markdown
+```{{r}}
+#| echo: true
+#| label: tbl-desc
+#| tbl-cap: "Descriptive statistics by condition."
+tbl_demo |> gt()
+```
+````
+
+::: callout-tip
+#### `echo: true` or `false`?
+The right default depends on your document's purpose. For teaching materials and workshop scripts, `echo: true` ensures participants can see the code alongside the output. For manuscript submissions, `echo: false` (along with `warning: false` and `message: false`) produces clean output with no visible code. For internal analysis reports, where the purpose is a transparent record of your analysis, `echo: true` is essential for auditability and reproducibility.
+:::
+
+#### Chunk labels
+
+Every chunk that produces a figure or table should have a label. Labels must begin with the correct prefix (`fig-` for figures, `tbl-` for tables) and be unique across the document. Unlabelled chunks cannot be cross-referenced.
+
+````r
+#| label: tbl-desc
+#| tbl-cap: "Descriptive statistics by condition."
+````
+
+::: callout-warning
+Duplicate labels cause render errors. If you copy a chunk, always update the label.
+:::
+
+## Data handling
+
+This section covers loading packages and data, and choosing appropriate chunk options for different script types.
+
+::: {.callout-note}
+#### Working Directories & RProjects
+
+Always open your scripts by launching the `.Rproj` file for your project. This ensures your working directory is set to the project root, i.e., the anchor point from which all relative paths are resolved. This becomes especially important when loading and saving data or objects: a script that works on your machine may silently break on another if paths are hardcoded or the wrong project is active.
+
+As Jenny Bryan [put it](https://tidyverse.org/blog/2017/12/workflow-vs-script/):
+
+> *If the first line of your R script is `setwd("C:\Users\jenny\path\that\only\I\have")` I will come into your office and SET YOUR COMPUTER ON FIRE `r if (!knitr::is_latex_output()) "🔥"`*
+
+This is exactly what makes the `here` package so useful: `here::here()` always constructs paths relative to the project root, regardless of where the script lives within the project or who is running it.
+
+```{r}
+#| eval: false
+library(here)
+
+# Always resolves relative to the project root
+data <- readRDS(here("data", "my_data.rds"))
+```
+:::
+
+### Packages
+
+Load all required packages at the top of a script. The standard approach is to use `library()` calls in a setup chunk. An alternative is `p_load()` from the `pacman` package, which installs missing packages automatically before loading them. We'll load the following packages:
+
+- **`tidyverse`** is a collection of packages for data import, manipulation, and visualisation. For reading data into R, we primarily rely on `readr` (e.g., `read_csv()`), which is loaded as part of the tidyverse
+- **`here`** constructs file paths relative to the project root, making scripts portable across machines and collaborators (see the RProjects note above)
+- **`janitor`** is not used in this script, but is worth loading for quick data exploration. In particular, `clean_names()` standardises column names to snake_case, which saves a lot of friction when working with messy real-world data
+
+::: {.panel-tabset}
+
+#### `p_load()`
+
+````{r}
+# install.packages("pacman")
+pacman::p_load(
+  tidyverse,
+  here,
+  janitor
+)
+````
+
+#### `library()`
+
+````{r}
+library(tidyverse)
+library(here)
+library(janitor)
+````
+
+:::
+
+The chunk options you use here depend on the purpose of your document. For a data processing or analysis script, you would typically show or evaluate the package loading chunk. For a manuscript, suppress all such output globally via `execute:` in the YAML (see @sec-chunk-options).
+
+::: {.callout-note}
+#### Checking for Unused Packages
+
+To check whether all loaded packages are actually used in your script, you can use `unused_import_linter()` from the `lintr` package:
+
+```{r}
+#| eval: false
+lintr::lint(here("chapters", "04_data.qmd"), linters = lintr::unused_import_linter())
+```
+
+Results appear in the RStudio Markers pane, flagging any `library()` calls for packages that aren't referenced in the script. Note that this only works with `library()` — if you use `pacman::p_load()`, the linter will not recognise your loaded packages and results will be unreliable.
+:::
+
+::: {.callout-important}
+#### Reproducibility: Session Info
+
+Always run `sessionInfo()` at the end of every script. This records your R version, package versions, and system information. This is an essential step for computational reproducibility.
+
+```{r}
+sessionInfo()
+```
+
+The output is captured in your script output (e.g., rendered Quarto HTML/PDF) and does not need to be saved separately. You *can* save it as an `.rds` file, but note that session info is a snapshot in time. Packages may have been updated since the analysis was run, so a saved object may not reflect the environment used for any future re-runs. For more robust environment management,the `renv` package allows you to snapshot and restore the exact package versions used in a project.
+:::
+
+### Load data
+
+Data should be stored in `data/raw/` and loaded at the top of the document using `here::here()`. This ensures the file path works regardless of where the project is opened:
+
+````{r}
+#| eval: false
+df_raw <- read_csv(here::here("data", "raw", "your-data.csv"))
+````
+
+For processed data or saved R objects, load from `data/processed/` or `output/models/`:
+
+````{r}
+#| eval: false
+df_clean           <- readRDS(here::here("data", "processed", "data_example.rds"))
+lmer_verb_firstfix <- readRDS(here::here("output", "models", "lmer_verb_firstfix.rds"))
+````
+
+::: callout-tip
+#### Loading data in a manuscript
+
+Load all data objects in a single setup chunk at the top of the document with `#| output: false`. This keeps the document clean and makes dependencies explicit.
+:::
+
+### Anonymising data
+
+Raw data often contains identifiable information such as participant codes linked to personal records. Before sharing or archiving data, these should be replaced with pseudonymous identifiers. The code below creates a randomly assigned numeric code and saves the result:
+
+````{r}
+#| eval: false
+set.seed(416) # for reproducibility
+
+px_lookup <- df |>
+  distinct(px_code) |>                               # one row per participant
+  mutate(px = sample(1:n(), n(), replace = FALSE))   # randomly assign 1:N
+
+df_clean <- df |>
+  left_join(px_lookup, by = "px_code") |>
+  select(-px_code)                                   # remove original identifier
+````
+
+Do not store `px_lookup` locally. It is the key linking original codes to pseudonymous ones and should never be shared or committed to version control.
+
+::: {.callout-warning collapse="true"}
+#### A note on pseudonymisation
+
+Replacing `px_code` with a new `px` value does not make data truly anonymous; this is more accurately described as *pseudonymisation*. The original identifiers can still be recovered via the `px_lookup` table, and because `set.seed(416)` is used, the assignment is deterministic and reproducible.
+
+More fundamentally, even without `px_lookup`, behavioural data is rarely truly anonymous. Each participant tends to produce a unique combination of response times, fixation durations, and trial-level values, making re-identification possible by cross-referencing with other versions of the dataset.
+
+The practical implication: raw data should be stored separately from any shared or processed outputs and never shared publicly. After anonymisation and preprocessing, raw data should be archived in an encrypted, access-controlled location (such as an institutional data repository or NAS server) and removed from the active project folder.
+:::
+
+### Saving processed data
+
+After anonymising and transforming your data, save the processed object so it can be loaded quickly in subsequent documents without re-running the full pipeline:
+
+````{r}
+#| eval: false
+saveRDS(df_clean, here::here("data", "processed", "data_example.rds"))
+````
+
+## Inline reporting {#sec-inline}
+
+Values from your data can be embedded directly in prose using inline R code, ensuring reported statistics are always consistent with the underlying data. For frequently reported values, compute them once in a setup chunk and store as named objects, then reference those objects inline:
+
+````{r}
+#| output: false
+#| eval: true
+n_px  <- dplyr::n_distinct(df_clean$px)
+n_obs <- nrow(df_clean |> filter(region == "verb"))
+m_tt  <- round(mean(df_clean$tt, na.rm = TRUE), 1)
+sd_tt <- round(sd(df_clean$tt,   na.rm = TRUE), 1)
+````
+
+````markdown
+The sample comprised ` r n_px` participants (*N* observations = ` r n_obs`). 
+Mean total reading time was ` r m_tt` ms (*SD* = ` r sd_tt`).
+````
+
+The rendered output would be:
+
+> The sample comprised `r n_px` participants (*N* observations = `r n_obs`). Mean total reading time was `r m_tt` ms (*SD* = `r sd_tt`).
+
+::: callout-tip
+Storing computed values as named objects keeps inline expressions short and readable, and ensures each value is computed only once, reducing the risk of inconsistencies if the expression appears in multiple places. Without named objects, the same inline code would need to be written as:
+
+````markdown
+The sample comprised `r dplyr::n_distinct(df_clean$px)` participants 
+(*N* observations = `r nrow(df_clean |> filter(region == "verb"))`). 
+Mean total reading time was `r round(mean(df_clean$tt, na.rm = TRUE), 1)` ms 
+(*SD* = `r round(sd(df_clean$tt, na.rm = TRUE), 1)`).
+````
+
+The output would be identical, but errors are harder to spot and fix.
+:::
+
+## Summary
+
+This chapter covered the core tools for working with data in a reproducible Quarto document, from loading and anonymising data through to reporting values inline.
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Topics, key functions, and packages covered in this chapter."
+#| echo: false
+summary_tbl <- tibble::tribble(
+  ~Topic,                  ~`Key functions`,                        ~Package,
+  "Load packages",         "`p_load()`",                           "`pacman`",
+  "File paths",            "`here()`",                             "`here`",
+  "Load data",             "`read_csv()`, `readRDS()`",            "`readr`, base R",
+  "Save data",             "`saveRDS()`",                          "base R",
+  "Anonymise data",        "`distinct()`, `mutate()`, `sample()`", "`dplyr`, base R",
+  "Chunk options",         "`echo`, `eval`, `output`, `label`",    "Quarto",
+  "Cross-references",      "`@tbl-`, `@fig-`, `@sec-`",           "Quarto",
+  "Inline reporting",      "`` `r ...` ``",                        "Quarto"
+) |>
+  mutate(Topic = paste0("**", Topic, "**"))
+
+if (knitr::is_latex_output()) {
+  summary_tbl |>
+    kbl(booktabs = TRUE, format = "latex", escape = FALSE) |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(2, width = "5cm")
+} else {
+  summary_tbl |>
+    gt() |>
+    fmt_markdown(columns = everything()) |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    cols_width(
+      Topic ~ px(180),
+      `Key functions` ~ px(280)
+    )
+}
+```
+
+## Session Info {.unnumbered}
+
+```{r}
+sessionInfo()
+```
+

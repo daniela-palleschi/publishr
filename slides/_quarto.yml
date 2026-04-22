@@ -13,7 +13,7 @@ knitr:
 
 format:
   revealjs:
-    theme: [simple, zas-footer]
+    theme: [simple, zas-footer.scss]
     logo: logos/ZAS_Marke-Lang_weiss.svg
     footer: "R for Publication    -    {{< meta day >}}:    {{< meta title >}}"
     width: 1600

@@ -40,9 +40,10 @@ In Positron: *File → New Folder → initialise as R project*.
 Get into the habit of always opening your work via the `.Rproj` file rather than navigating to individual scripts. This ensures the working directory is always set correctly and that `here::here()` resolves paths from the project root.
 :::
 
-## Folder structure
+## Folder structure {#sec-folder_structure}
 
 A consistent folder structure makes projects navigable by collaborators and reviewers, and is a prerequisite for FAIR-compliant data sharing [@Wilkinson2016]. The exact structure will vary by project, but the following is a reasonable starting point for a research project with data, analysis scripts, and a manuscript:
+
 ```{=html}
 <pre>
 my-project/
@@ -53,12 +54,13 @@ my-project/
 ├── data/
 │   ├── raw/                 # original data, never modified
 │   └── processed/           # cleaned and anonymised outputs
-├── R/
-│   ├── 01-anonymise.R
-│   ├── 02-process.R
-│   ├── 03-eda.R
-│   └── 04-analysis.R
-├── manuscript/              # .qmd chapters
+├── scripts/
+│   ├── 01-anonymise.qmd
+│   ├── 02-process.qmd
+│   ├── 03-eda.qmd
+│   └── 04-analysis.qmd
+├── manuscript/
+│   ├── manuscript.qmd
 └── output/
     ├── figures/
     ├── tables/

@@ -1,0 +1,143 @@
+---
+title: "Open and Reproducible Research"
+subtitle: "FAIR Principles, the Data Life Cycle, and Modular Analyses"
+---
+
+```{r}
+#| output: false
+#| echo: false
+pacman::p_load(here, tidyverse, kableExtra)
+if (!knitr::is_latex_output()) pacman::p_load(gt)
+```
+
+
+## Purpose
+
+This chapter provides the conceptual backdrop for Day 2 of the workshop. Before diving into the practical work of reporting model results, producing tables, and generating figures, it is worth stepping back to consider why reproducible research practices matter — not just for your own workflow, but for the broader scientific community.
+
+The tools covered in Day 2 (modular analysis scripts, saved model objects, dynamic tables, and publication-ready figures) are not merely conveniences. They are practical implementations of open science principles: making research transparent, verifiable, and reusable by others. This chapter introduces the key concepts — the research data life cycle, the FAIR principles, and modular analysis — and connects them to the hands-on work that follows.
+
+## Open science
+
+Open science is a broad movement towards making scientific research and its outputs — data, code, publications, and methods — openly accessible to all. It encompasses open access publishing, open data, open source software, and open peer review, among other practices. The core motivation is that science progresses faster and more reliably when findings can be scrutinised, replicated, and built upon by the wider community.
+
+Reproducibility is a central concern of open science. A study is reproducible if an independent researcher can take the original data and code and arrive at the same results. @Nuijten2016 found that around 50% of published psychology papers contained at least one statistical reporting error, many attributable to manual transcription of results. Reproducible workflows — where reported values are generated directly from data rather than typed manually — address this problem at its source.
+
+It is worth distinguishing between two related but distinct concepts:
+
+- **Reproducibility** — the same data and code produce the same results
+- **Replicability** — a new study with new data produces consistent findings
+
+A Quarto-based workflow primarily addresses reproducibility: by connecting your manuscript directly to your analysis, you ensure that what is reported is what was computed. Replicability is a broader scientific question that depends on study design, sample size, and theoretical assumptions — but reproducibility is a necessary precondition for it.
+
+## The research data life cycle
+
+Research data does not exist in a consistent state. It passes through a series of stages from initial planning to long-term archiving and reuse. Understanding this life cycle helps identify where reproducibility practices have the most impact.
+
+```{r}
+#| label: tbl-lifecycle
+#| tbl-cap: "The research data life cycle."
+#| echo: false
+tbl_lifecycle <- tibble::tribble(
+  ~Stage,     ~Description,                                          ~`Quarto connection`,
+  "Plan",     "Data management plan, storage formats, ethics",      "RProject structure, renv",
+  "Collect",  "Data acquisition, recording, documentation",         "Raw data in data/raw/",
+  "Process",  "Cleaning, anonymisation, quality control",           "01-anonymise.R, 02-process.R",
+  "Analyse",  "Statistical modelling, EDA",                         "03-eda.R, 04-analysis.R",
+  "Share",    "Publication, archiving, open access",                "Rendered manuscript, OSF",
+  "Reuse",    "Secondary analysis, meta-analysis, replication",     ".qmd + renv.lock"
+)
+
+if (knitr::is_latex_output()) {
+  tbl_lifecycle |>
+    kbl(booktabs = TRUE, format = "latex") |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(1, width = "2cm") |>
+    column_spec(2, width = "5cm") |>
+    column_spec(3, width = "5cm")
+} else {
+  tbl_lifecycle |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    cols_width(Description ~ px(250), `Quarto connection` ~ px(250))
+}
+```
+
+A well-structured Quarto project spans the process, analyse, and share stages of this cycle. The same project that runs your analysis can produce your manuscript, your supplementary materials, and a reproducible archive that others can download and re-run.
+
+## FAIR principles
+
+The FAIR principles [@Wilkinson2016] provide a framework for making research data and outputs maximally useful to the scientific community. Data should be:
+
+- **Findable** — assigned a persistent identifier (e.g. a DOI), described with rich metadata, and indexed in a searchable resource
+- **Accessible** — retrievable via a standard protocol, with metadata remaining accessible even if the data itself is not
+- **Interoperable** — using standard, open file formats and controlled vocabularies that allow data to be combined with other datasets
+- **Reusable** — accompanied by clear licensing, detailed provenance information, and sufficient documentation for others to understand and use the data
+
+The FAIR principles apply not only to data, but metadata as well, i.e., data about data. In fact, @Wilkinson2016 refers to "(meta)data" when describing the FAIR principles. A dataset without metadata is like a spreadsheet with no column headers: the values may be present but their meaning is opaque. Metadata describes what the data contains, how it was collected, who collected it, when, and under what conditions. In the context of a research project, metadata includes variable names and definitions (in a codebook), information about the study design and participant sample, details of the data collection procedure, and provenance information such as software versions and preprocessing steps. Rich, structured metadata is what makes data *findable* by search engines and repositories, *interoperable* with other datasets, and *reusable* by researchers who were not involved in the original study. Standards for research metadata exist across disciplines; in linguistics and psychology, for example, the CMDI (Component Metadata Infrastructure) and DDI (Data Documentation Initiative) frameworks provide structured vocabularies for describing datasets in a way that is both human-readable and machine-processable.
+
+### FAIR does not mean open
+
+A common misconception is that FAIR and open are synonymous. They are not. Data can be fully FAIR without being publicly accessible — for example, sensitive or identifiable data that is held under restricted access but is well-described, has a persistent identifier, and has clear conditions for access. The guiding principle is *as open as possible, as closed as necessary*.
+```{r}
+#| label: tbl-fair-open
+#| tbl-cap: "FAIR vs. open data."
+#| echo: false
+check <- if (knitr::is_latex_output()) "yes"      else "✅"
+cross <- if (knitr::is_latex_output()) "no"       else "❌"
+warn  <- if (knitr::is_latex_output()) "not required" else "not required"
+
+tbl_fair <- tibble::tribble(
+  ~Property,                      ~FAIR,  ~Open,
+  "Metadata publicly available",  check,  check,
+  "Data publicly accessible",     warn,   check,
+  "Persistent identifier (DOI)",  check,  check,
+  "Clear reuse licence",          check,  check,
+  "Access restrictions allowed",  check,  cross
+)
+
+if (knitr::is_latex_output()) {
+  tbl_fair |>
+    kbl(booktabs = TRUE, format = "latex") |>
+    kable_styling(latex_options = "hold_position")
+} else {
+  tbl_fair |>
+    gt() |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
+```
+
+### But open data should be FAIR
+
+Sharing data without documentation is not enough. A `.csv` file uploaded to OSF with no codebook, no README, and no variable descriptions is technically open but practically unusable. FAIR principles ensure that open data is actually reusable — that someone encountering it for the first time can understand what it contains, how it was collected, and under what conditions it may be used.
+
+When sharing data and analysis scripts alongside a manuscript, aim for both: open access where possible, and FAIR by default. In practice this means:
+
+- A `README.md` describing the project structure and how to reproduce the analysis
+- A codebook or data dictionary documenting variables
+- Meaningful file and variable names
+- A persistent identifier (OSF, Zenodo, or an institutional repository)
+- A clear licence (e.g. CC BY 4.0 for data, MIT for code)
+
+## Modular analyses
+
+The practical expression of these principles within a single project is a modular analysis workflow [@Nagler1995]. Rather than writing one long script that loads raw data, cleans it, fits models, produces figures, and writes results all in sequence, a modular workflow separates these steps into discrete, self-contained scripts. Each script has a single responsibility, takes clearly defined inputs, and produces clearly defined outputs.
+
+This approach has several advantages. It makes the analysis easier to understand, debug, and maintain. It makes it possible to re-run only the parts that have changed — if you update your exclusion criteria, you re-run `02-process.R` onwards without touching the anonymisation step. And it makes the project easier to archive and share: each script is a documented record of one step in the analysis pipeline, and the full pipeline can be reconstructed by running the scripts in order.
+
+The connection to FAIR and open science is direct: a modular, well-documented analysis project is far easier to make reusable than a monolithic script. Someone wishing to reproduce or extend your work can identify exactly where each output comes from, re-run individual steps, and substitute their own data or methods without needing to unpick a single tangled script.
+
+The modular workflow introduced in @sec-folder_structure — numbered scripts in `scripts/`, outputs saved to `output/`, manuscript files reading only from `output/` or `data/processed` — is a practical implementation of these principles. The rest of Day 2 builds directly on this structure.
+
+::: callout-tip
+A useful test for whether your project is sufficiently modular and documented: could a colleague with good R skills but no knowledge of your study reproduce your main results table from scratch, using only the files in your project folder and your README? If the answer is no, there is documentation or structure work to do.
+:::
+
+
+- a word on Global RStudio settings for reproducibility
