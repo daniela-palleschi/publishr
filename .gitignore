@@ -9,3 +9,26 @@ _book/
 renv/library/
 data/raw/exp1_data_tidy.csv
 publishr-Administrator*.Rproj
+
+# generated HTML (if not hosting)
+*.html
+
+# LaTeX
+*.tex
+*.aux
+*.toc
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Quarto output folders
+*_files/
+
+# archives
+*.zip
+
+# scratch files
+test.qmd
+slides/Untitled/

@@ -667,12 +667,14 @@ as_draws_df(brm_firstfix) |>
   pivot_longer(everything(), names_to = "term", values_to = "value") |>
   group_by(term) |>
   summarise(
-    mean  = round(mean(value), 2),
-    sd    = round(sd(value), 2),
-    q2.5  = round(quantile(value, 0.025), 2),
-    q97.5 = round(quantile(value, 0.975), 2)
+    mean  = round(mean(value), 3),
+    sd    = round(sd(value), 3),
+    q2.5  = round(quantile(value, 0.025), 3),
+    q97.5 = round(quantile(value, 0.975), 3)
   ) |>
   mutate(term = str_remove(term, "^b_")) |>
+  arrange(match(term, c("Intercept", "lifetime_c", "tense_c", 
+                        "lifetime_c:tense_c", "trial_c"))) |> 
   gt() |>
   cols_label(
     term  = "Term",
