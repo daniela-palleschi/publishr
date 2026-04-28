@@ -1,10 +1,14 @@
 ---
 editor: source
+execute: 
+  eval: false
+  echo: fenced
 ---
 
 # Session 2 Exercises {.unnumbered}
 
-In the `publishr_workshop` RProject, open the `exercises/session2.qmd` Quarto script. Before you make any changes, render it.
+In the `publishr_workshop` RProject, open the `exercises/00-data_cleaning.qmd` 
+Quarto script. Before you make any changes, render it.
 
 ## Data and Code
 
@@ -12,11 +16,13 @@ In the `publishr_workshop` RProject, open the `exercises/session2.qmd` Quarto sc
 
 ### Exercise 1: A simple code chunk
 
-Add a code chunk below that computes `2 + 2` and renders it. Make sure the chunk is both printed (code visible) and evaluated (output visible).
+Add a code chunk below that computes `2 + 2` and renders it. Make sure the 
+chunk is both printed (code visible) and evaluated (output visible).
 
 ### Exercise 2: Echo without eval
 
-Change the chunk options on your Exercise 1 chunk so that the code is printed but not evaluated. Render and observe the difference.
+Change the chunk options on your Exercise 1 chunk so that the code is printed 
+but not evaluated. Render and observe the difference.
 
 ::: callout-tip
 Relevant chunk option: `eval: false`
@@ -24,7 +30,9 @@ Relevant chunk option: `eval: false`
 
 ### Exercise 3: Silent chunk
 
-Add a new code chunk that computes `10 * 10`. Set the chunk options so that neither the code nor the output appears in the rendered document. Render and verify it is invisible.
+Add a new code chunk that computes `10 * 10`. Set the chunk options so that 
+neither the code nor the output appears in the rendered document. Render and 
+verify it is invisible.
 
 ::: callout-tip
 Relevant chunk option: `include: false`
@@ -32,36 +40,71 @@ Relevant chunk option: `include: false`
 
 ### Exercise 4: Load data
 
-Add a code chunk that loads the sample dataset. Set the chunk options so that the code is not printed in the rendered output but the chunk is evaluated.
-```r
-df <- readr::read_csv(here::here("data", "raw", "your-data.csv"))
+Add a code chunk that loads the sample dataset. Set the chunk options so that 
+the code is not printed in the rendered output but the chunk is evaluated.
+
+```{r}
+df_raw <- readr::read_csv(here::here("data", "raw", "data_example.csv"))
 ```
 
 ::: callout-tip
 Relevant chunk option: `echo: false`
 :::
 
-### Exercise 5: Summary statistics
+### Exercise 5: Anonymise data
 
-Create a code chunk that filters to the verb region and computes the mean and SD of first-pass reading time (`gaze`), storing them as named objects. Set the chunk so it runs silently.
-```r
+Add a code chunk that anonymises the `px` value.
+
+```{r}
+set.seed(416) # for reproducibility
+
+px_lookup <- df_raw |>
+  distinct(px) |>                             # one row per participant
+  mutate(px = sample(1:n(), n(), replace = FALSE)) # randomly assign 1:N
+
+df_clean <- df_raw |>
+  left_join(px_lookup, by = "px") |>
+  select(-px) |>                              # remove original identifier
+  relocate(px) |>
+  arrange(px)
+```
+
+### Exercise 6: Save processed data
+
+Save this anonymised data in `data/processed`.
+
+```{r}
+write_csv(df_clean, here::here("data", "processed", "data_clean.csv"))
+```
+
+### Exercise 7: Summary statistics
+
+Create a code chunk that filters to the verb region and computes the mean and 
+SD of first-pass reading time (`gaze`), storing them as named objects. Set the 
+chunk so it runs silently.
+
+```{r}
 m_gaze  <- # YOUR CODE HERE
 sd_gaze <- # YOUR CODE HERE
 ```
 
 ::: callout-tip
-You will need `filter(region == "verb")`, `mean(..., na.rm = TRUE)`, `sd(..., na.rm = TRUE)`, and `round(..., 1)`.
+You will need `filter(region == "verb")`, `mean(..., na.rm = TRUE)`, 
+`sd(..., na.rm = TRUE)`, and `round(..., 1)`.
 :::
 
-### Exercise 6: Inline reporting
+### Exercise 8: Inline reporting
 
-Report your values from Exercise 5 inline by completing the sentence below:
+Report your values from Exercise 7 inline by completing the sentence below:
 
-Mean first-pass reading time at the verb region was \_\_\_ ms (SD = \_\_\_ ms).
+```
+Mean first-pass reading time at the verb region was ___ ms (SD = ___ ms).
+```
 
-### Exercise 7: Global eval
+### Exercise 9: Global eval
 
 Add the following to your YAML `execute:` block:
+
 ```yaml
 execute:
   eval: false
@@ -69,13 +112,104 @@ execute:
 
 Render. What happens? Which exercises break and why?
 
-Now fix the problem by adding `#| eval: true` to the chunks that need to run (Exercises 4 and 5). Re-render and confirm everything works.
+Now fix the problem by adding `#| eval: true` to the chunks that need to run 
+(Exercises 4 and 5). Re-render and confirm everything works.
 
 ::: callout-note
-This exercise illustrates why global chunk options need to be set carefully, and why it is often better to set `eval: false` only on specific chunks rather than globally.
+This exercise illustrates why global chunk options need to be set carefully, 
+and why it is often better to set `eval: false` only on specific chunks rather 
+than globally.
 :::
 
 ---
+
+## Models
+
+### Exercise 1: Analysis script
+
+Open the script `analysis.qmd` and run each code chunk manually. Then render it.
+
+### Exercise 2: Set up your manuscript script
+
+Open `manuscript.qmd`. The global chunk option to hide code is already set. 
+Render it to confirm it works.
+
+Then use inline code to fill in the following sentence. First store the values 
+as named objects in a hidden chunk, then reference them inline:
+
+```
+There was no effect of tense (β = ___, SE = ___, *t* = ___, *p* ___).
+```
+
+::: callout-tip
+You will need `broom.mixed::tidy()` with `effects = "fixed"` and `conf.int = TRUE`, 
+then `filter(term == "tense1")` and `pull()` for each value.
+:::
+
+---
+
+### Exercise 3: Fit a total reading time model
+
+Switch back to `analysis.qmd`.
+
+1. Filter `df_clean` to the verb region and apply contrast coding and trial 
+centring as covered in the chapter, but this time use `tt` (total 
+reading time) as your dependent variable instead of `gaze`. Exclude zeros 
+as before.
+
+2. Set sum contrast coding for `lifetime` and `tense`. Center `trial`.
+
+2. Fit the following model:
+
+```{r}
+lmer_tt <- lmer(
+  log(tt) ~ lifetime * tense + trial_c +
+    (1 + lifetime | px) +
+    (1 + tense | item),
+  data    = df_verb,
+  control = lmerControl(optimizer = "bobyqa",
+                        optCtrl   = list(maxfun = 1e5))
+)
+```
+
+3. Check for convergence warnings. Is the model singular?
+
+4. Save the model:
+
+```{r}
+saveRDS(lmer_tt, here("output", "models", "lmer_tt.rds"))
+```
+
+---
+
+### Exercise 4: Report the total reading time model in your manuscript
+
+Switch to `manuscript.qmd`.
+
+1. Load the new model:
+
+```{r}
+lmer_tt <- readRDS(here("output", "models", "lmer_tt.rds"))
+```
+
+2. Extract the values needed for a methods paragraph:
+
+```{r}
+n_obs_tt       <- nobs(lmer_tt)
+n_px_tt        <- summary(lmer_tt)$ngrps[["px"]]
+n_items_tt     <- summary(lmer_tt)$ngrps[["item"]]
+formula_tt     <- deparse1(formula(lmer_tt))
+optimizer_tt   <- lmer_tt@optinfo$optimizer
+n_total_tt     <- n_px_tt * n_items_tt
+n_dropped_tt   <- n_total_tt - n_obs_tt
+pct_dropped_tt <- round(n_dropped_tt / n_total_tt * 100, 1)
+```
+
+3. Use these objects to fill in the blanks in `manuscript.qmd` under the 
+Total reading times section.
+
+4. Extract and report the lifetime main effect inline, following the same 
+pattern as Exercise 2.
 
 ## References {.unnumbered}
 

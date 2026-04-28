@@ -90,6 +90,10 @@ format:
         \usepackage{microtype}       % improved text justification and spacing
         \usepackage{gb4e}
         \noautomath
+        \DeclareUnicodeCharacter{2212}{$-$}
+        \DeclareUnicodeCharacter{2248}{$\approx$}
+        \DeclareUnicodeCharacter{03B2}{$\beta$}
+        \DeclareUnicodeCharacter{00D7}{$\times$}
     documentclass: scrbook # KOMA-Script book class: better typography than standard LaTeX book
     classoption: oneside # remove alternating margins intended for double-sided printing; keeps all pages consistently aligned
     papersize: a4

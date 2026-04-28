@@ -23,27 +23,23 @@ All models are fitted on first-pass reading time at the verb region from @palles
 
 Load packages.
 
-```{r}
+````{r}
 #| output: false
 #| message: false
-
 pacman::p_load(here, tidyverse, lme4, lmerTest, brms, broom.mixed, gt, kableExtra)
-```
+````
 
 Load data. N.B., we've skipped some filtering steps in our data preparation, so our results will be slightly different from the published results.
 
-```{r}
-# load in data
-df_clean <- read_csv(here("data", "processed", "data_example.csv"))
-```
+````{r}
+df_clean <- read_csv(here("data", "processed", "data_clean.csv"))
+````
 
 Load in helper function to format p-values according to APA 7 style.
 
-```{r}
-# helper function to format p-values
+````{r}
 source(here("R", "helpers.R"))
-```
-
+````
 
 ## Data preparation {#sec-data-prep}
 
@@ -57,137 +53,127 @@ Before fitting any model, we:
 
 First, check our data is fully balanced.
 
-```{r}
+````{r}
 #| output: false
-# sanity check: observations per participant
-df_clean |> janitor::tabyl(px_code) |> count(n)
-
-# sanity check: observations per item
+df_clean |> janitor::tabyl(px) |> count(n)
 df_clean |> janitor::tabyl(item) |> count(n)
-```
+````
 
-We see we have data from 24 participants with all of them contributing 480 observations, and 80 items all with 144 observations.
+We see we have data from 24 participants with all of them contributing 480 observations, and 80 items all with 144 observations. This is a useful first step to catch any unexpected imbalance (missing participants, dropped trials, or items with too few observations) before the data enter a model.
 
-This is a useful first step to catch any unexpected imbalance (missing participants, dropped trials, or items with too few observations) before the data enter a model. Then filter so that we only have reading times from the `verb` region, and trials where first-pass reading time was greater than 0 (i.e., wasn't skipped):
+Then filter so that we only have reading times from the `verb` region, and trials where first-pass reading time was greater than 0 (i.e., wasn't skipped):
 
-```{r}
+````{r}
 df_verb <- df_clean |>
-  filter(region == "verb" &
-           gaze > 0) 
-```
+  filter(region == "verb" & gaze > 0) 
+````
 
-::: {.callout-note}
+::: {.callout-note collapse="true"}
 #### Sanity check: observations per condition
 
 A random slope can only be estimated if there are multiple observations per unit per condition cell; the more observations per cell, the more reliably slope variance can be distinguished from residual error [e.g., @barr_2013; @barr_et_al_2013]. A typical rule of thumb is N per cell > 5. Below this threshold, convergence issues with a maximal random effects structure are almost guaranteed in the frequentist framework (`lme4`, `lmerTest`). Bayesian models (`brms`) are more robust to sparse cells through partial pooling and prior regularisation, but low N per cell will still result in wide, uncertain posteriors for random effect parameters.
 
-```{r}
+````{r}
 library(patchwork)
-# N observations per condition per item
+
 df_verb |>
   count(item, lifetime, tense) |>
   count(lifetime, tense, n, name = "n_items")
 
-# N observations per condition per participant
 df_verb |>
-  count(px_code, lifetime, tense) |>
+  count(px, lifetime, tense) |>
   count(lifetime, tense, n, name = "n_participants")
-```
+````
 
-
-```{r}
+````{r}
 #| echo: false
 #| label: fig-obvs
 #| fig-cap: "Number of observations per condition across participants (A) and items (B). For maximal model convergence N > 5 is the rule of thumb (but does not guarantee convergence)."
 df_verb |>
-  count(px_code, lifetime, tense) |>
+  count(px, lifetime, tense) |>
   ggplot(aes(x = n, fill = interaction(lifetime, tense))) +
   geom_histogram(binwidth = 1, colour = "white", linewidth = 0.2) +
-  labs(
-    x    = "N observations per participant",
-    y    = "N participants",
-    fill = "Condition",
-    title = "N first-pass > 0 per participant"
-  ) +
+  labs(x = "N observations per participant", y = "N participants",
+       fill = "Condition", title = "N first-pass > 0 per participant") +
   theme_bw() +
   df_verb |>
   count(item, lifetime, tense) |>
   ggplot(aes(x = n, fill = interaction(lifetime, tense))) +
   geom_histogram(binwidth = 1, colour = "white", linewidth = 0.2) +
-  labs(
-    x    = "N observations per items",
-    y    = "N items",
-    fill = "Condition",
-    title = "N first-pass > 0 per item"
-  ) +
+  labs(x = "N observations per item", y = "N items",
+       fill = "Condition", title = "N first-pass > 0 per item") +
   theme_bw() +
   plot_layout(guides = "collect") +
   plot_annotation(tag_levels = "A")
-```
+````
 
-Most participants contributed 20 observations per condition, though a small number contributed 18 or 16. Similarly, most items appeared 6 times per condition, with a small number appearing 5 or 4 times. The near-complete balance supports a maximal random effects structure for both grouping factors, but we may end up needing a simplified random effects structure (especially given one item having 4 observations in the `living PP` condition).
+Most participants contributed 20 observations per condition, though a small number contributed 18 or 16. Similarly, most items appeared 6 times per condition, with a small number appearing 5 or 4 times. The near-complete balance supports a maximal random effects structure for both grouping factors, but we may end up needing a simplified structure (especially given one item having 4 observations in the `living PP` condition).
 :::
 
 ### Contrast coding {#sec-contrasts}
 
-Both predictors are categorical with two levels and should be sum-coded so that the intercept represents the grand mean and each coefficient represents the deviation from it. We assign −0.5 to the theoretically "baseline" level in each case, creating a new variable with `_c` appended to the name to indicate it is `c`entred (or contrast coded):
+Both predictors are categorical with two levels and should be sum-coded so that the intercept represents the grand mean and each coefficient represents the deviation from it. We assign -0.5 to the theoretically "baseline" level in each case, creating a new variable with `_c` appended to the name to indicate it is centred:
 
-- `lifetime_c`: `living` = −0.5, `dead` = +0.5
-- `tense_c`: `pp` (present perfect) = −0.5, `sf` (simple future) = +0.5
+- `lifetime`: `living` = -0.5, `dead` = +0.5
+- `tense`: `pp` (present perfect) = -0.5, `sf` (simple future) = +0.5
 
-```{r}
+````{r}
 df_verb <- df_verb |>
   mutate(
-    lifetime_c = if_else(lifetime == "living", -0.5, 0.5),
-    tense_c    = if_else(tense == "PP", -0.5, 0.5)
-  )
-```
-
-::: {.callout-note collapse="true"}
-#### Alternative: setting contrasts with `contrasts()`
-
-The `contrasts()` function sets the contrast matrix directly on a factor variable, so it applies automatically whenever that variable enters a model:
-
-```{r}
-#| eval: false
-df_verb <- df_verb |>
-  mutate(
-    lifetime = factor(lifetime),
-    tense    = factor(tense)
+    lifetime = factor(lifetime, levels = c("living", "dead")),
+    tense    = factor(tense, levels = c("SF", "PP"))
   ) 
 
 contrasts(df_verb$lifetime) <- c(-0.5, 0.5)
 contrasts(df_verb$tense)    <- c(-0.5, 0.5)
-```
+````
 
-This is the canonical R approach and is common in the psycholinguistics literature. However, it has a few practical drawbacks: the contrast is set on the object in memory and will be lost if the variable is re-factored or the data are re-read; the coding is not visible in the data wrangling pipeline; and it requires the variable to be a factor first. The `if_else()` approach used above creates an explicit numeric column alongside the original, keeping the coding transparent and the original labels available for plotting.
+Note you can achieve the same thing with `contr.sum(2) / 2`, which divides the default ±1 values by 2 to give ±0.5. Always check your contrasts after setting them:
+
+````{r}
+contrasts(df_verb$lifetime)
+contrasts(df_verb$tense)
+````
+
+::: {.callout-note collapse="true"}
+#### Alternative: `±0.5` coding with `if_else()`
+
+The `if_else()` function creates explicit numeric columns directly in the data wrangling pipeline:
+
+````{r}
+#| eval: false
+df_verb <- df_verb |>
+  mutate(
+    lifetime = if_else(lifetime == "living", -0.5, 0.5),
+    tense    = if_else(tense == "PP", -0.5, 0.5)
+  )
+````
+
+This achieves the same sum coding as `contr.sum(2) / 2` but with a few practical advantages: the coding is visible in the pipeline, it doesn't require the variable to be a factor, and it won't be lost if the data are re-read or re-factored. The tradeoff is that the original labels are overwritten, so plotting requires either a lookup or a separate label column.
 :::
 
 ### Centre trial order
 
 Critical trials were numbered 3–209, with 80 critical trials in total (the remainder being fillers). We centre within participant so that each participant's trial effect is expressed relative to the midpoint:
 
-```{r}
+````{r}
 df_verb <- df_verb |>
   mutate(trial_c = trial - mean(trial))
-```
+````
 
 ::: {.callout-note}
 #### Why centre and sum-code predictors?
 
-**Sum coding** (−0.5 / +0.5) means the model intercept is the grand mean of the response, and each coefficient is the difference between one level and the grand mean. This makes coefficients interpretable as main effects in the presence of an interaction, unlike treatment (dummy) coding where the intercept is the mean of the reference level only.
+**Sum coding** (-0.5 / +0.5) means the model intercept is the grand mean of the response, and each coefficient is the difference between one level and the grand mean. This makes coefficients interpretable as main effects in the presence of an interaction, unlike treatment (dummy) coding where the intercept is the mean of the reference level only.
 
-**Centring continuous predictors** (subtracting the mean) serves a similar purpose: it makes the intercept meaningful (the predicted value at the average level of the predictor) and reduces collinearity between main effects and interactions. For `trial_c`, we centre around the mean critical trial position. Because the trial sequence was pseudorandomised and held constant across participants, this is equivalent to subtracting a constant. Now `trial_c = 0` corresponds to the midpoint of the experiment, and no `group_by(px_code)` is needed because we know that the experiment was designed and programmed to have the same position of critical trials across participants.
-
-Both of these practices also improve model convergence in mixed-effects models.
+**Centring continuous predictors** (subtracting the mean) serves a similar purpose: it makes the intercept meaningful (the predicted value at the average level of the predictor) and reduces collinearity between main effects and interactions. For `trial_c`, we centre around the mean critical trial position. Because the trial sequence was pseudorandomised and held constant across participants, this is equivalent to subtracting a constant — no `group_by(px)` is needed. Both practices also improve model convergence in mixed-effects models.
 :::
-
 
 ### Log-transform the dependent variable
 
 Fixation duration measures are typically right-skewed: most fixations are short, but a long tail of unusually long fixations pulls the mean upward. This violates the normality assumption of linear models. A log-transformation compresses the upper tail and produces residuals that more closely approximate a normal distribution.
 
-```{r}
+````{r}
 #| echo: false
 #| warning: false
 #| message: false
@@ -195,38 +181,33 @@ Fixation duration measures are typically right-skewed: most fixations are short,
 #| fig-cap: Positive skew in millisecond scale versus relative normality in log scale for first-fixation times at the verb region
 #| fig-asp: .5
 #| out-width: "80%"
-
 library(patchwork)
 
 df_verb |>
-  ggplot() +
-  aes(x = gaze) +
+  ggplot(aes(x = gaze)) +
   geom_histogram(fill = "pink") +
   labs(title = "Millisecond scale") +
-
   df_verb |> 
-  ggplot() +
-  aes(x = log(gaze))+
-  labs(title = "Log scale") +
-  geom_histogram(fill = "lightblue") &
-    
-    theme_bw()
-```
+  ggplot(aes(x = log(gaze))) +
+  geom_histogram(fill = "lightblue") +
+  labs(title = "Log scale") &
+  theme_bw()
+````
 
 The data are slightly bimodal (two peaks), but this will be absorbed by the random effects.
 
 ::: {.callout-note}
 #### Interpreting log-transformed estimates
 
-Coefficients from a model fitted on `log(gaze)` are on the log-ms scale. To back-transform a coefficient to the original millisecond scale, exponentiate it:
+Coefficients from a model fitted on `log(gaze)` are on the log-ms scale. To back-transform to the original millisecond scale, exponentiate:
 
-```{r}
+````{r}
 #| eval: false
 exp(coef)       # back-transform a single coefficient
 exp(conf.low)   # back-transform a confidence interval bound
-```
+````
 
-A coefficient of 0.05 on the log scale means a multiplicative change of `exp(0.05)` ≈ 1.05, i.e. a 5% increase in fixation duration. For small effects, log-scale coefficients are approximately equal to proportional changes, but for larger effects exponentiation is necessary for accurate interpretation.
+A coefficient of 0.05 on the log scale means a multiplicative change of `exp(0.05)` $\approx$ 1.05, i.e. a 5% increase in fixation duration. For small effects, log-scale coefficients are approximately equal to proportional changes, but for larger effects exponentiation is necessary for accurate interpretation.
 :::
 
 ## Linear mixed-effects model {#sec-lmer}
@@ -235,81 +216,44 @@ The appropriate model for repeated-measures data includes random effects for bot
 
 ### Random effects structure
 
-::: {.callout-note}
-#### Random effects structure: why not include `trial_c`?
+Let's fit a model with the maximal random effects structure justified by our design and data:
 
-The maximal random effects structure (Barr et al., 2013) includes all random slopes that are theoretically justified by the design. For a fully crossed within-participant, within-item design, this means random slopes for `lifetime_c`, `tense_c`, and their interaction for both participants and items.
-
-`trial_c` is excluded from the random effects structure because it is a within-session nuisance covariate (a proxy for fatigue or practice) rather than an experimentally manipulated within-unit factor. Its effect is not expected to vary meaningfully across items, and including it as a random slope for items in particular would be both theoretically unmotivated and likely to cause convergence problems. It is retained as a fixed effect to partial out its influence on the intercept.
-:::
-
-```{r}
+````{r}
 #| echo: false
 #| eval: false
 #| output: false
-# fit the model behind the scenes and save it as rds
 lmer_gaze_mm <- lmer(
-  log(gaze) ~ lifetime_c * tense_c + trial_c +
-    (1 + lifetime_c * tense_c | px_code) +
-    (1 + lifetime_c * tense_c | item),
-  data    = df_verb
+  log(gaze) ~ lifetime * tense + trial_c +
+    (1 + lifetime * tense | px) +
+    (1 + lifetime * tense | item),
+  data = df_verb
 )
-
 saveRDS(lmer_gaze_mm, here("output", "models", "lmer_gaze_mm.rds"))
-```
+````
 
-```{r}
+We get the warning `boundary (singular) fit: see help('isSingular')`. This tells us our random effects structure is overparameterised. We'll skip how to find the model that converges and just run the model reported in the paper:
+
+````{r}
 #| eval: false
-lmer_gaze_mm <- lmer(
-  log(gaze) ~ lifetime_c * tense_c + trial_c +
-    (1 + lifetime_c * tense_c | px_code) +  # maximal by-participant random effects
-    (1 + lifetime_c * tense_c | item),       # maximal by-item random effects
-  data    = df_verb
-)
-```
-
-We get the warning `boundary (singular) fit: see help('isSingular')`. We'll skip how to find the model that converges and just run the model reported in the paper and in the analysis on the OSF:
-
-```{r}
-#| eval: false
-#| echo: false
 lmer_gaze <-
-  lmer(log(gaze) ~ lifetime_c*tense_c  + trial_c +
-                   (1 + lifetime_c | px_code) +
-                   (1 + tense_c | item), 
-                   data = df_verb,
-                   control = lmerControl(optimizer = "bobyqa",
-                                         optCtrl = list(maxfun = 1e5))
-)
+  lmer(log(gaze) ~ lifetime * tense + trial_c +
+         (1 + lifetime | px) +
+         (1 + tense | item), 
+       data    = df_verb,
+       control = lmerControl(optimizer = "bobyqa",        # more stable than default Nelder_Mead
+                             optCtrl   = list(maxfun = 1e5)))  # max function evaluations
 
 saveRDS(lmer_gaze, here("output", "models", "lmer_gaze.rds"))
-```
+````
 
-```{r}
+````{r}
 #| echo: false
 lmer_gaze <- readRDS(here("output", "models", "lmer_gaze.rds"))
-```
+````
 
-
-```{r}
-#| eval: false
-lmer_gaze <-
-  lmer(log(gaze) ~ lifetime_c*tense_c  + trial_c +
-                   (1 + lifetime_c | px_code) +
-                   (1 + tense_c | item), 
-                   data = df_verb,
-                   control = lmerControl(optimizer = "bobyqa",  # alternative optimiser; often more stable than the default (Nelder_Mead)
-                                         optCtrl = list(maxfun = 1e5  # maximum number of function evaluations before giving up (default is 10000)
-  )
-)
-)
-```
-
-```{r}
+````{r}
 summary(lmer_gaze)
-```
-
-
+````
 
 ::: {.callout-tip}
 #### Convergence warnings
@@ -318,112 +262,105 @@ If the model fails to converge, the most common remedies in order of invasivenes
 
 1. Switch optimiser: `lmerControl(optimizer = "bobyqa")` or `"Nelder_Mead"`
 2. Increase the maximum number of function evaluations: `optCtrl = list(maxfun = 2e5)`
-3. Remove the interaction from the random slopes: `(1 + lifetime_c + tense_c | px_code)`
-4. Remove correlations between random effects: `(1 + lifetime_c * tense_c || px_code)`
-5. Fall back to random intercepts only: `(1 | px_code) + (1 | item)`
+3. Remove the interaction from the random slopes: `(1 + lifetime + tense | px)`
+4. Remove correlations between random effects: `(1 + lifetime * tense || px)`
+5. Fall back to random intercepts only: `(1 | px) + (1 | item)`
 
-In this case, the maximal by-item structure `(1 + lifetime_c * tense_c | item)` produced a singular fit, likely due to sparse cells (n = 6 per item per condition). Switching to `bobyqa`, increasing `maxfun`, and dropping tsome slopes resolved both issues. Always report what random effects structure was fitted and why, especially if you simplified from the maximal structure [@barr_et_al_2013; @matuschek_et_al_2017; @bates_et_al_2015].
+In this case, the maximal by-item structure `(1 + lifetime * tense | item)` produced a singular fit, likely due to sparse cells (n = 6 per item per condition). Switching to `bobyqa`, increasing `maxfun`, and dropping some slopes resolved both issues. Always report what random effects structure was fitted and why, especially if you simplified from the maximal structure [@barr_et_al_2013; @matuschek_et_al_2017; @bates_et_al_2015].
 :::
 
 ### Model summary table
 
-```{r}
+````{r}
 #| label: tbl-lmer
 #| tbl-cap: "Linear mixed-effects model predicting first-pass reading time at the verb region. Fixed effects only."
-#| echo: true
-broom.mixed::tidy(lmer_gaze, effects = "fixed", conf.int = TRUE) |>mutate(
+tidy_tbl <- broom.mixed::tidy(lmer_gaze, effects = "fixed", conf.int = TRUE) |>
+  mutate(
     across(c(estimate, std.error, conf.low, conf.high), \(x) round(x, 3)),
     statistic = round(statistic, 2),
     p.value   = fmt_p(p.value, table = TRUE)
-  ) |> 
-  select(-effect) |>
-  gt() |>
-  cols_label(
-    term      = "Term",
-    estimate  = "β",
-    std.error = "SE",
-    statistic = "t",
-    df        = "df",
-    p.value   = "p",
-    conf.low  = "95% CI lower",
-    conf.high = "95% CI upper"
   ) |>
-  tab_style(
-    style     = cell_text(weight = "bold"),
-    locations = cells_column_labels()
-  )
-```
+  select(-effect)
+
+if (knitr::is_latex_output()) {
+  tidy_tbl |>
+    kbl(booktabs = TRUE, format = "latex", escape = FALSE,
+        col.names = c("Term", "$\\beta$", "SE", "$t$", "df", "$p$",
+                      "95\\% CI lower", "95\\% CI upper")) |>
+    kable_styling(latex_options = c("hold_position", "scale_down"))
+} else {
+  tidy_tbl |>
+    gt() |>
+    cols_label(
+      term      = "Term",
+      estimate  = "β",
+      std.error = "SE",
+      statistic = "t",
+      df        = "df",
+      p.value   = "p",
+      conf.low  = "95% CI lower",
+      conf.high = "95% CI upper"
+    ) |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
+````
 
 ### Inline reporting
 
-```{r}
+````{r}
 #| output: false
-lmer_tidy    <- broom.mixed::tidy(lmer_gaze, effects = "fixed", conf.int = TRUE)
-b_trial_lmer  <- lmer_tidy |> filter(term == "trial_c") |> pull(estimate) |> round(2)
+lmer_tidy     <- broom.mixed::tidy(lmer_gaze, effects = "fixed", conf.int = TRUE)
+b_trial_lmer  <- lmer_tidy |> filter(term == "trial_c") |> pull(estimate)  |> round(2)
 se_trial_lmer <- lmer_tidy |> filter(term == "trial_c") |> pull(std.error) |> round(2)
 t_trial_lmer  <- lmer_tidy |> filter(term == "trial_c") |> pull(statistic) |> round(2)
-p_trial_lmer  <- lmer_tidy |> filter(term == "trial_c") |> pull(p.value) |> fmt_p(3)
-```
+p_trial_lmer  <- lmer_tidy |> filter(term == "trial_c") |> pull(p.value)   |> fmt_p(3)
+````
 
-```markdown
-There was a main effect of lifetime, with longer first-pass reading times for dead versus living referents (β = `r b_trial_lmer`, SE = `r se_trial_lmer`, 
+````markdown
+There was a main effect of lifetime, with longer first-pass reading times 
+for dead versus living referents (β = `r b_trial_lmer`, SE = `r se_trial_lmer`, 
 *t* = `r t_trial_lmer`, *p* `r p_trial_lmer`).
-```
+````
 
-> There was a main effect of lifetime, with longer first-pass reading times for dead versus living referents (β = `r b_trial_lmer`, SE = `r se_trial_lmer`, 
-*t* = `r t_trial_lmer`, *p* `r p_trial_lmer`).
+> There was a main effect of lifetime, with longer first-pass reading times for dead versus living referents (β = `r b_trial_lmer`, SE = `r se_trial_lmer`, *t* = `r t_trial_lmer`, *p* `r p_trial_lmer`).
 
 ::: {.callout-note}
-## Bimodality in the raw data is not necessarily a problem
+#### Bimodality in the raw data is not necessarily a problem
 
-Inspection of the raw first-pass reading times revealed a bimodal distribution in log space, reflecting a mixture of single-fixation and refixation trials. This might seem to violate the normality assumption of linear mixed-effects models, but the assumption applies to the *residuals*, not the raw data.
+Inspection of the raw first-pass reading times revealed a bimodal distribution in log space, reflecting a mixture of single-fixation and refixation trials. This might seem to violate the normality assumption of linear mixed-effects models, but the assumption applies to the *residuals*, not the raw data. Once the model has accounted for systematic variance (fixed effects) and between-participant and between-item variability (random effects), the residuals are expected to be approximately normally distributed even if the raw outcome variable is not.
 
-Once the model has accounted for systematic variance (fixed effects) and between-participant and between-item variability (random effects), the residuals are expected to be approximately normally distributed even if the raw outcome variable is not. In other words, the random effects can "soak up" structure in the data that would otherwise appear as non-normality.
+Residual inspection confirms this: the residual histogram (@fig-residuals A) is unimodal and approximately symmetric, centred on zero, and the Q-Q plot (@fig-residuals B) shows good agreement with the theoretical normal distribution in the central range, with only minor deviation in the tails, which is typical for log-transformed reading time data. The residuals vs. fitted plot (@fig-residuals C) showed no systematic pattern across most of the fitted value range, with a slight upturn at higher fitted values indicating minor heteroscedasticity, which is common with reading time data even after log transformation and is unlikely to meaningfully affect inference.
 
-Residual inspection confirms this: the residual histogram (@fig-residuals A) is unimodal and approximately symmetric, centred on zero, and the Q-Q plot (@fig-residuals B) shows good agreement with the theoretical normal distribution in the central range, with only minor deviation in the tails which is typical for log-transformed reading time data. The residuals vs. fitted plot ((@fig-residuals C) showed no systematic pattern across most of the fitted value range, with a slight upturn at higher fitted values indicating a small degree of heteroscedasticity, which is again common with reading time data even after log transformation and is unlikely to meaningfully affect inference.
-
-```{r}
+````{r}
 #| echo: false
 #| label: fig-residuals
-#| fig-cap: Residual plots for our model
-
+#| fig-cap: Residual plots for the linear mixed-effects model.
+#| out-width: "80%"
+#| fig-asp: .4
 p_hist <- data.frame(r = resid(lmer_gaze)) |>
   ggplot(aes(x = r)) +
   geom_histogram(bins = 50) +
   geom_vline(xintercept = 0, linetype = "dashed", colour = "red") +
-  labs(
-    x     = "Residuals",
-    y     = "Count",
-    title = "Histogram of residuals"
-  )
+  labs(x = "Residuals", y = "Count", title = "Histogram of residuals")
 
 p_qq <- data.frame(r = resid(lmer_gaze)) |>
   ggplot(aes(sample = r)) +
   stat_qq() +
   stat_qq_line(color = "red") +
-  labs(
-    x     = "Theoretical quantiles",
-    y     = "Sample quantiles",
-    title = "Q-Q plot"
-  )
+  labs(x = "Theoretical quantiles", y = "Sample quantiles", title = "Q-Q plot")
 
-p_resid <- data.frame(
-  fitted   = fitted(lmer_gaze),
-  residual = resid(lmer_gaze)
-) |>
+p_resid <- data.frame(fitted = fitted(lmer_gaze), residual = resid(lmer_gaze)) |>
   ggplot(aes(x = fitted, y = residual)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, linetype = "dashed") +
   geom_smooth(method = "loess", se = FALSE, colour = "red", linewidth = 0.7) +
-  labs(
-    x     = "Fitted values",
-    y     = "Residuals",
-    title = "Residuals vs fitted"
-  )
+  labs(x = "Fitted values", y = "Residuals", title = "Residuals vs fitted")
 
-p_hist + p_qq + p_resid &
-  theme_bw()
-```
+p_hist + p_qq + p_resid & theme_bw()
+````
 
 The practical takeaway is that residual plots, not plots of the raw outcome, are the appropriate diagnostic for assessing whether the normality assumption has been met.
 :::
@@ -432,214 +369,141 @@ The practical takeaway is that residual plots, not plots of the raw outcome, are
 
 Before reporting individual parameter estimates, a methods or results section should describe the model itself: the formula fitted, the data it was applied to, and any decisions made about the random effects structure. All of this can be extracted directly from the fitted model object and reported inline, ensuring consistency between the model and the write-up.
 
-First, load the saved model:
-
-```{r}
+````{r}
 #| output: false
 lmer_gaze <- readRDS(here("output", "models", "lmer_gaze.rds"))
-```
 
-Then extract the relevant information, as we did in @sec-inline:
-
-```{r}
-#| output: false
-# number of observations and grouping factor levels
-n_obs   <- nobs(lmer_gaze)
-n_px    <- summary(lmer_gaze)$ngrps[["px_code"]]
-n_items <- summary(lmer_gaze)$ngrps[["item"]]
-
-# extract the model formula as a string
+n_obs         <- nobs(lmer_gaze)
+n_px          <- summary(lmer_gaze)$ngrps[["px"]]
+n_items       <- summary(lmer_gaze)$ngrps[["item"]]
 model_formula <- deparse1(formula(lmer_gaze))
+optimizer     <- lmer_gaze@optinfo$optimizer
+n_evals       <- format(lmer_gaze@optinfo$control$maxfun, scientific = FALSE, big.mark = ",")
 
-# optimiser used
-optimizer <- lmer_gaze@optinfo$optimizer
+# contrast coding
+lifetime_contrasts_lmer <- contrasts(lmer_gaze@frame$lifetime)
+tense_contrasts_lmer    <- contrasts(lmer_gaze@frame$tense)
 
-# n evals
-n_evals <- format(lmer_gaze@optinfo$control$maxfun, scientific = FALSE, big.mark = ",")
-```
+# skipped trials
+n_total    <- n_px * n_items
+n_dropped  <- n_total - n_obs
+pct_dropped <- round(n_dropped / n_total * 100, 1)
+````
 
-These objects can then be used inline:
-
-```markdown
-First-pass reading time at the verb region was analysed using a linear mixed-effects model fitted with `lme4` [@bates_et_al_2015] and `lmerTest` [@kuznetsova_et_al_2017], with Satterthwaite's method for degrees of freedom. The model formula was `r model_formula`. Categorical predictors were sum-coded (−0.5/+0.5): lifetime (living = −0.5, dead = +0.5) and tense (present perfect = −0.5, simple future = +0.5). Trial order was centred around the mean critical trial position. The by-item interaction slope was dropped from the maximal random effects structure due to a singular fit, likely reflecting sparse cells (n = 6 observations per item per condition). The model was fitted using the `r optimizer` optimiser with a maximum of `r n_evals` function evaluations. The dataset comprised `r n_obs` observations from `r n_px` participants across 
-`r n_items` items.
-```
-
-Which renders as:
-
-> First-pass reading time at the verb region was analysed using a linear 
+````markdown
+The dataset comprised `r n_obs` observations from `r n_px` participants across 
+`r n_items` items. `r n_dropped` trials (`r pct_dropped`%) were excluded due to 
+first-pass reading times of zero, indicating the region was skipped. First-pass reading time at the verb region was analysed using a linear 
 mixed-effects model fitted with `lme4` [@bates_et_al_2015] and `lmerTest` 
 [@kuznetsova_et_al_2017], with Satterthwaite's method for degrees of freedom. 
 The model formula was `r model_formula`. Categorical predictors were sum-coded 
-(−0.5/+0.5): lifetime (living = −0.5, dead = +0.5) and tense (present perfect 
-= −0.5, simple future = +0.5). Trial order was centred around the mean critical 
-trial position. The by-item interaction slope was dropped from the maximal 
-random effects structure due to a singular fit, likely reflecting sparse cells 
-(n = 6 observations per item per condition). The model was fitted using the 
-`r optimizer` optimiser with a maximum of `r n_evals` function evaluations. 
-The dataset comprised `r n_obs` observations from `r n_px` participants across 
-`r n_items` items.
+(-0.5/+0.5): lifetime (`r rownames(lifetime_contrasts_lmer)[1]` = 
+`r lifetime_contrasts_lmer[1]`, `r rownames(lifetime_contrasts_lmer)[2]` = 
+`r lifetime_contrasts_lmer[2]`) and tense (`r rownames(tense_contrasts_lmer)[1]` 
+= `r tense_contrasts_lmer[1]`, `r rownames(tense_contrasts_lmer)[2]` = 
+`r tense_contrasts_lmer[2]`). Trial order was centred around the mean critical 
+trial position. The by-item interaction slope was dropped from the maximal random 
+effects structure due to a singular fit, likely reflecting sparse cells (n = 6 
+observations per item per condition). The model was fitted using the `r optimizer` 
+optimiser with a maximum of `r n_evals` function evaluations. The dataset comprised 
+`r n_obs` observations from `r n_px` participants across `r n_items` items.
+````
+
+This will be printed as:
+
+> The dataset comprised `r n_obs` observations from `r n_px` participants across 
+`r n_items` items. `r n_dropped` trials (`r pct_dropped`%) were excluded due to 
+first-pass reading times of zero, indicating the region was skipped.  First-pass reading time at the verb region was analysed using a linear mixed-effects model fitted with `lme4` [@bates_et_al_2015] and `lmerTest` [@kuznetsova_et_al_2017], with Satterthwaite's method for degrees of freedom. The model formula was `r model_formula`. Categorical predictors were sum-coded (-0.5/+0.5): lifetime (`r rownames(lifetime_contrasts_lmer)[1]` = `r lifetime_contrasts_lmer[1]`, `r rownames(lifetime_contrasts_lmer)[2]` = `r lifetime_contrasts_lmer[2]`) and tense (`r rownames(tense_contrasts_lmer)[1]` = `r tense_contrasts_lmer[1]`, `r rownames(tense_contrasts_lmer)[2]` = `r tense_contrasts_lmer[2]`). Trial order was centred around the mean critical trial position. The by-item interaction slope was dropped from the maximal random effects structure due to a singular fit, likely reflecting sparse cells (n = 6 observations per item per condition). The model was fitted using the `r optimizer` optimiser with a maximum of `r n_evals` function evaluations. The dataset comprised `r n_obs` observations from `r n_px` participants across `r n_items` items.
 
 ::: {.callout-tip}
 #### What to report for a mixed-effects model
 
-A reproducible methods section should include:
-
 - The R packages used and their versions (extractable from `sessionInfo()`)
-- The full model formula, including random effects structure
+- The full model formula, including random effects structure and contrast coding scheme
 - Any simplifications from the maximal structure and the reason (e.g. singular fit, convergence failure)
 - The optimiser used and any non-default control parameters
 - The number of observations, participants, and items
 - The contrast coding scheme for categorical predictors
 :::
 
-
 ## Bayesian mixed-effects model
 
-We fit the same model using `brms`, which provides a full posterior distribution over all parameters rather than point estimates. This gives us richer uncertainty quantification and a principled framework for incorporating prior knowledge. We can also use our maximal random effects structure.
-
-### Priors
-
-For first-pass reading time, we use regularising priors that are weakly informative: they rule out implausible values (e.g. effects of thousands of milliseconds) while remaining broad enough not to strongly constrain the posterior. 
-
-```{r}
-#| output: false
-priors <- c(
-  prior(normal(5.9, 0.3),  class = Intercept),   # centred on log(365 ms); SD allows range ~200–600 ms
-  prior(normal(0, 0.2),    class = b),            # fixed effects on log scale; 0.2 log units ≈ 20% change in ms
-  prior(normal(0, 0.1),    class = b, coef = trial_c),  # trial effects expected smaller
-  prior(normal(0, 0.2),    class = sd),           # mean 0.05 on log scale; more variance expected than first fixation
-  prior(lkj(2),            class = cor),
-  prior(normal(0, 0.2),    class = sigma)         # same for residual SD
-)
-```
-
-These correspond to:
-
-- **Intercept**: `normal(5.9, 0.3)`: centred on log(365 ms), 
-  with SD broad enough to accommodate the range of plausible 
-  first-pass reading times (~200–600 ms) while ruling out 
-  implausible values
-- **Fixed effects**: `normal(0, 0.2)`: effects on the log scale; 
-  0.2 log units corresponds to roughly a 20% change in ms, 
-  already a large effect for first-pass reading time in sentence 
-  processing
-- **Trial**: `normal(0, 0.1)`: trial-by-trial fatigue or 
-  habituation effects are expected to be smaller than condition 
-  effects
-- **Random effect SDs and residual SD**: `exponential(5)`, 
-  places most mass near zero with a mean of 0.2 on the log scale, 
-  allowing for greater between-participant and between-item 
-  variability than first fixation while still regularising against 
-  implausibly large clustering effects
-
-::: {.callout-note collapse="true"}
-#### Prior predictive checks
-
-Before fitting the model to data, it is good practice to run a **prior predictive check**: sample from the prior distributions only (ignoring the data) and inspect whether the implied predictions are plausible. This catches priors that are too wide (generating impossible values like negative reaction times or fixations of several seconds) or too narrow (concentrating all mass in an implausibly small range).
-
-```{r}
-#| echo: false
-brm_gaze_prior <- brm(
-  gaze ~ lifetime_c * tense_c + trial_c +
-    (1 + lifetime_c * tense_c | px_code) +
-    (1 + lifetime_c * tense_c  | item),
-  data         = df_verb,
-  family       = lognormal(),
-  prior        = priors,
-  sample_prior = "only",  # sample from prior, ignore data
-  chains       = 4,
-  iter         = 2000,
-  seed         = 416
-)
-
-saveRDS(brm_gaze_prior, here("output", "models", "brm_gaze_prior.rds"))
-```
-
-```{r}
-#| eval: false
-brm_gaze_prior <- brm(
-  gaze ~ lifetime_c * tense_c + trial_c +
-    (1 + lifetime_c * tense_c | px_code) +
-    (1 + lifetime_c * tense_c | item),
-  data         = df_verb,
-  family       = lognormal(),
-  prior        = priors,
-  sample_prior = "only",  # sample from prior, ignore data
-  chains       = 4,
-  iter         = 2000,
-  seed         = 416
-)
-```
-
-```{r}
-#| label: fig-priorpredictive
-#| fig-cap: Prior predictive distribution (ndraws = 100)
-pp_check(brm_gaze_prior, ndraws = 100)
-```
-
-The prior predictive distribution (light blue lines) shows the range of data the model considers plausible before seeing any observations, based on the prior distributions alone. The dark line shows the actual observed data. Ideally, the prior predictive should cover plausible log-ms values (roughly 4.6 to 6.9, corresponding to 100–1000 ms) without placing substantial mass on impossible values such as negative fixation durations or fixations of several seconds.
-
-In practice, achieving a clean prior predictive can be difficult with complex random effects structures. Here, the bulk of the prior mass is correctly centred on plausible log-ms values, but the tails extend into implausible territory. This is a known limitation of the Gaussian likelihood applied to a log-transformed bounded outcome. With a maximal random effects structure, the joint distribution of many correlated random effects can generate extreme predictions even when individual SD priors are tight. The lognormal family is theoretically preferable for reaction time data as it guarantees positive predictions, but produces similar or worse prior predictive behaviour in this case. We therefore proceed with Gaussian on log-transformed first-pass reading times, consistent with standard practice in the psycholinguistics literature, and note that the prior predictive serves its primary purpose of confirming the priors are not severely misspecified in the central range.
-
-Note that the prior predictive need not match the data closely, and in fact should be specified prior to seeing the data. It simply needs to be broadly consistent with domain knowledge. The goal is regularisation, not prediction. Prior predictive checks should be reported in any Bayesian analysis write-up, alongside the prior distributions themselves and the posterior predictive check after fitting.
-:::
-
-::: {.callout-note}
-#### Priors: what to set and what to report
-
-Priors encode your assumptions about plausible parameter values *before seeing the data*. For eyetracking measures like first-pass reading time, we have strong domain knowledge: typical first-pass reading times fall in the 150–600 ms range, with a longer upper tail than first fixation durations due to refixation trials. This justifies the weakly informative priors above.
-
-**What to report in a write-up:**
-
-- The prior distributions for all parameters (intercept, slopes, random effect SDs, residual SD)
-- A brief justification for each prior (domain knowledge, regularisation, or previous literature)
-- Whether a **prior predictive check** was run (`brms::pp_check(brm_gaze, type = "dens_overlay", ndraws = 100)`) to confirm priors generate plausible data before fitting
-
-**Useful diagnostics to check and report:**
-
-- `summary(brm_gaze)`: check $\hat{R}$ (Rhat) values — all should be < 1.01
-- `plot(brm_gaze)`: trace plots for chain mixing
-- `brms::pp_check(brm_gaze)`: posterior predictive check — does the model reproduce the shape of your data?
-- Effective sample size (`Bulk_ESS`, `Tail_ESS`) — should be > 1000
-
-At minimum, a reproducible manuscript should report: prior distributions, Rhat values, and a posterior predictive check.
-:::
+We fit the same model using `brms`, which provides a full posterior distribution over all parameters rather than point estimates, giving us richer uncertainty quantification and a principled framework for incorporating prior knowledge. Importantly, we can also retain our maximal random effects structure because the priors regularise poorly-constrained parameters instead of producing the singular fits and convergence failures common in `lme4`. We use default priors for today's purposes, but in practice you would set and report weakly informative priors that reflect domain knowledge about plausible values for your dependent variable, and verify them with a prior predictive check.
 
 ### Fit the model
 
-```{r}
+We use `lognormal()` as the likelihood, which is appropriate for right-skewed positive RT data. We run 2 chains with 2000 iterations (1000 warmup) — enough for a teaching example, but for a real model you'd want 4 chains and 4000 iterations. The `seed` argument ensures reproducibility.
+
+````{r}
 #| output: false
 brm_gaze <- brm(
-  gaze ~ lifetime_c * tense_c + trial_c +
-    (1 + lifetime_c * tense_c | px_code) +
-    (1 + lifetime_c * tense_c | item),
-  data    = df_verb,
-  family  = lognormal(),
-  prior   = priors,
-  chains  = 4,
-  iter    = 4000,
-  warmup  = 2000,
-  cores   = parallel::detectCores(),
-  seed    = 416,
-  file    = here("output", "models", "brm_gaze_verb")   # cache the fitted model
+  gaze ~ lifetime * tense + trial_c +
+    (1 + lifetime * tense | px) +  # by-participant
+    (1 + lifetime * tense | item),       # by-item
+  data   = df_verb,
+  family = lognormal(),
+  chains = 2,
+  iter   = 2000,
+  warmup = 1000,
+  seed   = 416,
+  # cores = parallel::detectCores() - 1  # parallelise chains
+  file   = here("output", "models", "brm_gaze.rds")  # cache model
 )
+````
+
+We get a low ESS warning because we're running a minimal number of chains and iterations for demonstration purposes. For a real model, change these settings to:
+
+````{r}
+#| eval: false
+chains = 4,
+iter   = 4000,
+warmup = 2000,
+````
+
+Inspect model summary.
+
+```{r}
+summary(brm_gaze)
 ```
+
 
 ::: {.callout-tip}
 #### Cache your models with `file =`
 
-The `file` argument saves the fitted model to disk. On subsequent renders, `brms` will load the cached model rather than re-fitting, saving considerable time. The file is invalidated automatically if the model formula, data, or priors change.
+The `file` argument saves the fitted model to disk. On subsequent renders, `brms` will load the cached model rather than re-fitting, saving considerable time. The file is invalidated automatically if the model formula, data, or priors change. Use `here()` to keep the path relative to the project root.
+:::
 
-Use `here()` to keep the path relative to the project root.
+### Model diagnostics
+
+Check convergence via trace plots and $\hat{R}$ values:
+
+```{r}
+plot(brm_gaze)      # trace plots and rank plots for each parameter
+```
+
+::: {.callout-note}
+#### Interpreting convergence diagnostics
+
+**Trace plots** show the sampled values for each parameter across iterations. A healthy trace plot looks like a "hairy caterpillar": the chains mix well, overlap completely, and show no trends or drifts. The posterior histogram alongside it should be smooth and unimodal.
+
+**$\hat{R}$** (Rhat) measures agreement between chains. Values < 1.01 indicate convergence. **ESS** (effective sample size) measures how many independent samples you effectively have; both `Bulk_ESS` and `Tail_ESS` should exceed 1000. Low ESS means noisier estimates but not necessarily wrong ones; running more chains and iterations will fix it (recall that we cut our chains and iterations in half in the interest of running models faster during the workshop).
+
+```{r}
+posterior::summarise_draws(brm_gaze, "rhat", "ess_bulk", "ess_tail") |>
+  summarise(
+    max_rhat     = max(rhat,     na.rm = TRUE),
+    min_ess_bulk = min(ess_bulk, na.rm = TRUE),
+    min_ess_tail = min(ess_tail, na.rm = TRUE)
+  )
+```
 :::
 
 ### Model summary table
 
-```{r}
+````{r}
+#| code-fold: true
 #| label: tbl-brm
 #| tbl-cap: "Bayesian mixed-effects model predicting first-pass reading time at the verb region. Posterior means, standard deviations, and 95% credible intervals for fixed effects."
-#| echo: true
 as_draws_df(brm_gaze) |>
   select(starts_with("b_")) |>
   pivot_longer(everything(), names_to = "term", values_to = "value") |>
@@ -651,8 +515,8 @@ as_draws_df(brm_gaze) |>
     q97.5 = round(quantile(value, 0.975), 3)
   ) |>
   mutate(term = str_remove(term, "^b_")) |>
-  arrange(match(term, c("Intercept", "lifetime_c", "tense_c", 
-                        "lifetime_c:tense_c", "trial_c"))) |> 
+  arrange(match(term, c("Intercept", "lifetime1", "tense1", 
+                        "lifetime1:tense1", "trial_c"))) |> 
   gt() |>
   cols_label(
     term  = "Term",
@@ -666,48 +530,35 @@ as_draws_df(brm_gaze) |>
     style     = cell_text(weight = "bold"),
     locations = cells_column_labels()
   )
-```
+````
 
-```{r}
+### Posterior distributions
+
+````{r}
+#| code-fold: true
 library(tidybayes)
-library(ggridges)
+library(ggdist)
 
 brm_gaze |>
-  gather_draws(b_lifetime_c, b_tense_c, 
-               `b_lifetime_c:tense_c`, b_trial_c) |>
-  mutate(.variable = factor(.variable, 
-    levels = c("b_Intercept", "b_lifetime_c", "b_tense_c",
-               "b_lifetime_c:tense_c", "b_trial_c"),
-    labels = c("Intercept", "Lifetime", "Tense", 
-               "Lifetime × Tense", "Trial"))) |>
+  gather_draws(b_lifetime1, b_tense1, `b_lifetime1:tense1`) |>
+  mutate(.variable = factor(.variable,
+    levels = c("b_lifetime1:tense1", "b_tense1", "b_lifetime1"),
+    labels = c("Lifetime × Tense", "Tense", "Lifetime"))) |>
   ggplot(aes(x = .value, y = .variable, fill = .variable)) +
-  geom_density_ridges(alpha = 0.7, scale = 0.9) +
-  geom_vline(xintercept = 0, linetype = "dashed") +
+  stat_halfeye(
+    point_interval = mean_qi,
+    .width         = 0.95,
+    alpha          = 0.8,
+    height         = 0.6,
+    normalize      = "groups"
+  ) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey40") +
+  scale_fill_manual(values = c("#7BAFD4", "#A8C87A", "#D4A8C7")) +
   guides(fill = "none") +
-  labs(x = "Posterior estimate (log ms)", y = NULL) +
-  theme_minimal()
-```
-
-```{r}
-library(tidybayes)
-
-brm_gaze |>
-  epred_draws(
-    newdata = expand_grid(
-      lifetime_c = c(-0.5, 0.5),   # your actual contrast values
-      tense_c    = c(-0.5, 0.5),   # adjust as needed
-      trial_c    = 0
-    ),
-    re_formula = NA                 # ignore random effects, population-level only
-  ) |> 
-  mutate(condition = paste(lifetime_c, tense_c, sep = "\n")) |>
-  ggplot(aes(x = .epred, y = condition, fill = condition)) +
-  geom_density_ridges(alpha = 0.7, scale = 0.9) +
-  guides(fill = "none") +
-  labs(x = "Predicted first-pass reading time (ms)", y = NULL) +
-  theme_minimal()
-```
-
+  labs(x = "Posterior estimate (log ms)", y = NULL,
+       title = "Posterior distributions with 95% CrIs") +
+  theme_classic(base_size = 12)
+````
 
 ### Inline reporting
 
@@ -715,45 +566,95 @@ Extract posterior summaries for specific parameters:
 
 ```{r}
 #| output: false
-brm_draws    <- as_draws_df(brm_gaze)
+brm_draws <- as_draws_df(brm_gaze)
 
 # lifetime main effect
-b_life_mean  <- round(mean(brm_draws$b_lifetime_c), 2)
-b_life_sd    <- round(sd(brm_draws$b_lifetime_c), 2)
-b_life_lower <- round(quantile(brm_draws$b_lifetime_c, 0.025), 2)
-b_life_upper <- round(quantile(brm_draws$b_lifetime_c, 0.975), 2)
+b_life_mean  <- round(mean(brm_draws$b_lifetime1), 3)
+b_life_sd    <- round(sd(brm_draws$b_lifetime1), 3)
+b_life_lower <- round(quantile(brm_draws$b_lifetime1, 0.025), 3)
+b_life_upper <- round(quantile(brm_draws$b_lifetime1, 0.975), 3)
 
-# probability of direction (effect > 0)
-p_life_pos   <- round(mean(brm_draws$b_lifetime_c > 0), 2)
+# probability of direction: proportion of draws on the positive side
+life_draws <- brm_draws$b_lifetime1
+p_life_pos <- round(mean(life_draws > 0), 2)
 ```
 
+Looking at the model summary above, we can see the lifetime effect has a 
+posterior mean of 0.05 (Est.Error = 0.02, 95% CrI [0.00, 0.10]). The 
+credible interval just excludes zero, suggesting weak evidence for longer 
+first-pass reading times for dead versus living referents. We can extract 
+and report this inline:
+
 ```markdown
-first-pass reading time was longer for dead than living referents 
-(posterior mean = `r b_life_mean` ms, SD = `r b_life_sd`, 
-95% CrI [`r b_life_lower`, `r b_life_upper`]; 
+There was a weak effect of lifetime, with longer first-pass reading times 
+for dead versus living referents (posterior mean = `r b_life_mean`, 
+SD = `r b_life_sd`, 95% CrI [`r b_life_lower`, `r b_life_upper`]; 
 *P*(β > 0) = `r p_life_pos`).
 ```
 
-> first-pass reading time was longer for dead than living referents (posterior mean = `r b_life_mean` ms, SD = `r b_life_sd`, 95% CrI [`r b_life_lower`, `r b_life_upper`]; *P*(β > 0) = `r p_life_pos`).
+Which renders as:
+
+> There was a weak effect of lifetime, with longer first-pass reading times 
+for dead versus living referents (posterior mean = `r b_life_mean`, 
+SD = `r b_life_sd`, 95% CrI [`r b_life_lower`, `r b_life_upper`]; 
+*P*(β > 0) = `r p_life_pos`).
 
 ::: {.callout-tip}
-#### What to extract for a Bayesian write-up
+#### Reporting Bayesian results: key differences from frequentist
 
-For each effect of interest, report:
+```{r}
+comparison_tbl <- tibble::tribble(
+  ~concept,          ~lmer,                       ~brms,
+  "Point estimate",  "\\$\\beta\\$ (fixed effect)", "Posterior mean or median",
+  "Uncertainty",     "Standard error (SE)",         "Posterior SD",
+  "Interval",        "95\\% CI",                    "95\\% CrI",
+  "Evidence",        "\\textit{p}-value",           "$P(\\beta > 0)$; CrI excludes zero"
+)
 
-- **Posterior mean** (or median): the point estimate
-- **Posterior SD**: uncertainty around the estimate (analogous to SE)
-- **95% credible interval**: the range containing 95% of the posterior mass — unlike a frequentist confidence interval, this can be interpreted directly as "there is a 95% probability the true value lies here"
-- **Probability of direction** (`mean(draws > 0)`): the probability the effect is in the expected direction, a useful complement to the credible interval
+if (knitr::is_latex_output()) {
+  comparison_tbl |>
+    kbl(booktabs = TRUE, format = "latex", escape = FALSE,
+        col.names = c("", "Frequentist (\\texttt{lmer})", "Bayesian (\\texttt{brms})")) |>
+    kable_styling(latex_options = "hold_position")
+} else {
+  tibble::tribble(
+    ~` `,              ~`Frequentist (lmer)`,   ~`Bayesian (brms)`,
+    "Point estimate",  "β (fixed effect)",       "Posterior mean or median",
+    "Uncertainty",     "Standard error (SE)",    "Posterior SD",
+    "Interval",        "95% CI",                 "95% CrI",
+    "Evidence",        "*p*-value",              "*P*(β > 0); CrI excludes zero"
+  ) |>
+    gt() |>
+    fmt_markdown(columns = everything()) |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
+```
+
+A few important distinctions in how you write up results:
+
+- The **95% CrI can be interpreted directly**: "there is a 95% probability 
+the true effect lies between `r b_life_lower` and `r b_life_upper`." A 
+frequentist CI does not support this interpretation.
+- **There is no *p*-value.** Instead, report the probability of direction — 
+the proportion of posterior draws on the expected side of zero. A value of 
+`r p_life_pos` means `r p_life_pos * 100`% of posterior draws are positive.
+- **Do not say "significant."** Instead, describe the posterior: "the credible 
+interval excludes zero", "the bulk of the posterior mass is positive", or 
+"there is weak/strong evidence for an effect of..."
+- The `Est.Error` in the `brms` summary is the **posterior SD**, not a 
+standard error in the frequentist sense — label it SD in your write-up.
 :::
 
 ## Reporting the Bayesian model in a methods section
 
 The same information extracted for the frequentist model applies to the Bayesian model, with a few additions: the prior distributions, the sampler settings, and the key diagnostics used to verify convergence.
 
-```{r}
+````{r}
 #| output: false
-m_brm <- readRDS(here("output", "models", "brm_gaze_verb.rds"))
+m_brm <- readRDS(here("output", "models", "brm_gaze.rds"))
 
 # sampler settings
 n_chains  <- m_brm$fit@sim$chains
@@ -763,78 +664,156 @@ n_samples <- (n_iter - n_warmup) * n_chains
 
 # number of observations, participants, items
 n_obs_brm   <- nrow(m_brm$data)
-n_px_brm    <- n_distinct(m_brm$data$px_code)
+n_px_brm    <- n_distinct(m_brm$data$px)
 n_items_brm <- n_distinct(m_brm$data$item)
+
+# contrast coding
+lifetime_contrasts <- contrasts(m_brm$data$lifetime)
+tense_contrasts    <- contrasts(m_brm$data$tense)
 
 # model formula
 brm_formula <- deparse1(m_brm$formula$formula)
 
-# convergence: max Rhat across all parameters
+# priors
+brm_priors <- prior_summary(m_brm)
+prior_intercept <- brm_priors |> filter(class == "Intercept") |> pull(prior)
+prior_b         <- brm_priors |> filter(class == "b", coef == "") |> pull(prior)
+prior_sd        <- brm_priors |> filter(class == "sd", coef == "") |> pull(prior) |> unique()
+prior_sigma     <- brm_priors |> filter(class == "sigma") |> pull(prior)
+prior_cor       <- brm_priors |> filter(class == "cor") |> pull(prior) |> unique()
+
+# convergence
 max_rhat <- round(max(rhat(m_brm), na.rm = TRUE), 3)
-```
+````
 
-Then in prose:
-
-```markdown
-first-pass reading time at the verb region was analysed using a Bayesian 
+````markdown
+First-pass reading time at the verb region was analysed using a Bayesian 
 linear mixed-effects model fitted with `brms` [@burkner_2017], using the 
-same formula as the frequentist model: `r brm_formula`. Weakly informative 
-priors were specified for all parameters: a normal prior centred on log(200 ms) 
-for the intercept (`normal(5.3, 0.2)`), normal priors for fixed effects 
-(`normal(0, 0.1)`), and exponential priors for random effect SDs and residual 
-SD (`exponential(10)`). Correlations between random effects were given an 
-LKJ(2) prior. The model was fitted with `r n_chains` chains of `r n_iter` 
-iterations each, with `r n_warmup` warmup iterations, yielding 
-`r n_samples` post-warmup samples. All $\hat{R}$ values were below 1.01 
-(max $\hat{R}$ = `r max_rhat`), indicating convergence. The dataset comprised 
-`r n_obs_brm` observations from `r n_px_brm` participants across 
-`r n_items_brm` items.
-```
+same formula as the frequentist model: `r brm_formula`. Lifetime was 
+sum-coded with `r rownames(lifetime_contrasts)[1]` = 
+`r lifetime_contrasts[1]` and `r rownames(lifetime_contrasts)[2]` = 
+`r lifetime_contrasts[2]`; tense was sum-coded with 
+`r rownames(tense_contrasts)[1]` = `r tense_contrasts[1]` and 
+`r rownames(tense_contrasts)[2]` = `r tense_contrasts[2]`. The following 
+priors were used: `r prior_intercept` for the intercept, `r prior_b` for 
+fixed effects, `r prior_sd` for random effect standard deviations, 
+`r prior_sigma` for the residual standard deviation, and `r prior_cor` for 
+random effect correlations. The model was fitted with `r n_chains` chains 
+of `r n_iter` iterations each, with `r n_warmup` warmup iterations, 
+yielding `r n_samples` post-warmup samples. Convergence was assessed via 
+trace plots and $\hat{R}$ values; all $\hat{R}$ values were below 1.01 
+(max $\hat{R}$ = `r max_rhat`). The dataset comprised `r n_obs_brm` 
+observations from `r n_px_brm` participants across `r n_items_brm` items.
+````
+
+> First-pass reading time at the verb region was analysed using a Bayesian 
+linear mixed-effects model fitted with `brms` [@burkner_2017], using the 
+maximal random effects structure: `r brm_formula`. Lifetime was 
+sum-coded with `r rownames(lifetime_contrasts)[1]` = 
+`r lifetime_contrasts[1]` and `r rownames(lifetime_contrasts)[2]` = 
+`r lifetime_contrasts[2]`; tense was sum-coded with 
+`r rownames(tense_contrasts)[1]` = `r tense_contrasts[1]` and 
+`r rownames(tense_contrasts)[2]` = `r tense_contrasts[2]`. The following 
+priors were used: `r prior_intercept` for the intercept, `r prior_b` for 
+fixed effects, `r prior_sd` for random effect standard deviations, 
+`r prior_sigma` for the residual standard deviation, and `r prior_cor` for 
+random effect correlations. The model was fitted with `r n_chains` chains 
+of `r n_iter` iterations each, with `r n_warmup` warmup iterations, 
+yielding `r n_samples` post-warmup samples. Convergence was assessed via 
+trace plots and $\hat{R}$ values; all $\hat{R}$ values were below 1.01 
+(max $\hat{R}$ = `r max_rhat`). The dataset comprised `r n_obs_brm` 
+observations from `r n_px_brm` participants across `r n_items_brm` items.
 
 ::: {.callout-note collapse="true"}
 #### What to report: `lmer()` vs `brms()`
 
-```{r}
+````{r}
 #| label: tbl-reporting
 #| tbl-cap: "Summary of what to report and how to extract it for frequentist and Bayesian mixed-effects models."
 #| echo: false
-tibble::tribble(
-  ~What,                   ~`lmer()`,                                          ~`brms()`,
+reporting_tbl <- tibble::tribble(
+  ~What,                   ~lmer,                                              ~brms,
   "Model formula",         "`deparse1(formula(m))`",                           "`deparse1(m$formula$formula)`",
   "N observations",        "`nobs(m)`",                                        "`nrow(m$data)`",
-  "N participants",        "`summary(m)$ngrps[[\"px_code\"]]`",                "`n_distinct(m$data$px_code)`",
-  "N items",               "`summary(m)$ngrps[[\"item\"]]`",                   "`n_distinct(m$data$item)`",
-  "Optimiser",             "`m@optinfo$optimizer`",                            "NUTS (default, no extraction needed)",
-  "Iterations",            "—",                                                "`m$fit@sim$iter`",
-  "Warmup",                "—",                                                "`m$fit@sim$warmup`",
-  "Chains",                "—",                                                "`m$fit@sim$chains`",
+  "N participants",        "`summary(m)$ngrps[['px']]`",                       "`n_distinct(m$data$px)`",
+  "N items",               "`summary(m)$ngrps[['item']]`",                     "`n_distinct(m$data$item)`",
+  "Contrast coding",       "`contrasts(m@frame$lifetime)`",                    "`contrasts(m$data$lifetime)`",
+  "Optimiser",             "`m@optinfo$optimizer`",                            "NUTS (default)",
+  "Iterations",            "---",                                              "`m$fit@sim$iter`",
+  "Warmup",                "---",                                              "`m$fit@sim$warmup`",
+  "Chains",                "---",                                              "`m$fit@sim$chains`",
   "Convergence",           "`isSingular(m)`; check Hessian warnings",          "`rhat(m)`; all should be < 1.01",
   "Point estimate",        "`tidy(m) |> pull(estimate)`",                      "`as_draws_df(m) |> summarise(mean(b_...))`",
   "Uncertainty",           "SE: `tidy(m) |> pull(std.error)`",                 "SD: `as_draws_df(m) |> summarise(sd(b_...))`",
   "Interval",              "95% CI: `tidy(m, conf.int=TRUE)`",                 "95% CrI: `as_draws_df(m) |> quantile()`",
-  "Test statistic",        "*t*: `tidy(m) |> pull(statistic)`",               "P(β > 0): `mean(draws > 0)`",
-  "p-value / evidence",    "*p*: `tidy(m) |> pull(p.value)`",                 "No *p*-value; report CrI + P(direction)",
-  "Priors",                "—",                                                "`prior_summary(m)`",
-  "Random effects",        "`as.data.frame(VarCorr(m))`",                     "`as_draws_df(m) |> select(starts_with('sd_'))`"
+  "Test statistic",        "t: `tidy(m) |> pull(statistic)`",                  "P(b > 0): `mean(draws > 0)`",
+  "p-value / evidence",    "p: `tidy(m) |> pull(p.value)`",                    "No p-value; report CrI + P(direction)",
+  "Priors",                "---",                                              "`prior_summary(m)`",
+  "Random effects",        "`as.data.frame(VarCorr(m))`",                      "`as_draws_df(m) |> select(starts_with('sd_'))`"
 ) |>
-  mutate(What = paste0("**", What, "**")) |>
-  gt() |>
-  fmt_markdown(columns = everything()) |>
-  tab_style(
-    style     = cell_text(weight = "bold"),
-    locations = cells_column_labels()
-  ) |>
-  cols_width(
-    What ~ px(180),
-    `lmer()` ~ px(250),
-    `brms()` ~ px(250)
-  )
-```
+  mutate(What = paste0("**", What, "**"))
+
+if (knitr::is_latex_output()) {
+  reporting_tbl |>
+    mutate(across(everything(),
+      ~ str_replace_all(., "\\*\\*([^*]+)\\*\\*", "\\\\textbf{\\1}") |>
+        str_replace_all("\\[\\[", "{[}{[}") |>
+        str_replace_all("\\]\\]", "{]}{]}") |>
+        str_replace_all(" \\|> ", " |> ") |>
+        str_replace_all("`([^`]*) \\|> ([^`]*)`", "\\\\texttt{\\1 |> \\2}") |>
+        str_replace_all("`([^`]+)`", "\\\\texttt{\\1}") |>
+        str_replace_all("\\$", "\\\\$") |>
+        str_replace_all("_", "\\\\_") |>
+        str_replace_all("@", "\\\\@") |>
+        str_replace_all("&", "\\\\&"))) |>
+    kbl(booktabs = TRUE, format = "latex", escape = FALSE,
+        col.names = c("What", "\\texttt{lmer()}", "\\texttt{brms()}")) |>
+    kable_styling(latex_options = c("hold_position", "scale_down")) |>
+    column_spec(1, width = "3cm") |>
+    column_spec(2, width = "5.5cm") |>
+    column_spec(3, width = "5.5cm")
+} else {
+  reporting_tbl |>
+    gt() |>
+    fmt_markdown(columns = everything()) |>
+    cols_label(
+      What = "**What**",
+      lmer = md("**`lmer()`**"),
+      brms = md("**`brms()`**")
+    ) |>
+    cols_width(
+      What ~ px(180),
+      lmer ~ px(250),
+      brms ~ px(250)
+    )
+}
+````
+:::
+
+::: {.callout-note}
+#### Priors: what to set and what to report
+
+Priors encode your assumptions about plausible parameter values *before seeing the data*. For eyetracking measures like first-pass reading time, we have strong domain knowledge: typical first-pass reading times fall in the 150–600 ms range, with a longer upper tail due to refixation trials. This justifies using weakly informative priors.
+
+**What to report in a write-up:**
+
+- The prior distributions for all parameters (intercept, slopes, random effect SDs, residual SD)
+- A brief justification for each prior (domain knowledge, regularisation, or previous literature)
+- Whether a **prior predictive check** was run to confirm priors generate plausible data before fitting
+
+**Useful diagnostics to check and report:**
+
+- `summary(brm_gaze)`: $\hat{R}$ values — all should be < 1.01
+- `plot(brm_gaze)`: trace plots and rank plots for chain mixing
+- `pp_check(brm_gaze)`: posterior predictive check — does the model reproduce the shape of your data?
+- Effective sample size (`Bulk_ESS`, `Tail_ESS`) — should be > 1000
+
+At minimum, a reproducible manuscript should report: prior distributions, $\hat{R}$ values, and a posterior predictive check.
 :::
 
 ## Summary
 
-```{r}
+````{r}
 #| label: tbl-summary
 #| tbl-cap: "Topics, key functions, and packages covered in this chapter."
 #| echo: false
@@ -873,18 +852,18 @@ if (knitr::is_latex_output()) {
       `Key functions` ~ px(280)
     )
 }
-```
+````
 
 ## Session Info {.unnumbered}
 
 ::: {.callout-important}
 #### Reproducibility: Session Info
 
-Always run `sessionInfo()` at the end of every script. This records your R version, package versions, and system information. This is an essential step for computational reproducibility.
+Always run `sessionInfo()` at the end of every script. This records your R version, package versions, and system information — an essential step for computational reproducibility.
 
-```{r}
+````{r}
 sessionInfo()
-```
+````
 
-The output is captured in your script output (e.g., rendered Quarto HTML/PDF) and does not need to be saved separately. You *can* save it as an `.rds` file, but note that session info is a snapshot in time. Packages may have been updated since the analysis was run, so a saved object may not reflect the environment used for any future re-runs. For more robust environment management, the `renv` package allows you to snapshot and restore the exact package versions used in a project.
+For more robust environment management, the `renv` package allows you to snapshot and restore the exact package versions used in a project.
 :::

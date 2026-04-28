@@ -216,18 +216,12 @@ The output is captured in your script output (e.g., rendered Quarto HTML/PDF) an
 
 Data should be stored in `data/raw/` and loaded at the top of the document using `here::here()`. This ensures the file path works regardless of where the project is opened:
 
-````{r}
+```{r}
 #| eval: false
-df_raw <- read_csv(here::here("data", "raw", "your-data.csv"))
-````
+df_raw <- read_csv(here::here("data", "raw", "data_example.csv"))
+```
 
-For processed data or saved R objects, load from `data/processed/` or `output/models/`:
 
-````{r}
-#| eval: false
-df_clean           <- readRDS(here::here("data", "processed", "data_example.rds"))
-lmer_verb_firstfix <- readRDS(here::here("output", "models", "lmer_verb_firstfix.rds"))
-````
 
 ::: callout-tip
 #### Loading data in a manuscript
@@ -235,7 +229,7 @@ lmer_verb_firstfix <- readRDS(here::here("output", "models", "lmer_verb_firstfix
 Load all data objects in a single setup chunk at the top of the document with `#| output: false`. This keeps the document clean and makes dependencies explicit.
 :::
 
-### Anonymising data
+## Anonymising data
 
 Raw data often contains identifiable information such as participant codes linked to personal records. Before sharing or archiving data, these should be replaced with pseudonymous identifiers. The code below creates a randomly assigned numeric code and saves the result:
 
@@ -243,16 +237,18 @@ Raw data often contains identifiable information such as participant codes linke
 #| eval: false
 set.seed(416) # for reproducibility
 
-px_lookup <- df |>
+px_lookup <- df_raw |>
   distinct(px_code) |>                               # one row per participant
   mutate(px = sample(1:n(), n(), replace = FALSE))   # randomly assign 1:N
 
-df_clean <- df |>
+df_clean <- df_raw |>
   left_join(px_lookup, by = "px_code") |>
-  select(-px_code)                                   # remove original identifier
+  select(-px_code) |>                                 # remove original identifier
+  relocate(px) |> 
+  arrange(px)
 ````
 
-Do not store `px_lookup` locally. It is the key linking original codes to pseudonymous ones and should never be shared or committed to version control.
+Do not store `px_lookup` locally. It is the key linking original codes to pseudonymous ones and should never be shared or committed to version control. In fact, you don't need to store it at all.
 
 ::: {.callout-warning collapse="true"}
 #### A note on pseudonymisation
@@ -270,7 +266,7 @@ After anonymising and transforming your data, save the processed object so it ca
 
 ````{r}
 #| eval: false
-saveRDS(df_clean, here::here("data", "processed", "data_example.rds"))
+write_csv(df_clean, here::here("data", "processed", "data_clean.csv"))
 ````
 
 ## Inline reporting {#sec-inline}
@@ -287,8 +283,7 @@ sd_tt <- round(sd(df_clean$tt,   na.rm = TRUE), 1)
 ````
 
 ````markdown
-The sample comprised ` r n_px` participants (*N* observations = ` r n_obs`). 
-Mean total reading time was ` r m_tt` ms (*SD* = ` r sd_tt`).
+The sample comprised ` r n_px` participants (*N* observations = ` r n_obs`). Mean total reading time was ` r m_tt` ms (*SD* = ` r sd_tt`).
 ````
 
 The rendered output would be:
@@ -296,13 +291,11 @@ The rendered output would be:
 > The sample comprised `r n_px` participants (*N* observations = `r n_obs`). Mean total reading time was `r m_tt` ms (*SD* = `r sd_tt`).
 
 ::: callout-tip
+### Why store computed values?
 Storing computed values as named objects keeps inline expressions short and readable, and ensures each value is computed only once, reducing the risk of inconsistencies if the expression appears in multiple places. Without named objects, the same inline code would need to be written as:
 
 ````markdown
-The sample comprised `r dplyr::n_distinct(df_clean$px)` participants 
-(*N* observations = `r nrow(df_clean |> filter(region == "verb"))`). 
-Mean total reading time was `r round(mean(df_clean$tt, na.rm = TRUE), 1)` ms 
-(*SD* = `r round(sd(df_clean$tt, na.rm = TRUE), 1)`).
+The sample comprised `r dplyr::n_distinct(df_clean$px)` participants (*N* observations = `r nrow(df_clean |> filter(region == "verb"))`). Mean total reading time was `r round(mean(df_clean$tt, na.rm = TRUE), 1)` ms (*SD* = `r round(sd(df_clean$tt, na.rm = TRUE), 1)`).
 ````
 
 The output would be identical, but errors are harder to spot and fix.
@@ -331,6 +324,11 @@ summary_tbl <- tibble::tribble(
 
 if (knitr::is_latex_output()) {
   summary_tbl |>
+    mutate(across(everything(),
+      ~ str_replace_all(., "`([^`]+)`", "\\\\texttt{\\1}") |>  # `code` -> \texttt{code}
+        str_replace_all("\\$", "\\\\$") |>                      # escape $
+        str_replace_all("_", "\\\\_") |>                        # escape _
+        str_replace_all("@", "\\\\@"))) |>                      # escape @
     kbl(booktabs = TRUE, format = "latex", escape = FALSE) |>
     kable_styling(latex_options = c("hold_position", "scale_down")) |>
     column_spec(2, width = "5cm")

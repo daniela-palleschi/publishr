@@ -3,7 +3,7 @@
 # Format p-values for inline reporting and tables
 # table = FALSE: "= .043" or "< .001" (for inline reporting)
 # table = TRUE:  ".043" or "< .001"   (for tables)
-fmt_p <- function(p, apa = TRUE, table = FALSE) {
+fmt_p <- function(p, digits = 3, apa = TRUE, table = FALSE) {
   formatted <- case_when(
     p < .001 ~ paste0("< .", paste(rep(0, digits - 1), collapse = ""), "1"),
     p < .01       ~ "< .01",
