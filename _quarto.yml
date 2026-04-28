@@ -79,29 +79,29 @@ format:
     citations-hover: true
     fig-width: 7
     fig-height: 5
-  pdf:
-    pdf-engine: pdflatex # use pdflatex instead of lualatex to avoid lua-ul/luacolor dependency
-    include-in-header:
-      text: |
-        \usepackage[utf8]{inputenc}  % Unicode character support for pdflatex
-        \usepackage{pmboxdraw}       % box-drawing characters (├, └, ─) for file structure diagrams
-        \usepackage{booktabs}        % professional table rules (required for kableExtra booktabs = TRUE)
-        \usepackage{longtable}       % tables that span multiple pages
-        \usepackage{microtype}       % improved text justification and spacing
-        \usepackage{gb4e}
-        \noautomath
-        \DeclareUnicodeCharacter{2212}{$-$}
-        \DeclareUnicodeCharacter{2248}{$\approx$}
-        \DeclareUnicodeCharacter{03B2}{$\beta$}
-        \DeclareUnicodeCharacter{00D7}{$\times$}
-    documentclass: scrbook # KOMA-Script book class: better typography than standard LaTeX book
-    classoption: oneside # remove alternating margins intended for double-sided printing; keeps all pages consistently aligned
-    papersize: a4
-    toc: true
-    number-sections: true
-    colorlinks: true
-    fig-width: 6 # in inches
-    fig-height: 4
+  # pdf:
+  #   pdf-engine: pdflatex # use pdflatex instead of lualatex to avoid lua-ul/luacolor dependency
+  #   include-in-header:
+  #     text: |
+  #       \usepackage[utf8]{inputenc}  % Unicode character support for pdflatex
+  #       \usepackage{pmboxdraw}       % box-drawing characters (├, └, ─) for file structure diagrams
+  #       \usepackage{booktabs}        % professional table rules (required for kableExtra booktabs = TRUE)
+  #       \usepackage{longtable}       % tables that span multiple pages
+  #       \usepackage{microtype}       % improved text justification and spacing
+  #       \usepackage{gb4e}
+  #       \noautomath
+  #       \DeclareUnicodeCharacter{2212}{$-$}
+  #       \DeclareUnicodeCharacter{2248}{$\approx$}
+  #       \DeclareUnicodeCharacter{03B2}{$\beta$}
+  #       \DeclareUnicodeCharacter{00D7}{$\times$}
+  #   documentclass: scrbook # KOMA-Script book class: better typography than standard LaTeX book
+  #   classoption: oneside # remove alternating margins intended for double-sided printing; keeps all pages consistently aligned
+  #   papersize: a4
+  #   toc: true
+  #   number-sections: true
+  #   colorlinks: true
+  #   fig-width: 6 # in inches
+  #   fig-height: 4
 
 execute:
   eval: true

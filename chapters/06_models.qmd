@@ -284,6 +284,7 @@ tidy_tbl <- broom.mixed::tidy(lmer_gaze, effects = "fixed", conf.int = TRUE) |>
 
 if (knitr::is_latex_output()) {
   tidy_tbl |>
+    mutate(term = str_replace_all(term, "_", "\\\\_")) |>
     kbl(booktabs = TRUE, format = "latex", escape = FALSE,
         col.names = c("Term", "$\\beta$", "SE", "$t$", "df", "$p$",
                       "95\\% CI lower", "95\\% CI upper")) |>
@@ -321,11 +322,11 @@ p_trial_lmer  <- lmer_tidy |> filter(term == "trial_c") |> pull(p.value)   |> fm
 
 ````markdown
 There was a main effect of lifetime, with longer first-pass reading times 
-for dead versus living referents (β = `r b_trial_lmer`, SE = `r se_trial_lmer`, 
+for dead versus living referents ($\beta$ = `r b_trial_lmer`, SE = `r se_trial_lmer`, 
 *t* = `r t_trial_lmer`, *p* `r p_trial_lmer`).
 ````
 
-> There was a main effect of lifetime, with longer first-pass reading times for dead versus living referents (β = `r b_trial_lmer`, SE = `r se_trial_lmer`, *t* = `r t_trial_lmer`, *p* `r p_trial_lmer`).
+> There was a main effect of lifetime, with longer first-pass reading times for dead versus living referents ($\beta$ = `r b_trial_lmer`, SE = `r se_trial_lmer`, *t* = `r t_trial_lmer`, *p* `r p_trial_lmer`).
 
 ::: {.callout-note}
 #### Bimodality in the raw data is not necessarily a problem
@@ -405,15 +406,14 @@ The model formula was `r model_formula`. Categorical predictors were sum-coded
 trial position. The by-item interaction slope was dropped from the maximal random 
 effects structure due to a singular fit, likely reflecting sparse cells (n = 6 
 observations per item per condition). The model was fitted using the `r optimizer` 
-optimiser with a maximum of `r n_evals` function evaluations. The dataset comprised 
-`r n_obs` observations from `r n_px` participants across `r n_items` items.
+optimiser with a maximum of `r n_evals` function evaluations.
 ````
 
 This will be printed as:
 
 > The dataset comprised `r n_obs` observations from `r n_px` participants across 
 `r n_items` items. `r n_dropped` trials (`r pct_dropped`%) were excluded due to 
-first-pass reading times of zero, indicating the region was skipped.  First-pass reading time at the verb region was analysed using a linear mixed-effects model fitted with `lme4` [@bates_et_al_2015] and `lmerTest` [@kuznetsova_et_al_2017], with Satterthwaite's method for degrees of freedom. The model formula was `r model_formula`. Categorical predictors were sum-coded (-0.5/+0.5): lifetime (`r rownames(lifetime_contrasts_lmer)[1]` = `r lifetime_contrasts_lmer[1]`, `r rownames(lifetime_contrasts_lmer)[2]` = `r lifetime_contrasts_lmer[2]`) and tense (`r rownames(tense_contrasts_lmer)[1]` = `r tense_contrasts_lmer[1]`, `r rownames(tense_contrasts_lmer)[2]` = `r tense_contrasts_lmer[2]`). Trial order was centred around the mean critical trial position. The by-item interaction slope was dropped from the maximal random effects structure due to a singular fit, likely reflecting sparse cells (n = 6 observations per item per condition). The model was fitted using the `r optimizer` optimiser with a maximum of `r n_evals` function evaluations. The dataset comprised `r n_obs` observations from `r n_px` participants across `r n_items` items.
+first-pass reading times of zero, indicating the region was skipped.  First-pass reading time at the verb region was analysed using a linear mixed-effects model fitted with `lme4` [@bates_et_al_2015] and `lmerTest` [@kuznetsova_et_al_2017], with Satterthwaite's method for degrees of freedom. The model formula was `r model_formula`. Categorical predictors were sum-coded (-0.5/+0.5): lifetime (`r rownames(lifetime_contrasts_lmer)[1]` = `r lifetime_contrasts_lmer[1]`, `r rownames(lifetime_contrasts_lmer)[2]` = `r lifetime_contrasts_lmer[2]`) and tense (`r rownames(tense_contrasts_lmer)[1]` = `r tense_contrasts_lmer[1]`, `r rownames(tense_contrasts_lmer)[2]` = `r tense_contrasts_lmer[2]`). Trial order was centred around the mean critical trial position. The by-item interaction slope was dropped from the maximal random effects structure due to a singular fit, likely reflecting sparse cells (n = 6 observations per item per condition). The model was fitted using the `r optimizer` optimiser with a maximum of `r n_evals` function evaluations.
 
 ::: {.callout-tip}
 #### What to report for a mixed-effects model
@@ -504,7 +504,7 @@ posterior::summarise_draws(brm_gaze, "rhat", "ess_bulk", "ess_tail") |>
 #| code-fold: true
 #| label: tbl-brm
 #| tbl-cap: "Bayesian mixed-effects model predicting first-pass reading time at the verb region. Posterior means, standard deviations, and 95% credible intervals for fixed effects."
-as_draws_df(brm_gaze) |>
+brm_tidy_tbl <- as_draws_df(brm_gaze) |>
   select(starts_with("b_")) |>
   pivot_longer(everything(), names_to = "term", values_to = "value") |>
   group_by(term) |>
@@ -515,21 +515,31 @@ as_draws_df(brm_gaze) |>
     q97.5 = round(quantile(value, 0.975), 3)
   ) |>
   mutate(term = str_remove(term, "^b_")) |>
-  arrange(match(term, c("Intercept", "lifetime1", "tense1", 
-                        "lifetime1:tense1", "trial_c"))) |> 
-  gt() |>
-  cols_label(
-    term  = "Term",
-    mean  = "Posterior mean",
-    sd    = "SD",
-    q2.5  = "2.5%",
-    q97.5 = "97.5%"
-  ) |>
-  tab_spanner(label = "95% Credible Interval", columns = c(q2.5, q97.5)) |>
-  tab_style(
-    style     = cell_text(weight = "bold"),
-    locations = cells_column_labels()
-  )
+  arrange(match(term, c("Intercept", "lifetime1", "tense1",
+                        "lifetime1:tense1", "trial_c")))
+
+if (knitr::is_latex_output()) {
+  brm_tidy_tbl |>
+    mutate(term = str_replace_all(term, "_", "\\\\_")) |>
+    kbl(booktabs = TRUE, format = "latex", escape = FALSE,
+        col.names = c("Term", "Posterior mean", "SD", "2.5\\%", "97.5\\%")) |>
+    add_header_above(c(" " = 3, "95\\% Credible Interval" = 2), escape = FALSE)
+} else {
+  brm_tidy_tbl |>
+    gt() |>
+    cols_label(
+      term  = "Term",
+      mean  = "Posterior mean",
+      sd    = "SD",
+      q2.5  = "2.5%",
+      q97.5 = "97.5%"
+    ) |>
+    tab_spanner(label = "95% Credible Interval", columns = c(q2.5, q97.5)) |>
+    tab_style(
+      style     = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
 ````
 
 ### Posterior distributions
@@ -589,7 +599,7 @@ and report this inline:
 There was a weak effect of lifetime, with longer first-pass reading times 
 for dead versus living referents (posterior mean = `r b_life_mean`, 
 SD = `r b_life_sd`, 95% CrI [`r b_life_lower`, `r b_life_upper`]; 
-*P*(β > 0) = `r p_life_pos`).
+*P*($\beta$ > 0) = `r p_life_pos`).
 ```
 
 Which renders as:
@@ -597,18 +607,18 @@ Which renders as:
 > There was a weak effect of lifetime, with longer first-pass reading times 
 for dead versus living referents (posterior mean = `r b_life_mean`, 
 SD = `r b_life_sd`, 95% CrI [`r b_life_lower`, `r b_life_upper`]; 
-*P*(β > 0) = `r p_life_pos`).
+*P*($\beta$ > 0) = `r p_life_pos`).
 
 ::: {.callout-tip}
 #### Reporting Bayesian results: key differences from frequentist
 
 ```{r}
 comparison_tbl <- tibble::tribble(
-  ~concept,          ~lmer,                       ~brms,
-  "Point estimate",  "\\$\\beta\\$ (fixed effect)", "Posterior mean or median",
-  "Uncertainty",     "Standard error (SE)",         "Posterior SD",
-  "Interval",        "95\\% CI",                    "95\\% CrI",
-  "Evidence",        "\\textit{p}-value",           "$P(\\beta > 0)$; CrI excludes zero"
+  ~concept,          ~lmer,                          ~brms,
+  "Point estimate",  "$\\beta$ (fixed effect)",      "Posterior mean or median",
+  "Uncertainty",     "Standard error (SE)",           "Posterior SD",
+  "Interval",        "95\\% CI",                     "95\\% CrI",
+  "Evidence",        "\\textit{p}-value",             "$P(\\beta > 0)$; CrI excludes zero"
 )
 
 if (knitr::is_latex_output()) {
@@ -836,6 +846,16 @@ summary_tbl <- tibble::tribble(
 
 if (knitr::is_latex_output()) {
   summary_tbl |>
+    mutate(
+      `Key functions` = str_replace_all(`Key functions`,
+                                        "`` `r \\.\\.\\.` ``",
+                                        "\\\\texttt{r ...}"),
+      across(everything(),
+        ~ str_replace_all(., "\\*\\*([^*]+)\\*\\*", "\\\\textbf{\\1}") |>
+          str_replace_all("`([^`]+)`", "\\\\texttt{\\1}") |>
+          str_replace_all("\\$", "\\\\$") |>
+          str_replace_all("_", "\\\\_") |>
+          str_replace_all("@", "\\\\@"))) |>
     kbl(booktabs = TRUE, format = "latex", escape = FALSE) |>
     kable_styling(latex_options = c("hold_position", "scale_down")) |>
     column_spec(2, width = "5cm")
