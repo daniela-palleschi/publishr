@@ -642,9 +642,10 @@ SD = `r b_life_sd`, 95% CrI [`r b_life_lower`, `r b_life_upper`];
 #### Reporting Bayesian results: key differences from frequentist
 
 ```{r}
+#| echo: false
 comparison_tbl <- tibble::tribble(
   ~concept,          ~lmer,                          ~brms,
-  "Point estimate",  "$\\beta$ (fixed effect)",      "Posterior mean or median",
+  "Point estimate",  "$\\beta$ (fixed effect)",      "$\\beta$ (posterior mean/median)",
   "Uncertainty",     "Standard error (SE)",           "Posterior SD",
   "Interval",        "95\\% CI",                     "95\\% CrI",
   "Evidence",        "\\textit{p}-value",             "$P(\\beta > 0)$; CrI excludes zero"
@@ -660,7 +661,7 @@ if (knitr::is_latex_output()) {
     ~` `,              ~`Frequentist (lmer)`,   ~`Bayesian (brms)`,
     "Point estimate",  "β (fixed effect)",       "Posterior mean or median",
     "Uncertainty",     "Standard error (SE)",    "Posterior SD",
-    "Interval",        "95% CI",                 "95% CrI",
+    "Interval",        "95% CI (confidence)",    "95% CrI (credible)",
     "Evidence",        "*p*-value",              "*P*(β > 0); CrI excludes zero"
   ) |>
     gt() |>
@@ -674,17 +675,23 @@ if (knitr::is_latex_output()) {
 
 A few important distinctions in how you write up results:
 
-- The **95% CrI can be interpreted directly**: "there is a 95% probability 
-the true effect lies between `r b_life_lower` and `r b_life_upper`." A 
-frequentist CI does not support this interpretation.
-- **There is no *p*-value.** Instead, report the probability of direction — 
-the proportion of posterior draws on the expected side of zero. A value of 
-`r p_life_pos` means `r p_life_pos * 100`% of posterior draws are positive.
-- **Do not say "significant."** Instead, describe the posterior: "the credible 
-interval excludes zero", "the bulk of the posterior mass is positive", or 
-"there is weak/strong evidence for an effect of..."
-- The `Est.Error` in the `brms` summary is the **posterior SD**, not a 
-standard error in the frequentist sense — label it SD in your write-up.
+- In `lmer`, $\beta$ is a **single point estimate**, meaning the model's best guess 
+  for the effect, full stop. In `brms`, $\beta$ is a **distribution of 
+  plausible values** (the posterior): the model returns not one number but a 
+  range of values with associated probabilities. The mean or median of that 
+  distribution is reported as the point estimate, but the full distribution 
+  is what you actually work with for inference.
+- The **95% CrI has a direct probability interpretation**: "there is a 95% 
+  probability that the true effect lies between `r b_life_lower` and 
+  `r b_life_upper`." A frequentist CI does not support this interpretation.
+- **There is no *p*-value.** Instead, report the *probability of direction*: 
+  the proportion of posterior draws on the expected side of zero. A value of 
+  `r p_life_pos` means `r p_life_pos * 100`% of posterior draws are positive.
+- **Do not say "significant."** Instead, describe the posterior directly: 
+  "the credible interval excludes zero," "the bulk of the posterior mass is 
+  positive," or "there is weak/strong evidence for an effect of X."
+- The `Est.Error` in the `brms` summary is the **posterior SD** — not a 
+  standard error in the frequentist sense. Label it *SD* in your write-up.
 :::
 
 ## Reporting the Bayesian model in a methods section
