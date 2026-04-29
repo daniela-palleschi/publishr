@@ -218,8 +218,8 @@ The appropriate model for repeated-measures data includes random effects for bot
 
 Let's fit a model with the maximal random effects structure justified by our design and data:
 
-````{r}
-#| echo: false
+```{r}
+#| echo: true
 #| eval: false
 #| output: false
 lmer_gaze_mm <- lmer(
@@ -228,12 +228,18 @@ lmer_gaze_mm <- lmer(
     (1 + lifetime * tense | item),
   data = df_verb
 )
+```
+
+
+```{r}
+#| eval: false
 saveRDS(lmer_gaze_mm, here("output", "models", "lmer_gaze_mm.rds"))
-````
+```
 
-We get the warning `boundary (singular) fit: see help('isSingular')`. This tells us our random effects structure is overparameterised. We'll skip how to find the model that converges and just run the model reported in the paper:
+We get the warning `boundary (singular) fit: see help('isSingular')`. This tells us our random effects structure is overparameterised. We'll skip how to find the model that converges and just run the model reported in the paper. I'm showing my code chunk options so you see my workflow:
 
-````{r}
+```{r}
+#| echo: fenced
 #| eval: false
 lmer_gaze <-
   lmer(log(gaze) ~ lifetime * tense + trial_c +
@@ -242,12 +248,21 @@ lmer_gaze <-
        data    = df_verb,
        control = lmerControl(optimizer = "bobyqa",        # more stable than default Nelder_Mead
                              optCtrl   = list(maxfun = 1e5)))  # max function evaluations
+```
 
+I run the models interactively, but set their code chunk options to `eval: false`. This is because I don't want to run every model when I render the document. For my final model, or any model that I want to interact with in the rendered document, I save it as an .rds file (also with `eval: false`):
+
+```{r}
+#| echo: fenced
+#| eval: false
 saveRDS(lmer_gaze, here("output", "models", "lmer_gaze.rds"))
-````
+```
+
+Then I load in the same file immediately after this, with `eval: true`. This way when I render the document I can still e.g., print the summary of the model.
 
 ````{r}
-#| echo: false
+#| echo: fenced
+#| eval: true
 lmer_gaze <- readRDS(here("output", "models", "lmer_gaze.rds"))
 ````
 
@@ -271,8 +286,18 @@ In this case, the maximal by-item structure `(1 + lifetime * tense | item)` prod
 
 ### Model summary table
 
+We can use `broom.mixed::tidy()` to extract model output into a tidy dataframe.
+
+```{r}
+broom.mixed::tidy(lmer_gaze)
+```
+
+
+We can also pass the tidy table to `kbl()` from `kableExtra` for a formatted table, or `gt()` for HTML (kableExtra would also work, but gt() is better suited to HTML). You can do a lot of formatted to the table, and we also use our custom `fmt_p` function to format the *p*-values.
+
 ````{r}
 #| label: tbl-lmer
+#| code-fold: true
 #| tbl-cap: "Linear mixed-effects model predicting first-pass reading time at the verb region. Fixed effects only."
 tidy_tbl <- broom.mixed::tidy(lmer_gaze, effects = "fixed", conf.int = TRUE) |>
   mutate(

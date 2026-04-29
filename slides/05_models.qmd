@@ -3,110 +3,122 @@ title: "Reporting Model Results"
 subtitle: "modelsummary, broom, and inline reporting"
 ---
 
-```{r}
-#| output: false
-pacman::p_load(
-  tidyverse,
-  broom,
-  modelsummary,
-  palmerpenguins)
-```
+## Overview
 
-```{r}
-#| output: false
-df_clean <- palmerpenguins::penguins |>
-  filter(!is.na(sex), !is.na(body_mass_g)) |>
-  mutate(
-    sex     = factor(sex, labels = c("Female", "Male")),
-    species = factor(species, levels = c("Adelie", "Chinstrap", "Gentoo"))
-  )
-```
-
-## Fitting models
-
-```{r}
-m1 <- lm(body_mass_g ~ species, data = df_clean)
-m2 <- lm(body_mass_g ~ species + sex, data = df_clean)
-m3 <- lm(body_mass_g ~ species * sex, data = df_clean)
-```
-
-## broom: tidy model output
-
-`broom::tidy()` returns model coefficients as a data frame — essential for inline reporting and custom tables.
-
-```{r}
-tidy(m2, conf.int = TRUE)
-```
-
-`broom::glance()` gives model-level fit statistics:
-
-```{r}
-glance(m2)
-```
-
-## Inline reporting
-
-Access model values directly in prose using inline R code. For example:
-
-```markdown
-The effect of sex on body mass was b = `r round(tidy(m2)$estimate[4], 1)` g
-(95% CI [`r round(tidy(m2, conf.int=TRUE)$conf.low[4], 1)`,
-`r round(tidy(m2, conf.int=TRUE)$conf.high[4], 1)`]),
-t(`r glance(m2)$df.residual`) = `r round(tidy(m2)$statistic[4], 2)`,
-p `r ifelse(tidy(m2)$p.value[4] < .001, "< .001", paste0("= ", round(tidy(m2)$p.value[4], 3)))`.
-```
-
-::: callout-tip
-Wrap repeated inline expressions in a small helper function stored in `R/utils.R` to keep prose readable.
+::: incremental
+- workflow for fitting a linear mixed effect model
+- extracting estimates for inline reporting
+- producing model summary table
 :::
 
-## modelsummary: regression tables
+## Set-up
 
-`modelsummary()` produces formatted regression tables from one or more models.
+- load packages: `here`, `tidyverse`, `lme4`, `lmerTest`, `kableExtra`
+- load data: `data/processed/data_clean.csv`; save it as `df_clean`
+  + or load some data you want to work with
+- load helper function for formatting p-values: `source(here("R", "helpers.R"))`
+
+### Code
 
 ```{r}
-modelsummary(
-  list("Null" = m1, "+ Sex" = m2, "Interaction" = m3),
-  stars     = TRUE,
-  gof_map   = c("nobs", "r.squared", "adj.r.squared", "rmse"),
-  coef_rename = c(
-    "speciesChinstrap"      = "Chinstrap",
-    "speciesGentoo"         = "Gentoo",
-    "sexMale"               = "Male",
-    "speciesChinstrap:sexMale" = "Chinstrap × Male",
-    "speciesGentoo:sexMale"    = "Gentoo × Male"
-  ),
-  title = "Table 2. Linear models predicting body mass (g)"
-)
+#| eval: true
+pacman::p_load(here, tidyverse, lme4, lmerTest, kableExtra)
+df_clean <- read_csv(here("data", "processed", "data_clean.csv"))
+source(here("R", "helpers.R"))
 ```
 
-## Exporting regression tables
-
-For Word:
-
 ```{r}
+#| echo: false
 #| eval: false
-modelsummary(
-  list("+ Sex" = m2),
-  output = here::here("output", "tables", "regression.docx")
-)
+
+# run this only when running interactively
+pacman::p_load(here, tidyverse, lme4, lmerTest, kableExtra)
+df_clean <- read_csv(here("../", "data", "processed", "data_clean.csv"))
 ```
 
-For LaTeX:
+## Model fitting
+
+- even with pre-processed data you typically want to do some data wrangling and exploration
+- usually I'd suggest having an Exploratory Data Analysis script before your analysis script
+    + here you'd plot the data in all different ways to get a feel for it
+    + you'd also want to look at the observations across participants etc.
+- we'll skip this step
+
+### Data prep
+
+- we need to filter our data
+- apply contrast coding for factorial predictors
+- centre continuous predictors
+- inspect distribution of dependent variable
+
+### Fit model
+
+- we'll do frequentist, and just run the published model structure
 
 ```{r}
+#| echo: fenced
 #| eval: false
-modelsummary(
-  list("+ Sex" = m2),
-  output  = here::here("output", "tables", "regression.tex"),
-  booktabs = TRUE
-)
+lmer_gaze <-
+  lmer(log(gaze) ~ lifetime * tense + trial_c +
+         (1 + lifetime | px) +
+         (1 + tense | item), 
+       data    = df_verb,
+       control = lmerControl(optimizer = "bobyqa",        # more stable than default Nelder_Mead
+                             optCtrl   = list(maxfun = 1e5)))  # max function evaluations
 ```
 
-## Chapter slides
+### Save and load model
 
-```{=html}
-<a href="../slides/05_models.html" class="btn btn-outline-primary" target="_blank">
-  Open slides ↗
-</a>
+```{r}
+#| echo: fenced
+#| eval: false
+saveRDS(lmer_gaze, here("output", "models", "lmer_gaze.rds"))
 ```
+
+```{r}
+#| echo: fenced
+#| eval: true
+lmer_gaze <- readRDS(here("output", "models", "lmer_gaze.rds"))
+```
+
+
+- `eval: false`: fitting and saving the model
+- `eval: true`: loading in the saved model
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### ✏️ Exercises — 5 minutes {background-color="#8D203D"}
+
+[Exercises 1: Analysis script](file:///C:/Users/Palleschi/OneDrive%20-%20Leibniz-ZAS/Documents/Workshops/publishr/_book/exercises/day2.html#data-and-code)
+
+You will render a script that already follows these steps.
+:::
+
+## Reporting your model
+
+- report model results inline using `broom.mixed::tidy()`
+- extract the term of interest with `filter()`, then pull and format each parameter
+
+````{r}
+#| echo: true
+lmer_tidy        <- broom.mixed::tidy(lmer_gaze, effects = "fixed", conf.int = TRUE)
+b_lifetime_lmer  <- lmer_tidy |> filter(term == "lifetime1") |> pull(estimate)  |> round(2)
+se_lifetime_lmer <- lmer_tidy |> filter(term == "lifetime1") |> pull(std.error) |> round(2)
+t_lifetime_lmer  <- lmer_tidy |> filter(term == "lifetime1") |> pull(statistic) |> round(2)
+p_lifetime_lmer  <- lmer_tidy |> filter(term == "lifetime1") |> pull(p.value)   |> fmt_p(3)
+````
+
+### Inline reporting
+
+- embed extracted values in prose using inline `` `r` ``
+- results update automatically when the model changes
+
+````markdown
+There was a main effect of lifetime, with longer first-pass reading times for dead 
+versus living referents ($\beta$ = `r b_lifetime_lmer`, SE = `r se_lifetime_lmer`, 
+*t* = `r t_lifetime_lmer`, *p* `r p_lifetime_lmer`).
+````
+
+> There was a main effect of lifetime, with longer first-pass reading times for dead 
+versus living referents ($\beta$ = `r b_lifetime_lmer`, SE = `r se_lifetime_lmer`, 
+*t* = `r t_lifetime_lmer`, *p* `r p_lifetime_lmer`).
+

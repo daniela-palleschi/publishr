@@ -77,7 +77,11 @@ Save this anonymised data in `data/processed`.
 write_csv(df_clean, here::here("data", "processed", "data_clean.csv"))
 ```
 
+**Assign code chunks accordingly!!!** Do you want to run all these steps each time you render, or is rendering a way to document a one-time process?
+
 ### Exercise 7: Summary statistics
+
+Load in your saved data (what should `eval` be?).
 
 Create a code chunk that filters to the verb region and computes the mean and 
 SD of first-pass reading time (`gaze`), storing them as named objects. Set the 
@@ -134,11 +138,12 @@ Open the script `analysis.qmd` and run each code chunk manually. Then render it.
 Open `manuscript.qmd`. The global chunk option to hide code is already set. 
 Render it to confirm it works.
 
-Then use inline code to fill in the following sentence. First store the values 
-as named objects in a hidden chunk, then reference them inline:
+Add inline code to fill in the following sentence (lines 137-139 in the Quarto script):
 
 ```
-There was no effect of tense (β = ___, SE = ___, *t* = ___, *p* ___).
+There was a main effect of lifetime, with longer first-pass reading times 
+for dead versus living referents ($\beta$ = , SE = , 
+*t* = , *p* ).
 ```
 
 ::: callout-tip
@@ -146,9 +151,13 @@ You will need `broom.mixed::tidy()` with `effects = "fixed"` and `conf.int = TRU
 then `filter(term == "tense1")` and `pull()` for each value.
 :::
 
+### Exercise 3: Reporting other effects
+
+So far our manuscript only reports effects of lifetime. Do the same for the Intercept and the effects of `tense1` and `trial_c`. How you structure the sentences and paragraph is up to you.
+
 ---
 
-### Exercise 3: Fit a total reading time model
+### Exercise 4: Fit a total reading time model
 
 Switch back to `analysis.qmd`.
 
@@ -182,7 +191,7 @@ saveRDS(lmer_tt, here("output", "models", "lmer_tt.rds"))
 
 ---
 
-### Exercise 4: Report the total reading time model in your manuscript
+### Exercise 5: Report the total reading time model in your manuscript
 
 Switch to `manuscript.qmd`.
 
