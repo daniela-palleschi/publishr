@@ -59,12 +59,12 @@ Add a code chunk that anonymises the `px` value.
 set.seed(416) # for reproducibility
 
 px_lookup <- df_raw |>
-  distinct(px) |>                             # one row per participant
+  distinct(px_code) |>                             # one row per participant
   mutate(px = sample(1:n(), n(), replace = FALSE)) # randomly assign 1:N
 
 df_clean <- df_raw |>
-  left_join(px_lookup, by = "px") |>
-  select(-px) |>                              # remove original identifier
+  left_join(px_lookup, by = "px_code") |>
+  select(-px_code) |>                              # remove original identifier
   relocate(px) |>
   arrange(px)
 ```
