@@ -29,93 +29,7 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-    /* CSS for syntax highlighting */
-    html { -webkit-text-size-adjust: 100%; }
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-    /* CSS for citations */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-      margin-bottom: 0em;
-    }
-    .hanging-indent div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }  </style>
+  </style>
   <link rel="stylesheet" href="day2_welcome_files/libs/revealjs/dist/theme/quarto-fc34a5e072ec2f43719a8788d267d86d.css">
   <link href="day2_welcome_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="day2_welcome_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -216,7 +130,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Welcome back</h1>
-  <p class="subtitle">Code Chunks, Loading Data, and Inline Reporting</p>
+  <p class="subtitle">Loading data and reporting models</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -228,339 +142,82 @@ Daniela Palleschi
 
   <p class="date">April 29, 2026</p>
 </section>
-<section>
 <section id="overview" class="title-slide slide level2 center">
 <h2>Overview</h2>
 <ul>
-<li class="fragment">Code chunks: structure and options</li>
-<li class="fragment">Loading and saving data</li>
-<li class="fragment">Inline reporting</li>
-</ul>
-</section>
-<section id="the-dataset" class="title-slide slide level3 center">
-<h3>The dataset</h3>
-<p>We will use eye-tracking reading data from <span class="citation" data-cites="palleschi_living_2025">Palleschi et al. (<a href="#/references" role="doc-biblioref" onclick="">2025</a>)</span>, adapted for this workshop.</p>
-<ul>
-<li class="fragment"><strong>Design:</strong> 2 × 2 — lifetime (living/dead) × tense (present perfect/simple future)</li>
-<li class="fragment"><strong>Regions:</strong> <code>verb</code> of interest for today</li>
-<li class="fragment"><strong>Reading measures:</strong> <code>gaze</code> (first-pass reading time) for today</li>
-<li class="fragment"><strong>Additional:</strong> <code>rating</code> (1–7 plausibility), <code>rt_ms</code> (reaction time to rating)</li>
-<li class="fragment"><strong>Note:</strong> participant codes (<code>px_code</code>) are randomly generated; we will anonymise these later</li>
-</ul>
-<div class="fragment">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>The verb region is the most theoretically relevant. We will focus on <code>gaze</code> in most exercises.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section>
-<section id="code-chunks" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="Code chunks">
-<h1>Code chunks</h1>
-
-</section>
-<section id="structure" class="title-slide slide level2 center">
-<h2>Structure</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href=""></a><span class="fu">## Reaction times</span></span>
-<span id="cb1-2"><a href=""></a></span>
-<span id="cb1-3"><a href=""></a>Calculate mean reaction times:</span>
-<span id="cb1-4"><a href=""></a></span>
-<span id="cb1-5"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb1-6"><a href=""></a>rt <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">312</span>, <span class="dv">287</span>, <span class="dv">445</span>, <span class="dv">301</span>, <span class="dv">389</span>)</span>
-<span id="cb1-7"><a href=""></a><span class="fu">mean</span>(rt)</span>
-<span id="cb1-8"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<ul>
-<li class="fragment">Fenced with <code>```{r}</code> and <code>```</code></li>
-<li class="fragment">Executed in sequence; output inserted at that position</li>
-<li class="fragment">Code must be written linearly: top to bottom</li>
-</ul>
-</div>
-</section>
-
-<section id="chunk-options" class="title-slide slide level2 center">
-<h2>Chunk options</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb2-2"><a href=""></a><span class="co">#| echo: false</span></span>
-<span id="cb2-3"><a href=""></a><span class="co">#| warning: false</span></span>
-<span id="cb2-4"><a href=""></a><span class="dv">5</span> <span class="sc">*</span> <span class="dv">6</span></span>
-<span id="cb2-5"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li class="fragment">must appear <em>directly</em> below <code>```{r}</code>, and</li>
-<li class="fragment">be preceded with <code>#|</code> + an empty space, and</li>
-<li class="fragment">be followed by a colon + empty space + value</li>
-<li class="fragment">apply only to when rendering or ‘Run all chunks (above)’, not when running interactively</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<div style="font-size: 0.7em;">
-<table class="caption-top">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 80%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Option</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>echo</code></td>
-<td>show or hide code</td>
-</tr>
-<tr class="even">
-<td><code>output</code></td>
-<td>show or hide output</td>
-</tr>
-<tr class="odd">
-<td><code>eval</code></td>
-<td>run or skip chunk</td>
-</tr>
-<tr class="even">
-<td><code>include</code></td>
-<td>include chunk and output</td>
-</tr>
-<tr class="odd">
-<td><code>warning</code></td>
-<td>show or hide warnings</td>
-</tr>
-<tr class="even">
-<td><code>message</code></td>
-<td>show or hide messages</td>
-</tr>
-<tr class="odd">
-<td><code>error</code></td>
-<td>halt on error (<code>false</code>) or continue and display error (<code>true</code>)</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div></div>
-</section>
-
-<section id="global-defaults-and-overrides" class="title-slide slide level2 center">
-<h2>Global defaults and overrides</h2>
-<p>Set globally in YAML:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href=""></a><span class="fu">execute</span><span class="kw">:</span></span>
-<span id="cb3-2"><a href=""></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb3-3"><a href=""></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
-<span id="cb3-4"><a href=""></a><span class="at">  </span><span class="fu">message</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>Override per chunk:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb4-2"><a href=""></a><span class="co">#| eval: true</span></span>
-<span id="cb4-3"><a href=""></a><span class="co">#| error: false</span></span>
-<span id="cb4-4"><a href=""></a><span class="dv">2</span><span class="sc">+</span><span class="dv">2</span></span>
-<span id="cb4-5"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4</code></pre>
-</div>
-</div>
-</div>
-</section>
-<section id="exercises-5-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
-<h3>✏️ Exercises — 5 minutes</h3>
-<p><a href="file:///C:/Users/Palleschi/OneDrive%20-%20Leibniz-ZAS/Documents/Workshops/publishr/_book/exercises/day2.html#data-and-code">Exercises 1 - 3: Code chunks</a></p>
-</section>
-
-</section>
-<section>
-<section id="loading-data" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="Loading data">
-<h1>Loading data</h1>
-
-</section>
-<section id="packages" class="title-slide slide level2 center">
-<h2>Packages</h2>
-<p>Always load pacakges at the top of your script!</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb6-2"><a href=""></a><span class="fu">library</span>(here)</span>
-<span id="cb6-3"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb6-4"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>I like the <code>pacman::p_load()</code> function for loading packages instead.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># install.packages("pacman")</span></span>
-<span id="cb7-2"><a href=""></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(here, tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-
-<section id="herehere" class="title-slide slide level2 center">
-<h2>here::here()</h2>
-<p>Always use <code>here::here()</code> for project-relative paths:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb8-2"><a href=""></a>df       <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw"</span>, <span class="st">"data_example.csv"</span>))</span>
-<span id="cb8-3"><a href=""></a>fit      <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"output"</span>, <span class="st">"models"</span>, <span class="st">"lmer_gaze.rds"</span>))</span>
-<span id="cb8-4"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="fragment">
-<p>Save processed objects so the manuscript never re-runs the analysis:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb9-2"><a href=""></a><span class="co">#| eval: false</span></span>
-<span id="cb9-3"><a href=""></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(df_clean, here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"data_clean.csv"</span>))</span>
-<span id="cb9-4"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-<div class="fragment">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Note</strong></p>
-</div>
-<div class="callout-content">
-<p>The <strong>analysis</strong> script <strong>processes/analyses</strong> data and <strong>saves it</strong> under a new filename.</p>
-<p>The <strong>manuscript</strong> script <strong>loads in</strong> the processed/analysed data and models and <strong>reports</strong> them.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="eval-true-or-false" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
-<h3>✏️ <code>eval: true</code> or <code>false</code>?</h3>
-<p>In an analysis script, which code chunks should be evaluated when rendering?</p>
-<ul>
-<li class="fragment">loading in your processed data</li>
-<li class="fragment">wrangling or checking distributions</li>
-<li class="fragment">running models</li>
-<li class="fragment">saving models as <code>.rds</code> files</li>
-<li class="fragment">re-loading in saved models</li>
-<li class="fragment">printing model summaries</li>
-<li class="fragment">running model diagnostics</li>
+<li class="fragment">Review</li>
+<li class="fragment">Today’s topics</li>
+<li class="fragment">Motivating dynamic reports</li>
 </ul>
 </section>
 
-
-<section id="anonymising-data" class="title-slide slide level2 center">
-<h2>Anonymising data</h2>
+<section id="publishr-workshop-github-repo" class="title-slide slide level1 center">
+<h1><code>publishr-workshop</code> GitHub repo</h1>
 <ul>
-<li class="fragment">here we create an anonymised participant code and save the result:</li>
-</ul>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="co"># create anonymised participant codes</span></span>
-<span id="cb10-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">416</span>)</span>
-<span id="cb10-3"><a href=""></a></span>
-<span id="cb10-4"><a href=""></a>px_lookup <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb10-5"><a href=""></a>  <span class="fu">distinct</span>(px_code) <span class="sc">|&gt;</span> <span class="co"># for each distinct px_code</span></span>
-<span id="cb10-6"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">px =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="fu">n</span>(), <span class="at">replace =</span> <span class="cn">FALSE</span>)) <span class="co"># randomly assign a value of 1:totalN</span></span>
-<span id="cb10-7"><a href=""></a></span>
-<span id="cb10-8"><a href=""></a>df_clean <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb10-9"><a href=""></a>  <span class="fu">left_join</span>(px_lookup, <span class="at">by =</span> <span class="st">"px_code"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-10"><a href=""></a>  <span class="fu">select</span>(<span class="sc">-</span>px_code)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-
-<section id="saving-cleaned-data" class="title-slide slide level2 center">
-<h2>Saving cleaned data</h2>
+<li class="fragment"><a href="https://github.com/daniela-palleschi/publishr-workshop">https://github.com/daniela-palleschi/publishr-workshop</a></li>
+<li class="fragment">make sure you have the new:
 <ul>
-<li class="fragment">cleaning/processing usually includes a lot more than just anonymise your data</li>
-<li class="fragment">for now let’s leave it at that</li>
-</ul>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb11-2"><a href=""></a><span class="co">#| eval: false</span></span>
-<span id="cb11-3"><a href=""></a><span class="fu">saveRDS</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"data_clean.csv"</span>))</span>
-<span id="cb11-4"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<ul>
-<li class="fragment"><code>eval: false</code> because we don’t want it to be saved with each render</li>
-<li class="fragment">usually at this point you would/should delete the raw data from your local machine
-<ul>
-<li class="fragment">and <em>archive</em> and <em>encrypt</em> it somewhere secure</li>
+<li class="fragment"><code>exercises/</code>: 01-cleaning.qmd, 02-analysis.qmd, 03-manuscript.qmd</li>
+<li class="fragment"><code>R/</code> folder</li>
+<li class="fragment">updated <code>references.bib</code></li>
+<li class="fragment"><code>data/raw/data_example.csv</code></li>
 </ul></li>
-<li class="fragment">note that we saved it in a subfolder for <code>processed</code> data</li>
 </ul>
 </section>
-<section id="exercises-5-minutes-1" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
-<h3>✏️ Exercises — 5 minutes</h3>
-<p><a href="https://daniela-palleschi.github.io/publishr/exercises/day1.html#exercise-4-load-data">Exercises 4 - 6: Load data</a></p>
-</section>
 
-</section>
-<section>
-<section id="inline-reporting" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="Inline reporting">
-<h1>Inline reporting</h1>
-
-</section>
-<section id="the-idea" class="title-slide slide level2 center">
-<h2>The idea</h2>
-<p>Instead of typing numbers manually:</p>
-<blockquote>
-<p>“The sample comprised <strong>48</strong> participants.”</p>
-</blockquote>
-<div class="fragment">
-<p>Embed directly in prose:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href=""></a>The sample comprised <span class="in">` r dplyr::n_distinct(df$px)`</span> participants.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="fragment">
-<p>Re-render when data changes – numbers update automatically.</p>
-</div>
-</section>
-
-<section id="store-values-as-objects" class="title-slide slide level2 center">
-<h2>Store values as objects</h2>
-<div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href=""></a>The sample comprised <span class="in">` r n_px`</span> participants.</span>
-<span id="cb13-2"><a href=""></a>Mean total reading time was <span class="in">` r m_tt`</span> ms (*SD* = <span class="in">` r sd_tt`</span>).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="fragment">
-<blockquote>
-<p>The sample comprised 24 participants. Mean total reading time was 350 ms (<em>SD</em> = 56).</p>
-</blockquote>
-</div>
-</section>
-<section id="exercises-10-minutes" class="title-slide slide level3 center" style="text-align: center; margin-top: 1em; color: white;" data-background-color="#8D203D">
-<h3>✏️ Exercises — 10 minutes</h3>
-<p><a href="https://daniela-palleschi.github.io/publishr/exercises/day1.html#exercise-5-summary-statistics">Exercises 7 - 9</a></p>
-</section>
-
-
-<section id="summary" class="title-slide slide level2 center">
-<h2>Summary</h2>
+<section id="review-quarto-foundations" class="title-slide slide level1 center" data-background-color="#8D203D" data-name="Review">
+<h1>Review: Quarto foundations</h1>
 <ul>
-<li class="fragment">Chunk options control what is shown and what runs</li>
-<li class="fragment"><code>here::here()</code> makes paths portable — the manuscript only loads, never re-runs</li>
-<li class="fragment">Inline R keeps reported values in sync with your analysis</li>
-<li class="fragment">Any number in your manuscript should be computed, not typed</li>
+<li class="fragment">RProjects</li>
+<li class="fragment">Writing in Quarto: Markdown</li>
+<li class="fragment">Output formats: PDF/tex, Word, HTML</li>
 </ul>
 </section>
 
-<section id="up-next" class="title-slide slide level2 center" data-background-color="#8D203D">
-<h2>Up next…</h2>
+<section id="today" class="title-slide slide level1 center" data-background-color="#8D203D" data-name="Today">
+<h1>Today</h1>
+<ul>
+<li class="fragment">adding data to our scripts</li>
+<li class="fragment">running a model in an analysis script</li>
+<li class="fragment">reporting a model in a manuscript script</li>
+</ul>
+</section>
+
+<section>
+<section id="motivating-dynamic-reports" class="title-slide slide level1 center" data-background-color="#8D203D" data-stack-name="Why dynamic reports?">
+<h1>Motivating dynamic reports</h1>
 
 </section>
-<section id="reporting-models" class="title-slide slide level3 center" style="text-align: center; margin-top: 2em; color: white;">
-<h3>Reporting models</h3>
-<p><em>Analyses and manuscripts in Quarto</em></p>
+<section id="why-reproducibility-matters" class="title-slide slide level3 center">
+<h3>Why reproducibility matters</h3>
+<ul>
+<li class="fragment"><strong>Open science</strong> encourages transparent, verifiable, and reusable research</li>
+<li class="fragment"><strong>FAIR principles</strong>: data and code should be Findable, Accessible, Interoperable, and Reusable</li>
+<li class="fragment">in practice: share your data, share your code, document your workflow</li>
+</ul>
 </section>
 
+<section id="modular-analyses" class="title-slide slide level3 center">
+<h3>Modular analyses</h3>
+<ul>
+<li class="fragment">separate your workflow into distinct scripts: data cleaning, modelling, reporting</li>
+<li class="fragment">each script does one thing and does it well</li>
+<li class="fragment">changes upstream (e.g.&nbsp;a preprocessing decision) propagate automatically downstream</li>
+</ul>
 </section>
-<section id="references" class="title-slide slide level1 smaller scrollable">
-<h1>References</h1>
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-palleschi_living_2025" class="csl-entry" role="listitem">
-Palleschi, D., Ronderos, C. R., &amp; Knoeferle, P. (2025). Living in the present – how referent lifetime influences processing of past, present (perfect), and future tenses. <em>Glossa Psycholinguistics</em>, <em>4</em>(1), 1–48. https://doi.org/<a href="https://doi.org/10.5070/G601119481">https://doi.org/10.5070/G601119481</a>
-</div>
-</div>
+<section id="dynamic-reports" class="title-slide slide level3 center">
+<h3>Dynamic reports</h3>
+<ul>
+<li class="fragment">a dynamic report links prose directly to code and data</li>
+<li class="fragment">no more copy-pasting results — values update when the data or model changes</li>
+<li class="fragment">reduces human error and makes your work easier to reproduce and audit</li>
+</ul>
+</section>
+</section>
+<section id="upnext" class="title-slide slide level1 center">
+<h1>Upnext</h1>
+
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -809,82 +466,6 @@ Palleschi, D., Ronderos, C. R., &amp; Knoeferle, P. (2025). Living in the presen
     setTimeout(centerTitle, 2000);
 
     </script>
-    
-
-    <script>
-
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-
-      // slide changes (different for each slide format).
-
-      (function () {
-
-        // dispatch for htmlwidgets
-
-        function fireSlideEnter() {
-
-          const event = window.document.createEvent("Event");
-
-          event.initEvent("slideenter", true, true);
-
-          window.document.dispatchEvent(event);
-
-        }
-
-    
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          fireSlideEnter();
-
-    
-
-          // dispatch for shiny
-
-          if (window.jQuery) {
-
-            if (previousSlide) {
-
-              window.jQuery(previousSlide).trigger("hidden");
-
-            }
-
-            if (currentSlide) {
-
-              window.jQuery(currentSlide).trigger("shown");
-
-            }
-
-          }
-
-        }
-
-    
-
-        // hookup for slidy
-
-        if (window.w3c_slidy) {
-
-          window.w3c_slidy.add_observer(function (slide_num) {
-
-            // slide_num starts at position 1
-
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-
-          });
-
-        }
-
-    
-
-      })();
-
-    </script>
-
-    
-
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
