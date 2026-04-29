@@ -3,6 +3,14 @@ title: "Open and Reproducible Research"
 subtitle: "FAIR Principles, the Data Life Cycle, and Modular Analyses"
 ---
 
+::: {style="text-align: right; margin-bottom: 1em;"}
+````{=html}
+<a href="../slides/day2_welcome.html" class="btn btn-outline-primary" target="_blank">
+  Open slides ↗
+</a>
+````
+:::
+
 ```{r}
 #| output: false
 #| echo: false

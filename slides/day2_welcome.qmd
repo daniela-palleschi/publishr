@@ -1,0 +1,63 @@
+---
+title: "Welcome back"
+subtitle: "Loading data and reporting models"
+author: "Daniela Palleschi"
+date: "2026-04-29"
+date-format: "MMMM D, YYYY"
+day: "Day 2"
+---
+
+## Overview
+
+::: incremental
+- Review
+- Today's topics
+- Motivating dynamic reports
+:::
+
+
+# `publishr-workshop` GitHub repo
+
+- [https://github.com/daniela-palleschi/publishr-workshop](https://github.com/daniela-palleschi/publishr-workshop)
+- make sure you have the new:
+  - `exercises/`: 01-cleaning.qmd, 02-analysis.qmd, 03-manuscript.qmd
+  - `R/` folder
+  - updated `references.bib`
+  - `data/raw/data_example.csv`
+
+# Review: Quarto foundations {background-color="#8D203D" data-name="Review"}
+
+- RProjects
+- Writing in Quarto: Markdown
+- Output formats: PDF/tex, Word, HTML
+
+# Today {background-color="#8D203D" data-name="Today"}
+- adding data to our scripts
+- running a model in an analysis script
+- reporting a model in a manuscript script
+
+# Motivating dynamic reports {background-color="#8D203D" data-stack-name="Why dynamic reports?"}
+
+### Why reproducibility matters
+
+- **Open science** encourages transparent, verifiable, and reusable research
+- **FAIR principles**: data and code should be Findable, Accessible, Interoperable, and Reusable
+- in practice: share your data, share your code, document your workflow
+
+### Modular analyses
+
+- separate your workflow into distinct scripts: data cleaning, modelling, reporting
+- each script does one thing and does it well
+- changes upstream (e.g. a preprocessing decision) propagate automatically downstream
+
+### Dynamic reports
+
+- a dynamic report links prose directly to code and data
+- no more copy-pasting results — values update when the data or model changes
+- reduces human error and makes your work easier to reproduce and audit
+
+
+# Upnext
+
+
+

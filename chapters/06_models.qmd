@@ -1,6 +1,10 @@
 ---
 title: "Fitting and reporting models"
-subtitle: "Linear models, mixed effects, and Bayesian estimation"
+subtitle: "Fitting and reporting mixed models"
+author: "Daniela Palleschi"
+date: "2026-04-29"
+date-format: "MMMM D, YYYY"
+day: "Day 2"
 editor_options: 
   chunk_output_type: console
 ---

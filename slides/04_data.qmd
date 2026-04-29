@@ -2,7 +2,7 @@
 title: "Data and Code in Quarto"
 subtitle: "Code Chunks, Loading Data, and Inline Reporting"
 author: "Daniela Palleschi"
-date: "2026-03-25"
+date: "2026-04-29"
 date-format: "MMMM D, YYYY"
 day: "Day 2"
 ---
