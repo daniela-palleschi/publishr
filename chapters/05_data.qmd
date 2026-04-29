@@ -200,21 +200,9 @@ lintr::lint(here("chapters", "04_data.qmd"), linters = lintr::unused_import_lint
 Results appear in the RStudio Markers pane, flagging any `library()` calls for packages that aren't referenced in the script. Note that this only works with `library()` — if you use `pacman::p_load()`, the linter will not recognise your loaded packages and results will be unreliable.
 :::
 
-::: {.callout-important}
-#### Reproducibility: Session Info
-
-Always run `sessionInfo()` at the end of every script. This records your R version, package versions, and system information. This is an essential step for computational reproducibility.
-
-```{r}
-sessionInfo()
-```
-
-The output is captured in your script output (e.g., rendered Quarto HTML/PDF) and does not need to be saved separately. You *can* save it as an `.rds` file, but note that session info is a snapshot in time. Packages may have been updated since the analysis was run, so a saved object may not reflect the environment used for any future re-runs. For more robust environment management,the `renv` package allows you to snapshot and restore the exact package versions used in a project.
-:::
-
 ### Load data
 
-Data should be stored in `data/raw/` and loaded at the top of the document using `here::here()`. This ensures the file path works regardless of where the project is opened:
+Raw/sensitive data should be stored separately from processed/(pseudo)anonymised data. In fact, raw or sensitive data should be archived and removed from your local folder after processing/anonymisation is completed. Our (not really) toy raw data are located in  `data/raw/` and should be loaded at the top of the document using `here::here()`. This ensures the file path works regardless of where the project is opened:
 
 ```{r}
 #| eval: false
@@ -347,9 +335,13 @@ if (knitr::is_latex_output()) {
 }
 ```
 
-## Session Info {.unnumbered}
+#### Reproducibility: Session Info
+
+Always run `sessionInfo()` at the end of every script. This records your R version, package versions, and system information. This is an essential step for computational reproducibility.
 
 ```{r}
 sessionInfo()
 ```
+
+The output is captured in your script output (e.g., rendered Quarto HTML/PDF) and does not need to be saved separately. You *can* save it as an `.rds` file, but note that session info is a snapshot in time. Packages may have been updated since the analysis was run, so a saved object may not reflect the environment used for any future re-runs. For more robust environment management,the `renv` package allows you to snapshot and restore the exact package versions used in a project.
 

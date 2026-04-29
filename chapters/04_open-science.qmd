@@ -15,20 +15,20 @@ if (!knitr::is_latex_output()) pacman::p_load(gt)
 
 This chapter provides the conceptual backdrop for Day 2 of the workshop. Before diving into the practical work of reporting model results, producing tables, and generating figures, it is worth stepping back to consider why reproducible research practices matter — not just for your own workflow, but for the broader scientific community.
 
-The tools covered in Day 2 (modular analysis scripts, saved model objects, dynamic tables, and publication-ready figures) are not merely conveniences. They are practical implementations of open science principles: making research transparent, verifiable, and reusable by others. This chapter introduces the key concepts — the research data life cycle, the FAIR principles, and modular analysis — and connects them to the hands-on work that follows.
+The tools covered in Day 2 (modular analysis scripts, saved model objects, dynamic tables, and publication-ready figures) are not merely conveniences. They are practical implementations of open science principles: making research transparent, verifiable, and reusable by others. This chapter introduces the key concepts (the research data life cycle, the FAIR principles, and modular analysis) and connects them to the hands-on work that follows.
 
 ## Open science
 
-Open science is a broad movement towards making scientific research and its outputs — data, code, publications, and methods — openly accessible to all. It encompasses open access publishing, open data, open source software, and open peer review, among other practices. The core motivation is that science progresses faster and more reliably when findings can be scrutinised, replicated, and built upon by the wider community.
+Open science is a broad movement towards making scientific research and its outputs (data, code, publications, and methods) openly accessible to all. It encompasses open access publishing, open data, open source software, and open peer review, among other practices. The core motivation is that science progresses faster and more reliably when findings can be scrutinised, replicated, and built upon by the wider community.
 
 Reproducibility is a central concern of open science. A study is reproducible if an independent researcher can take the original data and code and arrive at the same results. @Nuijten2016 found that around 50% of published psychology papers contained at least one statistical reporting error, many attributable to manual transcription of results. Reproducible workflows — where reported values are generated directly from data rather than typed manually — address this problem at its source.
 
 It is worth distinguishing between two related but distinct concepts:
 
-- **Reproducibility** — the same data and code produce the same results
-- **Replicability** — a new study with new data produces consistent findings
+- **Reproducibility**: the same data and code produce the same results
+- **Replicability**: a new study with new data produces consistent findings
 
-A Quarto-based workflow primarily addresses reproducibility: by connecting your manuscript directly to your analysis, you ensure that what is reported is what was computed. Replicability is a broader scientific question that depends on study design, sample size, and theoretical assumptions — but reproducibility is a necessary precondition for it.
+A Quarto-based workflow primarily addresses reproducibility: by connecting your manuscript directly to your analysis, you ensure that what is reported is what was computed. Replicability is a broader scientific question that depends on study design, sample size, and theoretical assumptions, but reproducibility is a necessary precondition for it.
 
 ## The research data life cycle
 
@@ -42,8 +42,8 @@ tbl_lifecycle <- tibble::tribble(
   ~Stage,     ~Description,                                          ~`Quarto connection`,
   "Plan",     "Data management plan, storage formats, ethics",      "RProject structure, renv",
   "Collect",  "Data acquisition, recording, documentation",         "Raw data in data/raw/",
-  "Process",  "Cleaning, anonymisation, quality control",           "01-anonymise.R, 02-process.R",
-  "Analyse",  "Statistical modelling, EDA",                         "03-eda.R, 04-analysis.R",
+  "Process",  "Cleaning, anonymisation, quality control",           "01-anonymise.qmd, 02-process.qmd",
+  "Analyse",  "Statistical modelling, EDA",                         "03-eda.qmd, 04-analysis.qmd",
   "Share",    "Publication, archiving, open access",                "Rendered manuscript, OSF",
   "Reuse",    "Secondary analysis, meta-analysis, replication",     ".qmd + renv.lock"
 )
@@ -115,7 +115,7 @@ if (knitr::is_latex_output()) {
 
 ### But open data should be FAIR
 
-Sharing data without documentation is not enough. A `.csv` file uploaded to OSF with no codebook, no README, and no variable descriptions is technically open but practically unusable. FAIR principles ensure that open data is actually reusable — that someone encountering it for the first time can understand what it contains, how it was collected, and under what conditions it may be used.
+Sharing data without documentation is not enough. A `.csv` file uploaded to OSF with no codebook, no README, and no variable descriptions is technically open but practically unusable. FAIR principles ensure that open data is actually reusable so that someone encountering it for the first time can understand what it contains, how it was collected, and under what conditions it may be used.
 
 When sharing data and analysis scripts alongside a manuscript, aim for both: open access where possible, and FAIR by default. In practice this means:
 
@@ -129,15 +129,16 @@ When sharing data and analysis scripts alongside a manuscript, aim for both: ope
 
 The practical expression of these principles within a single project is a modular analysis workflow [@Nagler1995]. Rather than writing one long script that loads raw data, cleans it, fits models, produces figures, and writes results all in sequence, a modular workflow separates these steps into discrete, self-contained scripts. Each script has a single responsibility, takes clearly defined inputs, and produces clearly defined outputs.
 
-This approach has several advantages. It makes the analysis easier to understand, debug, and maintain. It makes it possible to re-run only the parts that have changed — if you update your exclusion criteria, you re-run `02-process.R` onwards without touching the anonymisation step. And it makes the project easier to archive and share: each script is a documented record of one step in the analysis pipeline, and the full pipeline can be reconstructed by running the scripts in order.
+This approach has several advantages. It makes the analysis easier to understand, debug, and maintain. It makes it possible to re-run only the parts that have changed, e.g., if you update your exclusion criteria, you re-run `02-process.R` onwards without touching the anonymisation step. And it makes the project easier to archive and share: each script is a documented record of one step in the analysis pipeline, and the full pipeline can be reconstructed by running the scripts in order.
 
 The connection to FAIR and open science is direct: a modular, well-documented analysis project is far easier to make reusable than a monolithic script. Someone wishing to reproduce or extend your work can identify exactly where each output comes from, re-run individual steps, and substitute their own data or methods without needing to unpick a single tangled script.
 
-The modular workflow introduced in @sec-folder_structure — numbered scripts in `scripts/`, outputs saved to `output/`, manuscript files reading only from `output/` or `data/processed` — is a practical implementation of these principles. The rest of Day 2 builds directly on this structure.
+The modular workflow introduced in @sec-folder_structure (numbered scripts in `scripts/`, outputs saved to `output/`, manuscript files reading only from `output/` or `data/processed`) is a practical implementation of these principles. The rest of Day 2 builds directly on this structure.
 
 ::: callout-tip
 A useful test for whether your project is sufficiently modular and documented: could a colleague with good R skills but no knowledge of your study reproduce your main results table from scratch, using only the files in your project folder and your README? If the answer is no, there is documentation or structure work to do.
 :::
 
+## Summary
 
-- a word on Global RStudio settings for reproducibility
+Reproducible, open analyses are not an all-or-nothing achievement. By maintaining tidy project structures, consistent naming conventions, and modular code, you create the conditions for FAIR, transparent research where research data management principles carry directly into your analytical workflow.
