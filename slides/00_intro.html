@@ -6,8 +6,8 @@
 <script src="00_intro_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="00_intro_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="00_intro_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="00_intro_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<link href="00_intro_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.25">
 
   <meta name="author" content="Daniela Palleschi">
   <meta name="dcterms.date" content="2026-03-25">
@@ -95,8 +95,28 @@
     code span.va { color: #111111; } /* Variable */
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-  </style>
-  <link rel="stylesheet" href="00_intro_files/libs/revealjs/dist/theme/quarto-08649c2cfeb0d609b5b1aaeb4dc8b481.css">
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="00_intro_files/libs/revealjs/dist/theme/quarto-fc34a5e072ec2f43719a8788d267d86d.css">
   <link href="00_intro_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="00_intro_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="00_intro_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -353,7 +373,7 @@ Daniela Palleschi
 <p><strong>Warning</strong></p>
 </div>
 <div class="callout-content">
-<p>Around 50% of psychology papers contain at least one statistical reporting error, many due to manual transcription <span class="citation" data-cites="Nuijten2016">[@Nuijten2016]</span>.</p>
+<p>Around 50% of psychology papers contain at least one statistical reporting error, many due to manual transcription <span class="citation" data-cites="Nuijten2016">(<a href="" role="doc-biblioref" onclick="return false;">Nuijten et al., 2016</a>)</span>.</p>
 </div>
 </div>
 </div>
@@ -386,7 +406,7 @@ Daniela Palleschi
 </div>
 </section>
 
-<section class="slide level4">
+<section class="slide level4 center">
 
 </section>
 </section>
@@ -429,7 +449,7 @@ Daniela Palleschi
 
 <section id="the-dataset" class="title-slide slide level2 center">
 <h2>The dataset</h2>
-<p>The exercises use a real dataset based on <span class="citation" data-cites="palleschi_living_2025">@palleschi_living_2025</span> (<a href="https://osf.io/6sra7">osf.io/6sra7</a>), adapted for workshop purposes:</p>
+<p>The exercises use a real dataset based on <span class="citation" data-cites="palleschi_living_2025">Palleschi et al. (<a href="" role="doc-biblioref" onclick="return false;">2025</a>)</span> (<a href="https://osf.io/6sra7">osf.io/6sra7</a>), adapted for workshop purposes:</p>
 <ul>
 <li class="fragment">Some variables removed, some new ones added</li>
 <li class="fragment">Restructured to resemble raw data from a collection platform</li>
@@ -459,7 +479,7 @@ Daniela Palleschi
 <li class="fragment">Create publication-ready summary tables and figures</li>
 </ul>
 </section>
-<section class="slide level4">
+<section class="slide level4 center">
 
 </section>
 </section>
@@ -532,6 +552,14 @@ Daniela Palleschi
 </section>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-Nuijten2016" class="csl-entry" role="listitem">
+Nuijten, M. B., Hartgerink, C. H. J., Assen, M. A. L. M. van, Epskamp, S., &amp; Wicherts, J. M. (2016). The prevalence of statistical reporting errors in psychology (1985–2013). <em>Behavior Research Methods</em>, <em>48</em>, 1205–1226. <a href="https://doi.org/10.3758/s13428-015-0664-2">https://doi.org/10.3758/s13428-015-0664-2</a>
+</div>
+<div id="ref-palleschi_living_2025" class="csl-entry" role="listitem">
+Palleschi, D., Ronderos, C. R., &amp; Knoeferle, P. (2025). Living in the present – how referent lifetime influences processing of past, present (perfect), and future tenses. <em>Glossa Psycholinguistics</em>, <em>4</em>(1), 1–48. https://doi.org/<a href="https://doi.org/10.5070/G601119481">https://doi.org/10.5070/G601119481</a>
+</div>
+</div>
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -621,7 +649,7 @@ Daniela Palleschi
         disableLayout: false,
 
         // Vertical centering of slides
-        center: false,
+        center: true,
 
         // Enables touch navigation on devices with touch input
         touch: true,
@@ -750,6 +778,35 @@ Daniela Palleschi
           RevealZoom
         ]
       });
+    </script>
+    <script>
+
+    function centerTitle() {
+
+      const titleSlide = document.getElementById('title-slide');
+
+      if (titleSlide) {
+
+        titleSlide.style.setProperty('top', '50%', 'important');
+
+        titleSlide.style.setProperty('transform', 'translateY(-50%)', 'important');
+
+      }
+
+    }
+
+    
+
+    Reveal.on('ready', centerTitle);
+
+    Reveal.on('resize', centerTitle);
+
+    setTimeout(centerTitle, 300);
+
+    setTimeout(centerTitle, 1000);
+
+    setTimeout(centerTitle, 2000);
+
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
