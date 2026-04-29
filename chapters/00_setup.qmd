@@ -1,0 +1,41 @@
+---
+title: "Project Setup"
+subtitle: "Installing/Updating R, RStudio, and Quarto"
+---
+
+```{r}
+#| output: false
+library(here)
+library(renv)
+```
+
+## Before you start
+
+Before the first session, please make sure you have the following installed:
+
+- **R** ($\geq$ 4.2): <https://cran.r-project.org>
+- **RStudio** ($\geq$ 2022.07): <https://posit.co/download/rstudio-desktop>
+- **Quarto** (latest): <https://quarto.org/docs/download>
+
+### Checking your versions
+
+In the R console:
+```{r}
+#| output: false
+R.version.string  # R version
+```
+
+To check your Quarto CLI version, run this in the **Terminal** tab:
+```bash
+quarto --version
+```
+
+RStudio's version is visible under *Help → About RStudio*.
+
+### Updating
+
+- **R**: download the latest version from <https://cran.r-project.org>
+- **RStudio**: *Help → Check for Updates*
+- **Quarto**: download the latest version from <https://quarto.org/docs/download>
+
+

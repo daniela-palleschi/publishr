@@ -1,0 +1,63 @@
+---
+title: "End of Day 1"
+subtitle: "Recap and Preview"
+author: "Daniela Palleschi"
+date: "2026-03-25"
+date-format: "MMMM D, YYYY"
+day: "Day 1"
+---
+
+## What we covered today
+
+::: incremental
+- **Writing in Quarto** — Markdown, citations, cross-references, numbered examples
+- **Output formats** — HTML, Word, PDF, `keep-tex`, APA 7 trade-offs
+- **Data in Quarto** — code chunks, chunk options, loading data, inline reporting
+:::
+
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### 💬 Reflect {background-color="#8D203D"}
+
+*What was the most useful thing you learned today?*
+
+. . .
+
+*What are you still unsure about?*
+
+. . .
+
+*Did anything surprise you?*
+
+. . .
+
+*~3 minutes*
+:::
+
+## Before Day 2
+
+::: incremental
+- Make sure your RProject is set up and your data is in `data/raw/`
+- Try rendering `exercises/day1.qmd` to all three formats if you haven't already
+- Optional: have a look at your own analysis script; where could inline reporting replace manual transcription?
+:::
+
+
+## Day 2 preview
+
+::: incremental
+- **Open and reproducible research** — FAIR principles, data life cycle, modular analyses
+- **Model results** — `broom.mixed`, `modelsummary`, inline reporting
+- **Summary tables** — `gt`, `kableExtra`, `tribble`, format-conditional output
+- **Figures** — `ggplot2`, exporting, cross-referencing
+:::
+
+::: {style="text-align: center; margin-top: 2em; color: white;"}
+### See you next month {background-color="#8D203D"}
+
+Any questions before we finish?
+
+. . .
+
+*Thank you for your attention and engagement today.*
+:::

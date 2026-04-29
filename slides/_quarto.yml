@@ -10,11 +10,15 @@ date-format: "MMMM D, YYYY"
 knitr:
   opts_knit:
     root.dir: ".." # so that 'here' will use project folder as root directory
+    
+bibliography: ../references.bib
+csl: ../apa.csl
 
 format:
   revealjs:
     theme: [simple, zas-footer.scss]
     logo: logos/ZAS_Marke-Lang_weiss.svg
+    include-after-body: title-centre.html
     footer: "R for Publication    -    {{< meta day >}}:    {{< meta title >}}"
     width: 1600
     height: 900
@@ -25,7 +29,7 @@ format:
     progress: true
     scrollable: false
     incremental: true
-    center: false
+    center: true
     code-overflow: wrap
     code-link: true
     fig-align: center

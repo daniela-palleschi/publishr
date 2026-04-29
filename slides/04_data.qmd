@@ -1,0 +1,270 @@
+---
+title: "Data and Code in Quarto"
+subtitle: "Code Chunks, Loading Data, and Inline Reporting"
+author: "Daniela Palleschi"
+date: "2026-03-25"
+date-format: "MMMM D, YYYY"
+day: "Day 2"
+---
+
+## Overview
+
+::: incremental
+- Code chunks: structure and options
+- Loading and saving data
+- Inline reporting
+:::
+
+### The dataset
+
+We will use eye-tracking reading data from @palleschi_living_2025, adapted for this workshop.
+
+::: incremental
+- **Design:** 2 × 2 — lifetime (living/dead) × tense (present perfect/simple future)
+- **Regions:** `verb` of interest for today
+- **Reading measures:** `gaze` (first-pass reading time) for today
+- **Additional:** `rating` (1–7 plausibility), `rt_ms` (reaction time to rating)
+- **Note:** participant codes (`px_code`) are randomly generated; we will anonymise these later
+:::
+
+. . .
+
+::: callout-tip
+The verb region is the most theoretically relevant. We will focus on `gaze` in most exercises.
+:::
+
+# Code chunks {background-color="#8D203D" data-stack-name="Code chunks"}
+
+## Structure
+
+````markdown
+## Reaction times
+
+Calculate mean reaction times:
+
+```{{r}}
+rt <- c(312, 287, 445, 301, 389)
+mean(rt)
+```
+````
+
+
+. . .
+
+- Fenced with ` ```{r} ` and ` ``` `
+- Executed in sequence; output inserted at that position
+- Code must be written linearly: top to bottom
+
+## Chunk options
+
+:::: columns
+::: {.column width="50%"}
+````markdown
+```{{r}}
+#| echo: false
+#| warning: false
+5 * 6
+```
+````
+
+- must appear *directly* below ` ```{r} `, and
+- be preceded with `#|` + an empty space, and
+- be followed by a colon + empty space + value
+- apply only to when rendering or 'Run all chunks above', not when running interactively
+:::
+::: {.column width="50%"}
+::: {style="font-size: 0.7em;"}
+| Option | Effect |
+|---|---|
+| `echo` | show or hide code |
+| `output` | show or hide output |
+| `eval` | run or skip chunk |
+| `include` | include chunk and output |
+| `warning` | show or hide warnings |
+| `message` | show or hide messages |
+| `error` | halt on error (`false`) or continue and display error (`true`) |
+
+: {tbl-colwidths="[20,80]"}
+:::
+:::
+::::
+
+## Global defaults and overrides
+
+Set globally in YAML:
+````yaml
+execute:
+  echo: false
+  warning: false
+  message: false
+````
+
+. . .
+
+Override per chunk:
+
+```{r}
+#| echo: fenced
+#| eval: true
+#| error: false
+2+2
+```
+
+
+# Loading data {background-color="#8D203D" data-stack-name="Loading data"}
+
+## Packages
+
+Always load pacakges at the top of your script!
+
+```{r}
+#| echo: fenced
+library(here)
+library(tidyverse)
+```
+
+I like the `pacman::p_load()` function for loading packages instead.
+
+```{r}
+#| echo: true
+# install.packages("pacman")
+pacman::p_load(here, tidyverse)
+```
+
+
+## here::here()
+
+Always use `here::here()` for project-relative paths:
+
+```{r}
+#| echo: fenced
+df       <- readr::read_csv(here::here("data", "raw", "data_example.csv"))
+fit      <- readRDS(here::here("output", "models", "lmer_gaze.rds"))
+```
+
+. . .
+
+Save processed objects so the manuscript never re-runs the analysis:
+
+```{r}
+#| echo: fenced
+#| eval: false
+readr::write_csv(df_clean, here::here("data", "processed", "data_clean.csv"))
+```
+
+. . .
+
+::: callout-note
+The **analysis** script **processes/analyses** data and **saves it** under a new filename. 
+
+The **manuscript** script **loads in** the processed/analysed data and models and **reports** them.
+:::
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### ✏️ `eval: true` or `false`? {background-color="#8D203D"}
+
+In an analysis script, which code chunks should be evaluated when rendering?
+
+- loading in your processed data
+- wrangling or checking distributions
+- running models
+- saving models as `.rds` files
+- re-loading in saved models
+- printing model summaries
+- running model diagnostics
+:::
+
+## {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### ✏️ Exercise 4 — 5 minutes
+
+[Exercise 4: Load data](https://daniela-palleschi.github.io/publishr/exercises/day1.html#exercise-4-load-data)
+:::
+
+---
+
+## Anonymising data
+
+- here we create an anonymised participant code and save the result:
+
+```{r}
+#| eval: false
+# create anonymised participant codes
+set.seed(416)
+
+px_lookup <- df |>
+  distinct(px_code) |> # for each distinct px_code
+  mutate(px = sample(1:n(), n(), replace = FALSE)) # randomly assign a value of 1:totalN
+
+df_clean <- df |>
+  left_join(px_lookup, by = "px_code") |>
+  select(-px_code)
+```
+
+. . .
+
+# Inline reporting {background-color="#8D203D" data-stack-name="Inline reporting"}
+
+## The idea
+
+Instead of typing numbers manually:
+
+> "The sample comprised **48** participants."
+
+. . .
+
+Embed directly in prose:
+````markdown
+The sample comprised ` r dplyr::n_distinct(df$px)` participants.
+````
+
+. . .
+
+Re-render when data changes -- numbers update automatically.
+
+## Store values as objects
+```{r}
+#| eval: false
+n_px  <- dplyr::n_distinct(df_clean$px)
+m_tt  <- round(mean(df_clean$tt, na.rm = TRUE), 1)
+sd_tt <- round(sd(df_clean$tt,   na.rm = TRUE), 1)
+```
+
+. . .
+````markdown
+The sample comprised ` r n_px` participants.
+Mean total reading time was ` r m_tt` ms (*SD* = ` r sd_tt`).
+````
+
+. . .
+
+> The sample comprised 24 participants. Mean total reading time was 350 ms (*SD* = 56).
+
+
+## {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 1em; color: white;"}
+### ✏️ Exercises 5–7 — 10 minutes
+
+[Exercises 5–7](https://daniela-palleschi.github.io/publishr/exercises/day1.html#exercise-5-summary-statistics)
+:::
+
+
+
+## Summary
+
+::: incremental
+- Chunk options control what is shown and what runs
+- `here::here()` makes paths portable — the manuscript only loads, never re-runs
+- Inline R keeps reported values in sync with your analysis
+- Any number in your manuscript should be computed, not typed
+:::
+
+## Up next... {background-color="#8D203D"}
+
+::: {style="text-align: center; margin-top: 2em; color: white;"}
+### Day 2: Open Science and Tables
+
+*FAIR principles, data life cycle, and summary tables*
+:::
